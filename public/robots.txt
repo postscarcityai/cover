@@ -1,0 +1,89 @@
+# Robots.txt for Your Website
+# Template: Update with your actual domain and specific requirements
+# Purpose: Guide search engine crawlers and improve SEO
+
+User-agent: *
+Allow: /
+
+# Disallow sensitive or private areas
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /checkout/
+Disallow: /private/
+Disallow: /temp/
+
+# Template: Add your specific page paths to allow/disallow as needed
+# Example:
+# Allow: /about
+# Allow: /contact
+# Allow: /services
+
+# Sitemap location
+# Template: Update with your actual domain
+# Sitemap: https://yoursite.com/sitemap.xml
+
+# Crawl delay (be respectful to server resources)
+Crawl-delay: 1
+
+# Special instructions for major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# AI Search Engines and Chatbots
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Block aggressive crawlers that might impact performance
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+# Allow social media crawlers for link previews
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /

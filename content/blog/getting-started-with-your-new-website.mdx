@@ -1,0 +1,284 @@
+---
+title: "Getting Started with Your New Website"
+excerpt: "Welcome! Learn how to make the most of your new website's features including blog management, newsletter integration, and analytics tracking."
+author: "Your Company Name"
+date: "2025-01-10T09:00:00-05:00"
+readTime: "5 min read"
+category: "Getting Started"
+featured: true
+slug: "getting-started-with-your-new-website"
+---
+
+# Getting Started with Your New Website
+
+Welcome to your new marketing website! This platform is built with cutting-edge technology and includes powerful features to help you grow your business online.
+
+---
+
+## What's Included
+
+Your website comes with these enterprise-level features out of the box:
+
+<PracticalTip>
+**Quick Start Tip**
+
+Take 10 minutes to explore the site on both desktop and mobile. Click through all pages, test the newsletter signup, and try the blog post audio player (if enabled). This hands-on approach will help you understand what your visitors experience.
+</PracticalTip>
+
+### 🎯 Core Features
+
+1. **Fast, Modern Design** - Built with Next.js 14 for lightning-fast page loads
+2. **Mobile Responsive** - Perfect on phones, tablets, and desktops
+3. **SEO Optimized** - Structured data and meta tags for search engine visibility
+4. **Analytics Ready** - Google Analytics 4 integration for traffic insights
+5. **Newsletter System** - GDPR/CCPA compliant email subscriptions
+6. **Blog Platform** - Full-featured blogging with MDX support
+
+---
+
+## Key Pages on Your Site
+
+### Homepage
+Your digital storefront featuring:
+- Eye-catching hero section
+- Service highlights
+- Client results/testimonials
+- Clear calls-to-action
+
+### About Page
+Tell your story:
+- Company background
+- Team information
+- Values and mission
+- Trust indicators
+
+### Services Page
+Showcase what you offer:
+- Detailed service descriptions
+- Benefits and features
+- Pricing (if applicable)
+- Contact options
+
+### Blog
+Share your expertise:
+- Educational content
+- Industry news
+- How-to guides
+- Case studies
+
+### Contact Page
+Make it easy to reach you:
+- Contact form
+- Phone and email
+- Location/map
+- Business hours
+
+---
+
+## How to Update Content
+
+### Blog Posts
+
+Creating new blog posts is easy with MDX (Markdown + JSX):
+
+<QuestionAnswer
+  question="How do I create a new blog post?"
+  answer="Create a new .mdx file in the /content/blog/ directory. Add frontmatter with title, excerpt, date, and other metadata. Then write your content using Markdown. Deploy your changes and the post appears automatically!"
+/>
+
+<QuestionAnswer
+  question="What's MDX and why use it?"
+  answer="MDX combines Markdown's simplicity with React components. You can use standard formatting plus custom components like callout boxes, image layouts, and Q&A sections. It's powerful yet easy to learn."
+/>
+
+Check out the [complete feature showcase](/blog/example-blog-post-with-all-features) to see all available components.
+
+---
+
+## Newsletter Features
+
+Your website includes a professional newsletter system:
+
+**For Visitors:**
+- Simple signup form in footer
+- One-click subscription
+- Automatic confirmation
+- Easy unsubscribe option
+
+**For You:**
+- Subscriber management via Supabase
+- GDPR/CCPA compliance built-in
+- UTM tracking for marketing campaigns
+- Audit trail for all actions
+
+<LegalHighlight>
+**Privacy Compliance**
+
+Your newsletter system automatically handles consent tracking, IP logging, and user agent recording. This creates an audit trail that demonstrates compliance with privacy regulations like GDPR and CCPA.
+</LegalHighlight>
+
+---
+
+## Analytics & Tracking
+
+Understand your website traffic with Google Analytics 4:
+
+### What's Being Tracked
+
+**Conversions** (High Priority):
+- Phone calls clicked
+- Forms submitted
+- Newsletter signups
+- Downloads
+
+**Engagement** (Medium Priority):
+- Page views
+- Time on site
+- Scroll depth
+- Video plays
+
+**Errors** (For Optimization):
+- Form errors
+- Exit points
+- Bounce rate
+
+### Viewing Your Data
+
+1. Go to [analytics.google.com](https://analytics.google.com)
+2. Select your property
+3. View real-time and historical data
+4. Create custom reports
+
+<PracticalTip>
+**Analytics Best Practice**
+
+Check your analytics weekly for the first month, then monthly after that. Look for trends in traffic sources, popular pages, and conversion rates. Use these insights to refine your content strategy.
+</PracticalTip>
+
+---
+
+## Mobile Optimization
+
+Your site is fully responsive and optimized for mobile devices:
+
+- ✅ Touch-friendly navigation
+- ✅ Readable text sizes
+- ✅ Optimized images
+- ✅ Fast load times
+- ✅ Tap targets sized correctly
+
+Test it yourself: Open your website on your phone and try navigating, reading a blog post, and submitting the contact form.
+
+---
+
+## Search Engine Optimization (SEO)
+
+Your website includes advanced SEO features:
+
+### Schema.org Structured Data
+- Business information markup
+- Blog article markup
+- FAQ sections
+- Breadcrumb navigation
+
+### Technical SEO
+- Semantic HTML
+- Optimized meta tags
+- XML sitemap
+- Robots.txt
+- Canonical URLs
+
+### Performance
+- Image optimization (WebP/AVIF)
+- Code splitting
+- Font preloading
+- CDN caching
+
+---
+
+## Security Features
+
+Your site is built with security in mind:
+
+- 🔒 HTTPS/SSL encryption
+- 🔒 Security headers (CSP, X-Frame-Options)
+- 🔒 Rate limiting on forms
+- 🔒 Environment variable protection
+- 🔒 No sensitive data in client code
+
+---
+
+## Getting Help
+
+### Documentation
+
+Comprehensive guides are included in the `/docs` folder:
+- Blog structure guide
+- Schema implementation
+- Performance optimization
+- ADA compliance
+- Analytics setup
+
+### Support Resources
+
+- **Next.js Docs**: https://nextjs.org/docs
+- **Supabase Docs**: https://supabase.com/docs
+- **Tailwind CSS**: https://tailwindcss.com/docs
+
+### Common Tasks
+
+<QuestionAnswer
+  question="How do I update my phone number or email?"
+  answer="Update the contact information in site.config.ts, then redeploy. The changes will appear across all pages including the footer, navigation, and contact page."
+/>
+
+<QuestionAnswer
+  question="How do I change the site colors?"
+  answer="Edit the colors in tailwind.config.ts. You can update primary, secondary, and accent colors to match your brand. Changes apply site-wide automatically."
+/>
+
+<QuestionAnswer
+  question="How do I add a new page?"
+  answer="Create a new folder in the /app directory with a page.tsx file. For example: /app/new-page/page.tsx. The page will be accessible at /new-page automatically."
+/>
+
+---
+
+## Next Steps
+
+<DefenseStrategy>
+**Your Action Plan**
+
+1. **Week 1**: Familiarize yourself with all pages and features
+2. **Week 2**: Write your first blog post using the example as a guide
+3. **Week 3**: Review analytics data and subscriber growth
+4. **Week 4**: Optimize based on visitor behavior
+
+Success comes from consistent content creation and engagement with your audience.
+</DefenseStrategy>
+
+### Content Strategy
+
+- **Blog Posts**: Aim for 1-2 posts per week
+- **Newsletter**: Monthly updates minimum
+- **Analytics Review**: Weekly checks
+- **SEO Updates**: Quarterly optimization
+
+### Marketing Integration
+
+- Share blog posts on social media
+- Include website URL in email signatures
+- Add to business cards and materials
+- Cross-promote with partners
+
+---
+
+## Questions?
+
+<CaseAlert>
+**Need Assistance?**
+
+If you have questions about managing your website, refer to the SETUP-GUIDE.md file in the repository for detailed technical documentation and troubleshooting steps.
+</CaseAlert>
+
+Welcome aboard, and here's to your online success! 🚀

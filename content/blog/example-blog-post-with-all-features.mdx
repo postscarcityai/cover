@@ -1,0 +1,314 @@
+---
+title: "Example Blog Post: Complete Feature Showcase"
+excerpt: "This is a comprehensive example blog post demonstrating all available MDX components, styling options, and features including audio narration, image layouts, callouts, and SEO-optimized Q&A sections."
+author: "Your Company Name"
+date: "2025-01-15T10:00:00-05:00"
+readTime: "8 min read"
+category: "Examples"
+featured: true
+slug: "example-blog-post-with-all-features"
+audio:
+  narrator: "Professional Voice Actor"
+  totalDuration: "12 min"
+  parts:
+    - title: "Introduction"
+      url: "https://your-cdn.com/audio/example-part-1.mp3"
+      description: "Opening segment covering the main topic"
+      duration: "3:45"
+    - title: "Key Points"
+      url: "https://your-cdn.com/audio/example-part-2.mp3"
+      description: "Deep dive into important details"
+      duration: "4:30"
+    - title: "Conclusion"
+      url: "https://your-cdn.com/audio/example-part-3.mp3"
+      description: "Summary and takeaways"
+      duration: "3:45"
+---
+
+# Example Blog Post: Complete Feature Showcase
+
+This example post demonstrates **all available MDX components** and features in your marketing site template. Use this as a reference when creating client blog posts.
+
+---
+
+## Standard Markdown Elements
+
+### Typography Hierarchy
+
+You can use headings from H1 to H4. Each heading is styled with Playfair Display serif font for editorial appeal:
+
+#### This is an H4 Heading
+
+Regular paragraphs use a clean sans-serif font for readability. You can use **bold text**, *italic text*, and even ***bold italic*** for emphasis.
+
+### Lists
+
+**Unordered Lists:**
+- First important point
+- Second key takeaway
+- Third critical insight
+  - Nested sub-point
+  - Another nested item
+
+**Ordered Lists:**
+1. Step one in your process
+2. Step two to follow
+3. Step three to complete
+4. Final step for success
+
+### Blockquotes
+
+> "This is a blockquote. Use it for highlighting important quotes, testimonials, or key insights. It's styled with a left border for visual emphasis."
+>
+> — Attribution Name, Title
+
+### Code Blocks
+
+```javascript
+// Example code snippet
+const exampleFunction = () => {
+  console.log('This is formatted code');
+  return 'with syntax highlighting';
+}
+```
+
+---
+
+## Custom MDX Components
+
+### Content Callout Boxes
+
+<LegalHighlight>
+**Key Point Highlight**
+
+Use this yellow-bordered box to highlight important information, key takeaways, or critical points that readers should pay attention to. Perfect for summarizing complex topics.
+</LegalHighlight>
+
+<CaseAlert>
+**Alert / Warning Box**
+
+This red-bordered alert box is ideal for time-sensitive information, warnings, disclaimers, or urgent updates that require immediate attention from your readers.
+</CaseAlert>
+
+<PracticalTip>
+**Practical Tip**
+
+The blue-bordered tip box is perfect for actionable advice, pro tips, best practices, or helpful suggestions that add value to your content.
+</PracticalTip>
+
+<DefenseStrategy>
+**Strategy / Success Box**
+
+This green-bordered box works great for strategies, success stories, winning approaches, or positive outcomes. Use it to inspire action and confidence.
+</DefenseStrategy>
+
+---
+
+## Image Components
+
+### Full-Width Editorial Image
+
+<FullWidthImage
+  src="/img/placeholder.svg"
+  alt="Descriptive alt text for accessibility and SEO"
+  caption="This is a full-width image with a caption. Perfect for hero images or major visual breaks in your content."
+/>
+
+### Side-by-Side Images
+
+<SideBySide
+  left="/img/placeholder.svg"
+  right="/img/placeholder.svg"
+/>
+
+Use this for before/after comparisons, contrasting concepts, or dual visuals that complement each other.
+
+### Image with Quote (Left)
+
+<ImageQuote
+  src="/img/placeholder.svg"
+  alt="Team member or client photo"
+  quote="This component places an image on the left with a highlighted quote on the right. Perfect for testimonials, team insights, or expert opinions."
+  attribution="Attribution Name, Title"
+/>
+
+### Image with Quote (Right)
+
+<ImageRight
+  src="/img/placeholder.svg"
+  alt="Professional headshot or product image"
+  quote="This variation places the image on the right side with the quote on the left, offering layout flexibility for your content design."
+  attribution="Expert Name, Role"
+/>
+
+### Image with Editorial Text (Left)
+
+<ImageText
+  src="/img/placeholder.svg"
+  alt="Relevant supporting image"
+  text="This component combines an image on the left with editorial text on the right. Use it for explaining concepts, showcasing products, or highlighting team members with descriptive content."
+  attribution="Optional caption or attribution"
+/>
+
+### Image with Editorial Text (Right)
+
+<ImageTextRight
+  src="/img/placeholder.svg"
+  alt="Contextual image"
+  text="The right-aligned version places the image on the right side with text on the left. Great for alternating layouts and maintaining visual interest throughout long-form content."
+  attribution="Photo credit or caption"
+/>
+
+### Blog Image (Rounded with Caption)
+
+<BlogImage
+  src="/img/placeholder.svg"
+  alt="Blog-style image with rounded corners"
+  text="This rounded image component is perfect for inline blog images. It includes a subtle shadow and caption for a polished, professional appearance."
+  attribution="Image caption or credit"
+/>
+
+---
+
+## SEO-Optimized Q&A Sections
+
+Use the `QuestionAnswer` component to create FAQ sections that generate structured data for search engines. These appear in Google's rich results and voice search answers.
+
+<QuestionAnswer
+  question="What makes this template ideal for marketing websites?"
+  answer="This template includes enterprise-level features like MDX blog posts, audio narration, newsletter integration, advanced analytics, and comprehensive SEO optimization. It's production-ready and fully customizable for any industry."
+/>
+
+<QuestionAnswer
+  question="How do I customize the template for a new client?"
+  answer="Start by updating the site.config.ts file with client information, replace logos and favicons, update colors in the Tailwind config, customize page content, and configure environment variables for Supabase and Google Analytics."
+/>
+
+<QuestionAnswer
+  question="What external services are required?"
+  answer="You'll need three main services: Supabase (for newsletter and audio storage), Google Analytics 4 (for tracking), and optionally ElevenLabs (for text-to-speech audio generation). All are documented in the setup guide."
+/>
+
+<QuestionAnswer
+  question="Can I add custom components to blog posts?"
+  answer="Yes! All MDX components are defined in components/mdx-components.tsx. You can create new components and add them to that file to make them available in all blog posts."
+/>
+
+---
+
+## Audio Narration Feature
+
+This blog post includes **audio narration** configured in the frontmatter. The audio player appears:
+- **Desktop**: Sticky position in the top-right corner
+- **Mobile**: Below the title for easy access
+
+The player features:
+- Play/pause with spacebar support
+- Multi-part chapter navigation
+- Seekable timeline
+- Volume control
+- Duration display
+- Analytics tracking (play, part completion, series completion)
+
+---
+
+## Embedded Media Examples
+
+### Links
+
+Here's a [standard hyperlink](https://example.com) and here's a link with [descriptive anchor text](https://example.com/page).
+
+### Inline Images
+
+![Inline image alt text](/img/placeholder.svg)
+
+---
+
+## Best Practices for Blog Posts
+
+### 1. **Frontmatter Requirements**
+Every blog post must include:
+- `title` - SEO-optimized headline
+- `excerpt` - Meta description (150-160 chars)
+- `author` - Writer or company name
+- `date` - ISO format with timezone
+- `readTime` - Estimated reading time
+- `category` - Content category
+- `featured` - Boolean for homepage display
+- `slug` - URL-safe identifier
+
+### 2. **Image Optimization**
+- Use descriptive filenames
+- Add meaningful alt text for accessibility
+- Compress images before upload (WebP/AVIF)
+- Store in `/public/jw/[slug]/` directory
+- Recommended sizes: 1200x630 for OG, 800x600 for content
+
+### 3. **SEO Optimization**
+- Use one H1 (title) per post
+- Include H2-H4 subheadings for structure
+- Add QuestionAnswer components for FAQ schema
+- Target keyword density: 1-2%
+- Internal linking to related posts
+- External links to authoritative sources
+
+### 4. **Content Structure**
+- Hook readers in first paragraph
+- Use short paragraphs (2-3 sentences)
+- Include visuals every 300-500 words
+- Break up content with callout boxes
+- End with clear call-to-action
+
+### 5. **Audio Narration** (Optional)
+- Generate scripts from post content
+- Use consistent narrator voice
+- Break into logical chapters (3-5 parts)
+- Upload to Supabase storage
+- Add metadata to frontmatter
+
+---
+
+## Markdown Reference
+
+**Text Formatting:**
+- `**bold**` → **bold**
+- `*italic*` → *italic*
+- `***bold italic***` → ***bold italic***
+- `~~strikethrough~~` → ~~strikethrough~~
+- `` `inline code` `` → `inline code`
+
+**Links:**
+- `[Link text](https://url.com)` → [Link text](https://url.com)
+
+**Images:**
+- `![Alt text](/path/to/image.jpg)` → Standard image
+
+**Lists:**
+- Use `-` or `*` for unordered lists
+- Use `1.` `2.` `3.` for ordered lists
+
+**Blockquotes:**
+- Start line with `>` for blockquote
+
+**Code Blocks:**
+- Use triple backticks with language: ` ```javascript `
+
+---
+
+## Summary
+
+This example post demonstrates:
+
+✅ All standard Markdown elements
+✅ Custom callout boxes (4 types)
+✅ Image components (8 variations)
+✅ SEO-optimized Q&A sections
+✅ Audio narration configuration
+✅ Typography hierarchy
+✅ Best practices guide
+
+Use this as a reference when creating new blog posts for your clients. Mix and match components to create engaging, SEO-optimized content that converts visitors into customers.
+
+---
+
+**Need Help?** Check the documentation in `/docs/blog-instructions/blog-structure-guide.md` for detailed authoring guidelines and component usage examples.

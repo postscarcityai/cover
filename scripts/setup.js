@@ -1,0 +1,194 @@
+#!/usr/bin/env node
+
+/**
+ * WCW Site Template - Interactive Setup Script
+ *
+ * This script helps you configure the template for a new client project.
+ * It will guide you through:
+ * - Basic site configuration
+ * - Environment variable setup
+ * - Theme selection
+ * - Logo and branding setup
+ */
+
+const fs = require('fs');
+const path = require('path');
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+// Colors for terminal output
+const colors = {
+  reset: '\x1b[0m',
+  bright: '\x1b[1m',
+  green: '\x1b[32m',
+  blue: '\x1b[34m',
+  yellow: '\x1b[33m',
+  red: '\x1b[31m',
+  cyan: '\x1b[36m'
+};
+
+function log(message, color = 'reset') {
+  console.log(colors[color] + message + colors.reset);
+}
+
+function question(prompt) {
+  return new Promise((resolve) => {
+    rl.question(colors.cyan + prompt + colors.reset, (answer) => {
+      resolve(answer);
+    });
+  });
+}
+
+async function main() {
+  log('\n========================================', 'bright');
+  log('  WCW Site Template - Setup Wizard', 'bright');
+  log('========================================\n', 'bright');
+
+  log('This wizard will help you configure the template for your new client project.\n', 'blue');
+
+  // Step 1: Basic Information
+  log('Step 1: Basic Site Information', 'green');
+  log('─────────────────────────────────────\n', 'green');
+
+  const siteName = await question('Client/Company Name: ');
+  const siteDescription = await question('Site Description (for SEO): ');
+  const siteUrl = await question('Site URL (e.g., https://example.com): ');
+  const phone = await question('Phone Number (e.g., +1 (555) 123-4567): ');
+  const email = await question('Contact Email: ');
+
+  // Step 2: Address
+  log('\nStep 2: Business Address', 'green');
+  log('─────────────────────────────────────\n', 'green');
+
+  const street = await question('Street Address: ');
+  const city = await question('City: ');
+  const state = await question('State/Province: ');
+  const zip = await question('ZIP/Postal Code: ');
+  const country = await question('Country: ');
+
+  // Step 3: Theme Selection
+  log('\nStep 3: Theme Selection', 'green');
+  log('─────────────────────────────────────\n', 'green');
+  log('Available themes:', 'blue');
+  log('  1. professional - Traditional, trustworthy (Navy Blue)', 'blue');
+  log('  2. modern - Clean, contemporary (Teal)', 'blue');
+  log('  3. elegant - Sophisticated (Deep Purple)', 'blue');
+  log('  4. minimal - Simple, refined (Charcoal)', 'blue');
+  log('  5. warm - Approachable (Burnt Orange)', 'blue');
+
+  const themeChoice = await question('\nSelect theme (1-5) [default: 5]: ') || '5';
+  const themes = ['professional', 'modern', 'elegant', 'minimal', 'warm'];
+  const selectedTheme = themes[parseInt(themeChoice) - 1] || 'warm';
+
+  // Step 4: Environment Variables
+  log('\nStep 4: Environment Variables (Optional - press Enter to skip)', 'green');
+  log('─────────────────────────────────────\n', 'green');
+
+  const gaId = await question('Google Analytics Measurement ID (G-XXXXXXXXXX): ');
+  const supabaseUrl = await question('Supabase Project URL: ');
+  const supabaseKey = await question('Supabase Service Role Key: ');
+  const adminKey = await question('Newsletter Admin Key (generate with: openssl rand -base64 32): ');
+
+  // Step 5: Generate Configuration
+  log('\nStep 5: Generating Configuration Files...', 'green');
+  log('─────────────────────────────────────\n', 'green');
+
+  try {
+    // Update site.config.ts
+    const siteConfigPath = path.join(process.cwd(), 'site.config.ts');
+    let siteConfig = fs.readFileSync(siteConfigPath, 'utf8');
+
+    // Replace values
+    siteConfig = siteConfig.replace(/name:\s*"[^"]*"/, `name: "${siteName}"`);
+    siteConfig = siteConfig.replace(/description:\s*"[^"]*"/, `description: "${siteDescription}"`);
+    siteConfig = siteConfig.replace(/url:\s*"[^"]*"/, `url: "${siteUrl}"`);
+    siteConfig = siteConfig.replace(/phone:\s*"[^"]*"/, `phone: "${phone}"`);
+    siteConfig = siteConfig.replace(/email:\s*"[^"]*"/, `email: "${email}"`);
+    siteConfig = siteConfig.replace(/street:\s*"[^"]*"/, `street: "${street}"`);
+    siteConfig = siteConfig.replace(/city:\s*"[^"]*"/, `city: "${city}"`);
+    siteConfig = siteConfig.replace(/state:\s*"[^"]*"/, `state: "${state}"`);
+    siteConfig = siteConfig.replace(/zip:\s*"[^"]*"/, `zip: "${zip}"`);
+    siteConfig = siteConfig.replace(/country:\s*"[^"]*"/, `country: "${country}"`);
+    siteConfig = siteConfig.replace(/activeTheme:\s*'[^']*'/, `activeTheme: '${selectedTheme}'`);
+
+    fs.writeFileSync(siteConfigPath, siteConfig);
+    log('✓ Updated site.config.ts', 'green');
+
+    // Create .env.local
+    if (gaId || supabaseUrl || supabaseKey || adminKey) {
+      const envContent = `# =============================================================================
+# WCW Site Template - Environment Variables
+# =============================================================================
+# Generated by setup wizard
+# =============================================================================
+
+${gaId ? `# Google Analytics
+NEXT_PUBLIC_GA_MEASUREMENT_ID=${gaId}
+` : '# Google Analytics (not configured)
+# NEXT_PUBLIC_GA_MEASUREMENT_ID=
+'}
+${supabaseUrl ? `# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=${supabaseUrl}
+${supabaseKey ? `SUPABASE_SERVICE_ROLE_KEY=${supabaseKey}` : '# SUPABASE_SERVICE_ROLE_KEY='}
+` : '# Supabase Configuration (not configured)
+# NEXT_PUBLIC_SUPABASE_URL=
+# SUPABASE_SERVICE_ROLE_KEY=
+'}
+${adminKey ? `# Newsletter Admin Authentication
+NEWSLETTER_ADMIN_KEY=${adminKey}
+` : '# Newsletter Admin Authentication (not configured)
+# NEWSLETTER_ADMIN_KEY=
+'}
+# Site Configuration
+NEXT_PUBLIC_SITE_URL=${siteUrl}
+`;
+
+      const envPath = path.join(process.cwd(), '.env.local');
+      fs.writeFileSync(envPath, envContent);
+      log('✓ Created .env.local', 'green');
+    }
+
+    // Update package.json
+    const packagePath = path.join(process.cwd(), 'package.json');
+    const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+    packageJson.name = siteName.toLowerCase().replace(/\s+/g, '-');
+    fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2));
+    log('✓ Updated package.json', 'green');
+
+    log('\n========================================', 'bright');
+    log('  Setup Complete!', 'green');
+    log('========================================\n', 'bright');
+
+    log('Your template has been configured with:', 'blue');
+    log(`  • Site Name: ${siteName}`, 'blue');
+    log(`  • Theme: ${selectedTheme}`, 'blue');
+    log(`  • URL: ${siteUrl}`, 'blue');
+    log(`  • Contact: ${email}`, 'blue');
+
+    log('\nNext Steps:', 'yellow');
+    log('  1. Replace logo files in /public/img/', 'yellow');
+    log('  2. Review and customize site.config.ts', 'yellow');
+    log('  3. Update content in /app pages', 'yellow');
+    log('  4. Create blog posts in /content/blog', 'yellow');
+    log('  5. Run: pnpm dev', 'yellow');
+
+    log('\nFor detailed instructions, see SETUP-GUIDE.md\n', 'cyan');
+
+  } catch (error) {
+    log('\n✗ Error during setup:', 'red');
+    log(error.message, 'red');
+    process.exit(1);
+  }
+
+  rl.close();
+}
+
+main().catch(error => {
+  log('\n✗ Setup failed:', 'red');
+  log(error.message, 'red');
+  process.exit(1);
+});

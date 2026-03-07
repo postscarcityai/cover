@@ -295,8 +295,8 @@ export async function GET() {
     message: 'Newsletter subscription endpoint',
     endpoints: {
       POST: '/api/newsletter/subscribe - Subscribe to newsletter',
-      GET: '/api/newsletter/confirm/[token] - Confirm subscription',
-      GET: '/api/newsletter/unsubscribe/[token] - Unsubscribe'
+      'GET (confirm)': '/api/newsletter/confirm/[token] - Confirm subscription',
+      'GET (unsubscribe)': '/api/newsletter/unsubscribe/[token] - Unsubscribe'
     },
     requiredFields: {
       email: 'string (required)',

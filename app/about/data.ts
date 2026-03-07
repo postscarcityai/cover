@@ -116,7 +116,7 @@ export const ourFirmData: OurFirmData = {
   ],
   practiceAreas: siteConfig.business.expertise,
   stateLicenses: siteConfig.serviceLocations?.states?.map(s => s.name) || siteConfig.business.serviceAreas,
-  federalJurisdictions: siteConfig.serviceLocations?.points?.map(p => p.name) || [],
+  federalJurisdictions: (siteConfig.serviceLocations?.points ?? []).map((p) => (p as { name: string }).name),
   cta: siteConfig.about?.cta || {
     heading: "Ready to Get Started?",
     paragraphs: [

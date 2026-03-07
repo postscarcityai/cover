@@ -12,26 +12,6 @@ interface FAQAccordionProps {
   className?: string;
 }
 
-/**
- * FAQ Accordion Component
- * 
- * Reusable, accessible FAQ accordion with:
- * - Only one FAQ open at a time
- * - Smooth expand/collapse animations
- * - Schema.org FAQPage structured data for SEO
- * - Keyboard accessible
- * - ARIA compliant
- * 
- * @example
- * ```tsx
- * <FAQAccordion 
- *   faqs={[
- *     { question: "What is your return policy?", answer: "We offer..." },
- *     { question: "How long does shipping take?", answer: "Typically..." }
- *   ]}
- * />
- * ```
- */
 export function FAQAccordion({ faqs, className = '' }: FAQAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -39,7 +19,6 @@ export function FAQAccordion({ faqs, className = '' }: FAQAccordionProps) {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  // Generate FAQPage schema for search engines
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -55,51 +34,62 @@ export function FAQAccordion({ faqs, className = '' }: FAQAccordionProps) {
 
   return (
     <>
-      {/* Schema.org structured data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      {/* FAQ Accordion */}
-      <div className={`space-y-4 ${className}`}>
+      <div className={`space-y-3 ${className}`}>
         {faqs.map((faq, index) => (
-          <div 
-            key={index} 
-            className="bg-white shadow-md border-t border-black/85 overflow-hidden transition-shadow hover:shadow-lg"
+          <div
+            key={index}
+            className="rounded-lg overflow-hidden transition-all border"
+            style={{
+              backgroundColor: 'var(--surface)',
+              borderColor: openIndex === index ? 'var(--accent)' : 'var(--border)',
+            }}
           >
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-gray-50 transition-colors"
+              className="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer transition-colors"
               aria-expanded={openIndex === index}
               aria-controls={`faq-answer-${index}`}
               id={`faq-question-${index}`}
             >
-              <h3 className="font-montserrat font-light text-xl text-gray-900">
+              <h3 className="font-medium text-lg" style={{ color: 'var(--fg)' }}>
                 {faq.question}
               </h3>
-              <svg 
-                className={`flex-shrink-0 w-6 h-6 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}
-                style={{ color: 'var(--theme-primary)' }}
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-                aria-hidden="true"
+              <div
+                className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"
+                style={{
+                  backgroundColor: openIndex === index
+                    ? 'var(--accent)'
+                    : 'color-mix(in srgb, var(--accent) 15%, transparent)',
+                }}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
+                <svg
+                  className={`w-4 h-4 transition-transform duration-300 ${openIndex === index ? 'rotate-45' : ''}`}
+                  style={{ color: openIndex === index ? 'var(--accent-fg)' : 'var(--accent)' }}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v12M6 12h12" />
+                </svg>
+              </div>
             </button>
-            <div 
+            <div
               id={`faq-answer-${index}`}
               role="region"
               aria-labelledby={`faq-question-${index}`}
               className="overflow-hidden transition-all duration-300 ease-in-out"
-              style={{ 
+              style={{
                 maxHeight: openIndex === index ? '1000px' : '0',
                 opacity: openIndex === index ? 1 : 0
               }}
             >
-              <div className="font-montserrat text-gray-700 leading-relaxed px-6 pb-6">
+              <div className="leading-relaxed px-6 pb-6" style={{ color: 'var(--fg-muted)' }}>
                 {faq.answer}
               </div>
             </div>
@@ -109,4 +99,3 @@ export function FAQAccordion({ faqs, className = '' }: FAQAccordionProps) {
     </>
   );
 }
-

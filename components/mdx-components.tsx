@@ -13,37 +13,37 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     // Allows customizing built-in components, e.g. to add styling.
     h1: ({ children }) => (
-      <h1 className="text-5xl md:text-6xl font-bold text-[#2A2C53] mb-8 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+      <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
         {children}
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="text-3xl md:text-4xl font-bold text-[#2A2C53] mb-6 mt-12 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+      <h2 className="text-3xl md:text-4xl font-bold mb-6 mt-12 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-2xl md:text-3xl font-bold text-[#2A2C53] mb-4 mt-8 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+      <h3 className="text-2xl md:text-3xl font-bold mb-4 mt-8 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
         {children}
       </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="text-xl md:text-2xl font-semibold text-[#2A2C53] mb-4 mt-6">
+      <h4 className="text-xl md:text-2xl font-semibold mb-4 mt-6" style={{ color: 'var(--fg)' }}>
         {children}
       </h4>
     ),
     p: ({ children }) => (
-      <p className="text-lg text-gray-700 leading-relaxed mb-6">
+      <p className="text-lg leading-relaxed mb-6" style={{ color: 'var(--fg-muted)' }}>
         {children}
       </p>
     ),
     ul: ({ children }) => (
-      <ul className="text-lg text-gray-700 leading-relaxed mb-6 pl-6 space-y-2">
+      <ul className="text-lg leading-relaxed mb-6 pl-6 space-y-2" style={{ color: 'var(--fg-muted)' }}>
         {children}
       </ul>
     ),
     ol: ({ children }) => (
-      <ol className="text-lg text-gray-700 leading-relaxed mb-6 pl-6 space-y-2 list-decimal">
+      <ol className="text-lg leading-relaxed mb-6 pl-6 space-y-2 list-decimal" style={{ color: 'var(--fg-muted)' }}>
         {children}
       </ol>
     ),
@@ -53,72 +53,74 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </li>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="border-l-4 border-[#2A2C53] pl-6 py-4 my-8 bg-gray-50 italic text-lg text-gray-700">
+      <blockquote className="border-l-4 pl-6 py-4 my-8 italic text-lg" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--surface)', color: 'var(--fg-muted)' }}>
         {children}
       </blockquote>
     ),
     code: ({ children }) => (
-      <code className="bg-gray-100 px-2 py-1 rounded text-sm font-mono text-[#2A2C53]">
+      <code className="px-2 py-1 rounded text-sm font-mono" style={{ backgroundColor: 'var(--muted)', color: 'var(--accent)' }}>
         {children}
       </code>
     ),
     pre: ({ children }) => (
-      <pre className="bg-gray-900 text-white p-6 rounded-lg my-8 overflow-x-auto">
+      <pre className="p-6 rounded-lg my-8 overflow-x-auto" style={{ backgroundColor: 'var(--muted)', color: 'var(--fg)' }}>
         {children}
       </pre>
     ),
     a: ({ href, children }) => (
-      <Link href={href || '#'} className="text-[#2A2C53] hover:text-[#2A2C53]/80 underline font-medium">
+      <Link href={href || '#'} className="underline font-medium" style={{ color: 'var(--accent)' }}>
         {children}
       </Link>
     ),
     // Custom components for legal content
     LegalHighlight: ({ children }: { children: React.ReactNode }) => (
-      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 my-8">
-        <div className="text-yellow-800 font-semibold mb-2">⚖️ Key Legal Point</div>
-        <div className="text-yellow-700">{children}</div>
+      <div className="border-l-4 p-6 my-8" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--accent)' }}>
+        <div className="font-semibold mb-2" style={{ color: 'var(--fg)' }}>Key Legal Point</div>
+        <div style={{ color: 'var(--fg-muted)' }}>{children}</div>
       </div>
     ),
     CaseAlert: ({ children }: { children: React.ReactNode }) => (
-      <div className="bg-red-50 border-l-4 border-red-400 p-6 my-8">
-        <div className="text-red-800 font-semibold mb-2">🚨 Case Alert</div>
-        <div className="text-red-700">{children}</div>
+      <div className="border-l-4 p-6 my-8" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--accent)' }}>
+        <div className="font-semibold mb-2" style={{ color: 'var(--fg)' }}>Case Alert</div>
+        <div style={{ color: 'var(--fg-muted)' }}>{children}</div>
       </div>
     ),
     PracticalTip: ({ children }: { children: React.ReactNode }) => (
-      <div className="bg-blue-50 border-l-4 border-blue-400 p-6 my-8">
-        <div className="text-blue-800 font-semibold mb-2">💡 Practical Tip</div>
-        <div className="text-blue-700">{children}</div>
+      <div className="border-l-4 p-6 my-8" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--accent)' }}>
+        <div className="font-semibold mb-2" style={{ color: 'var(--fg)' }}>Practical Tip</div>
+        <div style={{ color: 'var(--fg-muted)' }}>{children}</div>
       </div>
     ),
     DefenseStrategy: ({ children }: { children: React.ReactNode }) => (
-      <div className="bg-green-50 border-l-4 border-green-400 p-6 my-8">
-        <div className="text-green-800 font-semibold mb-2">🛡️ Defense Strategy</div>
-        <div className="text-green-700">{children}</div>
+      <div className="border-l-4 p-6 my-8" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--accent)' }}>
+        <div className="font-semibold mb-2" style={{ color: 'var(--fg)' }}>Defense Strategy</div>
+        <div style={{ color: 'var(--fg-muted)' }}>{children}</div>
       </div>
     ),
     QuestionAnswer: ({ question, answer }: { question: string; answer: string }) => (
-      <div className="bg-purple-50 border-l-4 border-purple-400 p-6 my-8">
-        <div className="text-purple-800 font-semibold mb-3 flex items-start">
-          <span className="mr-2">❓</span>
+      <div className="border-l-4 p-6 my-8" style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--accent)' }}>
+        <div className="font-semibold mb-3 flex items-start" style={{ color: 'var(--fg)' }}>
+          <span className="mr-2">Q:</span>
           <span>{question}</span>
         </div>
-        <div className="text-purple-700 leading-relaxed">{answer}</div>
+        <div className="leading-relaxed" style={{ color: 'var(--fg-muted)' }}>{answer}</div>
       </div>
     ),
     CallToAction: ({ href, children }: { href?: string; children: React.ReactNode }) => (
-      <div className="bg-purple-accent-600 text-white p-12 my-16 text-center">
-        <div className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">{children}</div>
+      <div className="p-12 my-16 text-center" style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}>
+        <div className="text-xl mb-8 leading-relaxed max-w-3xl mx-auto opacity-90">{children}</div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a 
             href={href || '/contact'}
-            className="inline-block bg-purple-accent-700 hover:bg-purple-accent-800 text-white font-montserrat font-semibold uppercase tracking-wide px-8 py-4 rounded-none transition-colors"
+            className="inline-block font-semibold uppercase tracking-wide px-8 py-4 rounded-full transition-all hover:scale-105"
+            style={{ backgroundColor: 'color-mix(in srgb, var(--accent) 80%, black)', color: 'var(--accent-fg)' }}
           >
-            Get Legal Help
+            Get Help Now
           </a>
           <a
             href={`tel:${siteConfig.contact.phone.replace(/[^\d]/g, '')}`}
-            className="inline-block border-2 border-white bg-transparent text-white hover:bg-white hover:text-purple-accent-600 font-montserrat font-semibold uppercase tracking-wide px-8 py-4 rounded-none transition-colors"
+            className="inline-block border-2 bg-transparent font-semibold uppercase tracking-wide px-8 py-4 rounded-full transition-all hover:scale-105"
+            style={{ borderColor: 'var(--accent-fg)', color: 'var(--accent-fg)' }}
           >
             Call {siteConfig.contact.phone}
           </a>
@@ -128,47 +130,47 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     // Editorial image components
     ImageQuote: ({ src, alt, quote, attribution }: { src?: string; alt?: string; quote: string; attribution?: string }) => (
       <div className="my-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-        <div className="bg-gray-200 aspect-[4/3] flex items-center justify-center text-gray-500 text-lg font-medium overflow-hidden">
+        <div className="aspect-[4/3] flex items-center justify-center text-lg font-medium overflow-hidden" style={{ backgroundColor: 'var(--muted)', color: 'var(--fg-muted)' }}>
           {src ? (
             <Image src={src} alt={alt || ''} width={600} height={450} className="w-full h-full object-cover" sizes="(max-width: 768px) 100vw, 50vw" placeholder="blur" blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8VAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k=" />
           ) : (
             `[Image: ${alt || 'Editorial Photo'}]`
           )}
         </div>
-        <blockquote className="text-lg italic text-gray-700 border-l-4 border-[#2A2C53] pl-6">
+        <blockquote className="text-lg italic border-l-4 pl-6" style={{ borderColor: 'var(--accent)', color: 'var(--fg-muted)' }}>
           "{quote}"
           {attribution && (
-            <cite className="block text-sm text-gray-500 mt-2 not-italic">— {attribution}</cite>
+            <cite className="block text-sm mt-2 not-italic" style={{ color: 'var(--fg-muted)' }}>— {attribution}</cite>
           )}
         </blockquote>
       </div>
     ),
     ImageText: ({ src, alt, text, attribution }: { src?: string; alt?: string; text: string; attribution?: string }) => (
       <div className="my-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-        <div className="bg-gray-200 aspect-[4/3] flex items-center justify-center text-gray-500 text-lg font-medium overflow-hidden">
+        <div className="aspect-[4/3] flex items-center justify-center text-lg font-medium overflow-hidden" style={{ backgroundColor: 'var(--muted)', color: 'var(--fg-muted)' }}>
           {src ? (
             <Image src={src} alt={alt || ''} width={600} height={450} className="w-full h-full object-cover" sizes="(max-width: 768px) 100vw, 50vw" placeholder="blur" blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8VAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k=" />
           ) : (
             `[Image: ${alt || 'Editorial Photo'}]`
           )}
         </div>
-        <div className="text-lg text-gray-700">
+        <div className="text-lg" style={{ color: 'var(--fg-muted)' }}>
           {text}
           {attribution && (
-            <div className="text-sm text-gray-500 mt-2">— {attribution}</div>
+            <div className="text-sm mt-2" style={{ color: 'var(--fg-muted)' }}>— {attribution}</div>
           )}
         </div>
       </div>
     ),
     ImageRight: ({ src, alt, quote, attribution }: { src?: string; alt?: string; quote: string; attribution?: string }) => (
       <div className="my-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-        <blockquote className="text-lg italic text-gray-700 border-l-4 border-[#2A2C53] pl-6 lg:order-1">
+        <blockquote className="text-lg italic border-l-4 pl-6 lg:order-1" style={{ borderColor: 'var(--accent)', color: 'var(--fg-muted)' }}>
           "{quote}"
           {attribution && (
-            <cite className="block text-sm text-gray-500 mt-2 not-italic">— {attribution}</cite>
+            <cite className="block text-sm mt-2 not-italic" style={{ color: 'var(--fg-muted)' }}>— {attribution}</cite>
           )}
         </blockquote>
-        <div className="bg-gray-200 aspect-[4/3] flex items-center justify-center text-gray-500 text-lg font-medium lg:order-2 overflow-hidden">
+        <div className="aspect-[4/3] flex items-center justify-center text-lg font-medium lg:order-2 overflow-hidden" style={{ backgroundColor: 'var(--muted)', color: 'var(--fg-muted)' }}>
           {src ? (
             <Image src={src} alt={alt || ''} width={600} height={450} className="w-full h-full object-cover" sizes="(max-width: 768px) 100vw, 50vw" placeholder="blur" blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8VAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k=" />
           ) : (
@@ -179,13 +181,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     ImageTextRight: ({ src, alt, text, attribution }: { src?: string; alt?: string; text: string; attribution?: string }) => (
       <div className="my-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-        <div className="text-lg text-gray-700 lg:order-1">
+        <div className="text-lg lg:order-1" style={{ color: 'var(--fg-muted)' }}>
           {text}
           {attribution && (
-            <div className="text-sm text-gray-500 mt-2">— {attribution}</div>
+            <div className="text-sm mt-2" style={{ color: 'var(--fg-muted)' }}>— {attribution}</div>
           )}
         </div>
-        <div className="bg-gray-200 aspect-[4/3] flex items-center justify-center text-gray-500 text-lg font-medium lg:order-2 overflow-hidden">
+        <div className="aspect-[4/3] flex items-center justify-center text-lg font-medium lg:order-2 overflow-hidden" style={{ backgroundColor: 'var(--muted)', color: 'var(--fg-muted)' }}>
           {src ? (
             <Image src={src} alt={alt || ''} width={600} height={450} className="w-full h-full object-cover" sizes="(max-width: 768px) 100vw, 50vw" placeholder="blur" blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8VAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k=" />
           ) : (
@@ -201,7 +203,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         ) : (
           `[Image: ${alt || 'Editorial'}]`
         )}
-        {text && <p className="text-sm text-gray-600 italic mt-3 px-4 pb-4">{text}</p>}
+        {text && <p className="text-sm italic mt-3 px-4 pb-4" style={{ color: 'var(--fg-muted)' }}>{text}</p>}
       </div>
     ),
     SideBySide: ({ left, right }: { left?: string; right?: string }) => (
@@ -216,7 +218,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     FullWidthImage: ({ src, alt, caption }: { src?: string; alt?: string; caption?: string }) => (
       <div className="my-16 -mx-4 sm:-mx-6 lg:-mx-8">
-        <div className="bg-gray-200 aspect-[16/9] flex items-center justify-center text-gray-500 text-xl font-medium overflow-hidden">
+        <div className="aspect-[16/9] flex items-center justify-center text-xl font-medium overflow-hidden" style={{ backgroundColor: 'var(--muted)', color: 'var(--fg-muted)' }}>
           {src ? (
             <Image src={src} alt={alt || ''} width={1200} height={675} className="w-full h-full object-cover" sizes="100vw" placeholder="blur" blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8VAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k=" />
           ) : (
@@ -224,7 +226,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
           )}
         </div>
         {caption && (
-          <p className="text-sm text-gray-500 italic text-center mt-4 px-4 sm:px-6 lg:px-8">
+          <p className="text-sm italic text-center mt-4 px-4 sm:px-6 lg:px-8" style={{ color: 'var(--fg-muted)' }}>
             {caption}
           </p>
         )}

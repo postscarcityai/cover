@@ -1,7 +1,8 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { MagneticButton } from "@/components/magnetic-button"
 import { trackPhoneCallClick, trackScheduleConsultation } from "@/lib/analytics"
 import { siteConfig } from "@/site.config"
 
@@ -14,8 +15,8 @@ interface BlogCTAProps {
 }
 
 export function BlogCTA({ 
-  title = "Need Legal Assistance?",
-  description = "If you're facing criminal charges or under investigation, don't wait. Early intervention can make the difference in your case.",
+  title = "Ready to Get Started?",
+  description = "Take the next step. Our team is here to help you navigate the path forward with confidence.",
   buttonText = "Schedule Consultation",
   buttonAction = () => window.location.href = '/contact',
   className = ""
@@ -31,38 +32,50 @@ export function BlogCTA({
   }
 
   return (
-    <section className={`py-20 bg-purple-accent-600 ${className}`}>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
+    <section
+      className={`py-24 md:py-40 ${className}`}
+      style={{ background: 'linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%)' }}
+    >
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 text-center">
+        <div data-reveal="fade-up">
+          <h2
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8"
+            style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}
+          >
             {title}
           </h2>
-          <p className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
+          <p
+            className="text-lg md:text-xl mb-12 leading-relaxed max-w-3xl mx-auto"
+            style={{ color: 'var(--fg-muted)' }}
+          >
             {description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg"
-              className="bg-purple-accent-700 hover:bg-purple-accent-800 text-white font-semibold font-montserrat tracking-wide uppercase px-8 py-4 rounded-none"
-              onClick={handleScheduleClick}
-            >
-              {buttonText}
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white bg-transparent text-white hover:bg-white hover:text-purple-accent-600 font-montserrat font-semibold uppercase tracking-wide px-8 py-4 rounded-none"
-              onClick={handlePhoneClick}
-            >
-              Call {siteConfig.contact.phone}
-            </Button>
+            <MagneticButton>
+              <Button 
+                variant={null as any}
+                size="lg"
+                className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full transition-all hover:scale-105"
+                style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}
+                onClick={handleScheduleClick}
+              >
+                {buttonText}
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </MagneticButton>
+            <MagneticButton>
+              <Button
+                variant={null as any}
+                size="lg"
+                className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full border transition-all hover:scale-105"
+                style={{ borderColor: 'var(--border)', color: 'var(--fg-muted)', backgroundColor: 'transparent' }}
+                onClick={handlePhoneClick}
+              >
+                Call {siteConfig.contact.phoneDisplay}
+              </Button>
+            </MagneticButton>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

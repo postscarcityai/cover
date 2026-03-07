@@ -1,9 +1,10 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { Phone, Mail, ArrowRight, MessageCircle } from 'lucide-react'
+import { Phone } from "lucide-react"
+import { MagneticButton } from "@/components/magnetic-button"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { ContactConversionForm } from "@/components/contact-conversion-form"
 import { trackPhoneCallClick, trackScheduleConsultation } from "@/lib/analytics"
 import { usePageTracking, useScrollTracking } from "@/lib/analytics-hooks"
 import { siteConfig } from "@/site.config"
@@ -13,314 +14,195 @@ interface Props {
   data: ContactData
 }
 
-export default function ContactClient({ data }: Props) {
-  const { hero, emergency, contactMethods: contactMethodsData, sectionTitle, map, cta, disclaimer } = data
+const DEFAULT_TRUST_BULLETS = [
+  "24-hour response",
+  "100% confidential",
+  "No obligation",
+]
 
-  // Track page view once on mount
-  usePageTracking('Contact', 'contact', 'contact_page')
-  
-  // Track scroll depth milestones
+export default function ContactClient({ data }: Props) {
+  const { disclaimer } = data
+
+  usePageTracking("Contact", "contact", "contact_page")
   useScrollTracking()
 
-  // Helper function to get href for different contact methods
-  const getContactHref = (method: typeof contactMethodsData[0]) => {
-    switch (method.type) {
-      case 'phone':
-        return `tel:${method.action.replace(/[^\d]/g, '')}`
-      case 'whatsapp':
-        // Use main phone number for WhatsApp in international format
-        const phoneNumber = siteConfig.contact.phone.replace(/[^\d]/g, '')
-        const message = encodeURIComponent(`Hi, I'd like to get in touch with ${siteConfig.name}.`)
-        return `https://wa.me/${phoneNumber}?text=${message}`
-      case 'email':
-        return `mailto:${method.action}`
-      default:
-        return '#'
-    }
+  const config = siteConfig.contactPage
+  const headline = config?.conversionHeadline ?? "Get Your Free Consultation"
+  const subhead =
+    config?.conversionSubhead ??
+    "Tell us about your situation. We'll respond within 24 hours—no pressure, no obligation."
+  const trustBullets = config?.trustBullets ?? DEFAULT_TRUST_BULLETS
+  const testimonialQuote = config?.testimonialQuote
+  const testimonialAuthor = config?.testimonialAuthor
+  const testimonialRole = config?.testimonialRole
+
+  const handleCallClick = () => {
+    trackPhoneCallClick("contact_page", "hero_call_cta")
+    trackScheduleConsultation("contact_page", "hero_call_cta")
   }
 
-  const handlePhoneClick = () => {
-    trackPhoneCallClick('contact_page', 'emergency_cell_button')
-  }
-
-  const handleScheduleClick = () => {
-    trackScheduleConsultation('contact_page', 'emergency_cta')
-  }
-
-  // Map contact methods data to include icons and styling
-  const contactMethods = contactMethodsData.map(method => ({
-    icon: method.type === 'phone' ? Phone : method.type === 'whatsapp' ? MessageCircle : Mail,
-    title: method.title,
-    subtitle: method.subtitle,
-    description: method.description,
-    action: method.action,
-    href: getContactHref(method),
-    type: method.type,
-    isPrimary: method.isPrimary,
-    isWhatsApp: method.type === 'whatsapp'
-  }))
+  const phoneHref = `tel:${siteConfig.contact.phone.replace(/[^\d]/g, "")}`
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen">
       <Navigation />
-      
+
       <main id="main-content">
-        {/* Hero Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="lg:col-span-8"
-            >
-              <div className="text-sm font-montserrat font-medium tracking-widest uppercase text-gray-500 mb-6">
-                {hero.label}
-              </div>
-              <h1
-                className="text-6xl md:text-8xl font-bold leading-none mb-8"
-                style={{ color: 'var(--theme-primary)' }}
-              >
-                {hero.title[0]}
-                <span className="block">{hero.title[1]}</span>
-              </h1>
-              <div className="text-3xl md:text-4xl font-light text-gray-600 mb-8 leading-tight">
-                {hero.subtitle}
-              </div>
-            </motion.div>
+        <section
+          className="relative min-h-[100dvh] flex flex-col justify-center py-24 md:py-32"
+          style={{ backgroundColor: "var(--bg)" }}
+        >
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 50% at 50% 20%, color-mix(in srgb, var(--accent) 6%, transparent), transparent)",
+            }}
+          />
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="lg:col-span-4 space-y-6"
-            >
-              <div className="bg-red-50 p-6 border-l-4 border-red-500">
-                <div className="text-sm font-montserrat font-semibold uppercase tracking-wide text-red-700 mb-2">
-                  {emergency.label}
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 w-full">
+            <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+              <div data-reveal="fade-up" className="order-2 lg:order-1">
+                <nav
+                  aria-label="Breadcrumb"
+                  className="mb-8"
+                >
+                  <ol className="flex items-center gap-2 text-xs tracking-[0.2em] uppercase">
+                    <li>
+                      <a
+                        href="/"
+                        className="transition-opacity hover:opacity-100"
+                        style={{ color: "var(--fg-muted)", opacity: 0.6 }}
+                      >
+                        Home
+                      </a>
+                    </li>
+                    <li style={{ color: "var(--fg-muted)", opacity: 0.4 }}>/</li>
+                    <li style={{ color: "var(--accent)" }}>Contact</li>
+                  </ol>
+                </nav>
+
+                <h1
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6"
+                  style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+                >
+                  {headline}
+                </h1>
+
+                <p
+                  className="text-lg md:text-xl leading-relaxed mb-10 max-w-xl"
+                  style={{ color: "var(--fg-muted)" }}
+                >
+                  {subhead}
+                </p>
+
+                <div className="flex flex-wrap gap-6 mb-10">
+                  {trustBullets.map((bullet) => (
+                    <div
+                      key={bullet}
+                      className="flex items-center gap-2"
+                      style={{ color: "var(--fg-muted)" }}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: "var(--accent)" }}
+                      />
+                      <span className="text-sm font-medium">{bullet}</span>
+                    </div>
+                  ))}
                 </div>
-                <div className="text-2xl font-bold text-red-700">{emergency.title}</div>
-                <div className="text-sm text-red-600">{emergency.subtitle}</div>
+
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  <span className="text-sm" style={{ color: "var(--fg-muted)" }}>
+                    Prefer to talk?
+                  </span>
+                  <MagneticButton>
+                    <a
+                      href={phoneHref}
+                      onClick={handleCallClick}
+                      className="inline-flex items-center gap-2 px-6 py-3 font-semibold text-sm rounded-xl transition-all hover:scale-[1.02]"
+                      style={{
+                        backgroundColor: "var(--surface)",
+                        color: "var(--accent)",
+                        border: "1px solid var(--border)",
+                      }}
+                    >
+                      <Phone className="h-4 w-4" />
+                      {siteConfig.contact.phoneDisplay}
+                    </a>
+                  </MagneticButton>
+                </div>
               </div>
-              
 
-              <a
-                href={`tel:${siteConfig.contact.phone.replace(/[^\d]/g, '')}`}
-                onClick={handlePhoneClick}
-                className="inline-flex items-center justify-center w-full px-6 py-3 font-montserrat font-semibold tracking-wide uppercase rounded-none transition-opacity duration-200 hover:opacity-90"
-                style={{
-                  backgroundColor: 'var(--theme-primary)',
-                  color: 'var(--theme-primary-foreground)',
-                }}
-              >
-                Call Now
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Methods */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2
-              className="text-4xl md:text-5xl font-bold mb-6"
-              style={{ color: 'var(--theme-primary)' }}
-            >
-              {sectionTitle}
-            </h2>
-            <div
-              className="w-24 h-1 mx-auto"
-              style={{ backgroundColor: 'var(--theme-primary)' }}
-            ></div>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {contactMethods.map((method, index) => {
-              const handleMethodClick = () => {
-                if (method.type === 'phone') {
-                  trackPhoneCallClick('contact_page', `${method.type}_button`)
-                }
-              }
-
-              return (
-                <motion.div
-                  key={method.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="relative bg-white p-8 rounded-lg shadow-lg border-t-4 hover:shadow-xl transition-shadow duration-300"
+              <div data-reveal="fade-up" className="order-1 lg:order-2">
+                <div
+                  className="rounded-2xl p-6 md:p-8 border max-w-md mx-auto lg:mx-0 lg:ml-auto"
                   style={{
-                    borderTopColor: method.isWhatsApp ? '#10b981' : method.isPrimary ? 'var(--theme-primary)' : '#d1d5db'
+                    backgroundColor: "var(--surface)",
+                    borderColor: "var(--border)",
+                    boxShadow: "0 25px 50px -12px color-mix(in srgb, var(--fg) 8%, transparent)",
                   }}
                 >
-                  {method.isPrimary && (
-                    <div
-                      className="absolute -top-3 left-6 px-4 py-1 text-sm font-semibold rounded"
-                      style={{
-                        backgroundColor: 'var(--theme-primary)',
-                        color: 'var(--theme-primary-foreground)',
-                      }}
-                    >
-                      RECOMMENDED
-                    </div>
-                  )}
-
-                  <div className="flex items-center mb-4">
-                    <div
-                      className="w-12 h-12 flex items-center justify-center rounded-lg mr-4"
-                      style={{
-                        backgroundColor: method.isWhatsApp ? '#10b981' : method.isPrimary ? 'var(--theme-primary)' : '#f3f4f6'
-                      }}
-                    >
-                      <method.icon
-                        className="h-6 w-6"
-                        style={{
-                          color: method.isWhatsApp || method.isPrimary ? '#ffffff' : '#4b5563'
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <h3
-                        className="text-xl font-bold"
-                        style={{ color: 'var(--theme-primary)' }}
-                      >
-                        {method.title}
-                      </h3>
-                      <div className="text-sm text-gray-500 font-medium">{method.subtitle}</div>
-                    </div>
-                  </div>
-
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {method.description}
-                  </p>
-
-                  <a
-                    href={method.href}
-                    onClick={handleMethodClick}
-                    target={method.isWhatsApp ? '_blank' : undefined}
-                    rel={method.isWhatsApp ? 'noopener noreferrer' : undefined}
-                    className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-semibold tracking-wide uppercase rounded-none transition-opacity duration-200 hover:opacity-90"
-                    style={
-                      method.isPrimary
-                        ? {
-                            backgroundColor: 'var(--theme-primary)',
-                            color: 'var(--theme-primary-foreground)',
-                          }
-                        : method.isWhatsApp
-                        ? {
-                            border: '2px solid #10b981',
-                            color: '#059669',
-                            backgroundColor: 'transparent',
-                          }
-                        : {
-                            border: '2px solid var(--theme-primary)',
-                            color: 'var(--theme-primary)',
-                            backgroundColor: 'transparent',
-                          }
-                    }
-                  >
-                    {method.action}
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </a>
-                </motion.div>
-              )
-            })}
+                  <ContactConversionForm />
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Legal Disclaimer */}
-      <section className="py-6 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center"
+        {testimonialQuote && (
+          <section
+            className="py-20 md:py-28"
+            style={{ backgroundColor: "var(--surface)" }}
           >
-            <h3 className="text-xs font-semibold text-gray-600 mb-3 uppercase tracking-wide">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 text-center" data-reveal="fade-up">
+              <blockquote
+                className="text-2xl md:text-3xl font-light leading-relaxed italic mb-6"
+                style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+              >
+                &ldquo;{testimonialQuote}&rdquo;
+              </blockquote>
+              {testimonialAuthor && (
+                <footer>
+                  <cite className="font-semibold not-italic" style={{ color: "var(--fg)" }}>
+                    {testimonialAuthor}
+                  </cite>
+                  {testimonialRole && (
+                    <span className="block text-sm mt-1" style={{ color: "var(--fg-muted)" }}>
+                      {testimonialRole}
+                    </span>
+                  )}
+                </footer>
+              )}
+            </div>
+          </section>
+        )}
+
+        <section
+          className="py-12 md:py-16"
+          style={{ backgroundColor: "var(--bg)" }}
+        >
+          <details className="group max-w-3xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
+            <summary
+              className="text-xs font-semibold uppercase tracking-[0.2em] cursor-pointer flex items-center gap-2 [&::-webkit-details-marker]:hidden"
+              style={{ color: "var(--fg-muted)" }}
+            >
+              <span className="transition-transform group-open:rotate-90">›</span>
               {disclaimer.title}
-            </h3>
-            <div className="space-y-2">
+            </summary>
+            <div className="mt-4 space-y-2">
               {disclaimer.content.map((paragraph, index) => (
-                <p key={index} className="text-xs text-gray-500 leading-relaxed">
+                <p
+                  key={index}
+                  className="text-xs leading-relaxed"
+                  style={{ color: "var(--fg-muted)", opacity: 0.8 }}
+                >
                   {paragraph}
                 </p>
               ))}
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Office Information & Map */}
-      <section className="py-0 bg-white">
-        <div className="w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <iframe
-              src={map.embedUrl}
-              width="100%"
-              height="500"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title={map.title}
-              tabIndex={-1}
-            ></iframe>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Emergency CTA */}
-      <section
-        className="py-20"
-        style={{ backgroundColor: 'var(--theme-primary)', color: 'var(--theme-primary-foreground)' }}
-      >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-8">
-              {cta.title}
-            </h2>
-            <p className="text-xl mb-8 leading-relaxed opacity-90">
-              {cta.description}
-            </p>
-            <a
-              href={`tel:${siteConfig.contact.phone.replace(/[^\d]/g, '')}`}
-              onClick={handleScheduleClick}
-              className="inline-flex items-center justify-center font-semibold font-montserrat tracking-wide uppercase px-8 py-4 rounded-none transition-opacity duration-200 hover:opacity-90"
-              style={{
-                backgroundColor: 'var(--theme-primary-foreground)',
-                color: 'var(--theme-primary)',
-              }}
-            >
-              {cta.buttonText}
-            </a>
-          </motion.div>
-        </div>
-      </section>
+          </details>
+        </section>
       </main>
 
       <Footer />

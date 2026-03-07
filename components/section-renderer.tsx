@@ -1,0 +1,109 @@
+"use client"
+
+import dynamic from "next/dynamic"
+import { type HomepageSection } from "@/app/data"
+import { HeroSection } from "@/components/sections/hero-section"
+import { FeaturesSection } from "@/components/sections/features-section"
+import { StatsSection } from "@/components/sections/stats-section"
+import { ContentSection } from "@/components/sections/content-section"
+import type {
+  HeroContent,
+  FeaturesContent,
+  StatsContent,
+  ContentSectionContent,
+  TestimonialsContent,
+  CTAContent,
+  FAQContent,
+} from "@/app/data"
+
+const TestimonialsSection = dynamic(
+  () =>
+    import("@/components/sections/testimonials-section").then((mod) => ({
+      default: mod.TestimonialsSection,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div
+        className="h-96 animate-pulse rounded-lg"
+        style={{ backgroundColor: "var(--surface)" }}
+        aria-hidden
+      />
+    ),
+  }
+)
+
+const CTASection = dynamic(
+  () =>
+    import("@/components/sections/cta-section").then((mod) => ({
+      default: mod.CTASection,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div
+        className="h-64 animate-pulse rounded-lg"
+        style={{ backgroundColor: "var(--muted)" }}
+        aria-hidden
+      />
+    ),
+  }
+)
+
+const FAQSection = dynamic(
+  () =>
+    import("@/components/sections/faq-section").then((mod) => ({
+      default: mod.FAQSection,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div
+        className="h-80 animate-pulse rounded-lg"
+        style={{ backgroundColor: "var(--surface)" }}
+        aria-hidden
+      />
+    ),
+  }
+)
+
+interface SectionRendererProps {
+  sections: HomepageSection[]
+}
+
+function getSectionNumber(sections: HomepageSection[], idx: number): string | undefined {
+  let count = 0
+  for (let i = 0; i <= idx; i++) {
+    if (sections[i].numbered) count++
+  }
+  return sections[idx].numbered ? String(count).padStart(2, "0") : undefined
+}
+
+export function SectionRenderer({ sections }: SectionRendererProps) {
+  return (
+    <>
+      {sections.map((section, index) => {
+        const num = getSectionNumber(sections, index)
+
+        switch (section.type) {
+          case "hero":
+            return <HeroSection key={section.id} content={section.content as HeroContent} />
+          case "features":
+            return <FeaturesSection key={section.id} content={section.content as FeaturesContent} sectionNumber={num} />
+          case "stats":
+            return <StatsSection key={section.id} content={section.content as StatsContent} />
+          case "content":
+            return <ContentSection key={section.id} content={section.content as ContentSectionContent} />
+          case "testimonials":
+            return <TestimonialsSection key={section.id} content={section.content as TestimonialsContent} sectionNumber={num} />
+          case "cta":
+            return <CTASection key={section.id} content={section.content as CTAContent} />
+          case "faq":
+            return <FAQSection key={section.id} content={section.content as FAQContent} sectionNumber={num} />
+          default:
+            return null
+        }
+      })}
+    </>
+  )
+}

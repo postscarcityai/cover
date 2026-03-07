@@ -1,94 +1,163 @@
-'use client'
+import type { Metadata } from "next"
+import Link from "next/link"
+import { Navigation } from "@/components/navigation"
+import { Footer } from "@/components/footer"
+import { SubpageHero } from "@/components/subpage-hero"
+import { SubpageSection } from "@/components/subpage-section"
+import { siteConfig } from "@/site.config"
+import { getDisclaimerData } from "./data"
 
-import { Navigation } from '@/components/navigation'
-import { Footer } from '@/components/footer'
-import { siteConfig } from '@/site.config'
+export const metadata: Metadata = {
+  title: `Disclaimer | ${siteConfig.name}`,
+  description: `Website disclaimer for ${siteConfig.name}. Important information about the use of our website.`,
+  keywords: [...siteConfig.seo.keywords, "disclaimer", "legal notice"],
+  alternates: {
+    canonical: `${siteConfig.url}/disclaimer`,
+  },
+  robots: { index: true, follow: true },
+}
+
+const sectionHeadingStyle = {
+  fontFamily: "var(--font-heading)",
+  color: "var(--accent)",
+}
+
+function ContactLinks() {
+  return (
+    <ul className="list-disc pl-6 space-y-2">
+      <li>
+        Phone:{" "}
+        <Link
+          href={`tel:${siteConfig.contact.phone.replace(/[^\d]/g, "")}`}
+          className="hover:underline"
+          style={{ color: "var(--accent)" }}
+        >
+          {siteConfig.contact.phoneDisplay}
+        </Link>
+      </li>
+      <li>
+        Email:{" "}
+        <Link
+          href={`mailto:${siteConfig.contact.email}`}
+          className="hover:underline"
+          style={{ color: "var(--accent)" }}
+        >
+          {siteConfig.contact.email}
+        </Link>
+      </li>
+      <li>
+        Mail: {siteConfig.contact.address.street}, {siteConfig.contact.address.city},{" "}
+        {siteConfig.contact.address.state} {siteConfig.contact.address.zip}
+      </li>
+    </ul>
+  )
+}
 
 export default function DisclaimerPage() {
+  const data = getDisclaimerData()
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <Navigation />
+      <SubpageHero
+        eyebrow={data.hero.eyebrow}
+        title={data.hero.title}
+        size="compact"
+        breadcrumbs={data.hero.breadcrumbs}
+      />
+      <main id="main-content">
+        <SubpageSection maxWidth="narrow">
+          <div className="prose prose-lg max-w-none">
+            <p className="mb-8" style={{ color: "var(--fg-muted)" }}>
+              <strong>Effective Date:</strong> {data.effectiveDate}
+              <br />
+              <strong>Last Updated:</strong> {data.lastUpdated}
+            </p>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="prose prose-lg max-w-none">
-          <h1 className="text-4xl font-bold text-[#2A2C53] mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Website Disclaimer
-          </h1>
+            <div className="space-y-8 leading-relaxed" style={{ color: "var(--fg)" }}>
+              {data.sections.map((section) => (
+                <section key={section.id}>
+                  {section.isNotice ? (
+                    <div
+                      className="border-l-4 p-4 mb-6 rounded-r-lg"
+                      style={{
+                        backgroundColor: "var(--surface)",
+                        borderColor: "var(--accent)",
+                      }}
+                    >
+                      <p className="font-medium" style={{ color: "var(--fg)" }}>
+                        <strong>{section.title}</strong> {section.content}
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <h2
+                        className="text-2xl font-semibold mb-4"
+                        style={sectionHeadingStyle}
+                      >
+                        {section.title}
+                      </h2>
+                      <p>{section.content}</p>
+                    </>
+                  )}
+                </section>
+              ))}
 
-          <p className="text-gray-600 mb-8">
-            <strong>Effective Date:</strong> {siteConfig.disclaimer?.effectiveDate || "January 1, 2025"}<br/>
-            <strong>Last Updated:</strong> {siteConfig.disclaimer?.lastUpdated || "January 1, 2025"}
-          </p>
-
-          <div className="space-y-8 text-gray-700 leading-relaxed">
-            <section>
-              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-                <p className="text-yellow-800 font-medium">
-                  <strong>IMPORTANT NOTICE.</strong> {siteConfig.disclaimer?.notice || "The information provided on this website is for general informational purposes only and should not be construed as professional advice. Consult with a qualified professional for specific guidance related to your situation."}
-                </p>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-[#2A2C53] mb-4">General Disclaimer</h2>
-              <p>
-                {siteConfig.disclaimer?.general || `This website is designed for general information only. The information presented at this site should not be construed as professional advice. ${siteConfig.name} makes no representations or warranties regarding the accuracy, completeness, or suitability of the information provided.`}
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-[#2A2C53] mb-4">Results May Vary</h2>
-              <p>
-                {siteConfig.disclaimer?.results || `Results and outcomes depend upon a variety of factors unique to each situation. Past performance does not guarantee future results. The information on this website is not intended to create any guarantees or promises about specific outcomes.`}
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-[#2A2C53] mb-4">Professional Services</h2>
-              <p>
-                {siteConfig.disclaimer?.professionalServices || `${siteConfig.name} provides professional services in ${siteConfig.business.expertise.join(", ").toLowerCase()}. We maintain professional standards and comply with all applicable regulations in the jurisdictions where we operate.`}
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-[#2A2C53] mb-4">Service Areas</h2>
-              <p>
-                {siteConfig.disclaimer?.serviceAreas || `${siteConfig.name} serves clients in ${siteConfig.business.serviceAreas.join(", ")}. Services may be subject to geographic limitations and local regulations.`}
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-[#2A2C53] mb-4">Testimonials and Reviews</h2>
-              <p>
-                {siteConfig.disclaimer?.testimonials || "Any testimonials or reviews displayed on this website represent the experience of individual clients and should not be considered as a guarantee that similar results can be obtained for others. Every situation is different, and outcomes depend on specific circumstances."}
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold text-[#2A2C53] mb-4">Contact Information</h2>
-              <p>
-                For questions about this disclaimer or our services, please contact us at:
-              </p>
-              <div className="bg-gray-50 p-4 rounded-lg mt-4">
-                <p className="font-medium">{siteConfig.name}</p>
-                <p>Email: <a href={`mailto:${siteConfig.contact.email}`} className="text-[#2A2C53] hover:underline">{siteConfig.contact.email}</a></p>
-                <p>Phone: <a href={`tel:${siteConfig.contact.phone}`} className="text-[#2A2C53] hover:underline">{siteConfig.contact.phoneDisplay}</a></p>
-                <p className="mt-2 text-sm text-gray-600">
-                  Service Areas: {siteConfig.business.serviceAreas.join(", ")}
-                </p>
-              </div>
-            </section>
-
-            {siteConfig.disclaimer?.additionalSections && siteConfig.disclaimer.additionalSections.map((section: any, index: number) => (
-              <section key={index}>
-                <h2 className="text-2xl font-semibold text-[#2A2C53] mb-4">{section.title}</h2>
-                <p>{section.content}</p>
+              {/* Contact Section */}
+              <section>
+                <h2
+                  className="text-2xl font-semibold mb-4"
+                  style={sectionHeadingStyle}
+                >
+                  {data.contactSection.title}
+                </h2>
+                <p>{data.contactSection.intro}</p>
+                <div
+                  className="p-4 rounded-lg mt-4"
+                  style={{ backgroundColor: "var(--surface)" }}
+                >
+                  <p className="font-medium">{siteConfig.name}</p>
+                  <p>
+                    Email:{" "}
+                    <Link
+                      href={`mailto:${siteConfig.contact.email}`}
+                      className="hover:underline"
+                      style={{ color: "var(--accent)" }}
+                    >
+                      {siteConfig.contact.email}
+                    </Link>
+                  </p>
+                  <p>
+                    Phone:{" "}
+                    <Link
+                      href={`tel:${siteConfig.contact.phone.replace(/[^\d]/g, "")}`}
+                      className="hover:underline"
+                      style={{ color: "var(--accent)" }}
+                    >
+                      {siteConfig.contact.phoneDisplay}
+                    </Link>
+                  </p>
+                  <p className="mt-2 text-sm" style={{ color: "var(--fg-muted)" }}>
+                    Service Areas: {siteConfig.business.serviceAreas.join(", ")}
+                  </p>
+                </div>
               </section>
-            ))}
-          </div>
-        </div>
-      </main>
 
+              {data.additionalSections?.map((section, index) => (
+                <section key={index}>
+                  <h2
+                    className="text-2xl font-semibold mb-4"
+                    style={sectionHeadingStyle}
+                  >
+                    {section.title}
+                  </h2>
+                  <p>{section.content}</p>
+                </section>
+              ))}
+            </div>
+          </div>
+        </SubpageSection>
+      </main>
       <Footer />
     </div>
   )

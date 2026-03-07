@@ -1,7 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { Calendar, Clock, User, ArrowLeft, ArrowRight, Share2 } from 'lucide-react'
+import { Calendar, Clock, User, ArrowLeft, ArrowRight, Share2 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Navigation } from "@/components/navigation"
@@ -20,116 +19,93 @@ interface BlogPostClientProps {
 }
 
 export function BlogPostClient({ post, mdxContent }: BlogPostClientProps) {
-  // Track page view once on mount
-  usePageTracking(post.title, 'blog', 'blog_post')
-  
-  // Track scroll depth milestones (important for blog engagement)
+  usePageTracking(post.title, "blog", "blog_post")
   useScrollTracking()
 
-  // Remove all links in blog content from tab order
   useEffect(() => {
-    const editorialContent = document.querySelector('.editorial-content')
+    const editorialContent = document.querySelector(".editorial-content")
     if (editorialContent) {
-      const links = editorialContent.querySelectorAll('a')
+      const links = editorialContent.querySelectorAll("a")
       links.forEach(link => {
-        link.setAttribute('tabIndex', '-1')
+        link.setAttribute("tabIndex", "-1")
       })
     }
   }, [mdxContent])
 
   const handleShareClick = () => {
-    trackButtonClick('Share', 'blog_post_header', 'share')
+    trackButtonClick("Share", "blog_post_header", "share")
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <Navigation />
-      
-      {/* Article Header */}
-      <article className="pt-24 pb-16" id="main-content">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Back to Blog Link */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-8"
-          >
+
+      <article className="pt-32 md:pt-40 pb-16" id="main-content" style={{ backgroundColor: "var(--bg)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
+          <div data-reveal="fade-up" className="mb-8">
             <Link
               href={siteConfig.blog.basePath}
-              className="inline-flex items-center text-[#2A2C53] hover:text-[#2A2C53]/80 font-montserrat font-medium text-sm uppercase tracking-wide transition-colors"
+              className="inline-flex items-center text-sm font-semibold uppercase tracking-wider transition-opacity hover:opacity-70"
+              style={{ color: "var(--accent)" }}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to {siteConfig.blog.title}
             </Link>
-          </motion.div>
+          </div>
 
-          {/* Article Meta */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-8"
-          >
-            <div className="flex flex-wrap items-center space-x-4 mb-6">
-              <span className="bg-[#2A2C53] text-white px-3 py-1 text-sm font-montserrat font-medium uppercase tracking-wide">
+          <div data-reveal="fade-up" className="mb-6">
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              <span
+                className="px-3 py-1 text-xs font-medium uppercase tracking-wider rounded-full"
+                style={{ backgroundColor: "color-mix(in srgb, var(--accent) 15%, transparent)", color: "var(--accent)" }}
+              >
                 {post.category}
               </span>
-              <div className="flex items-center text-gray-500 text-sm">
-                <Calendar className="h-4 w-4 mr-1" />
-                {new Date(post.date).toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
+              <span className="flex items-center text-xs" style={{ color: "var(--fg-muted)" }}>
+                <Calendar className="h-3 w-3 mr-1" />
+                {new Date(post.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 })}
-              </div>
-              <div className="flex items-center text-gray-500 text-sm">
-                <Clock className="h-4 w-4 mr-1" />
+              </span>
+              <span className="flex items-center text-xs" style={{ color: "var(--fg-muted)" }}>
+                <Clock className="h-3 w-3 mr-1" />
                 {post.readTime}
-              </div>
-              <div className="flex items-center text-gray-500 text-sm">
-                <User className="h-4 w-4 mr-1" />
+              </span>
+              <span className="flex items-center text-xs" style={{ color: "var(--fg-muted)" }}>
+                <User className="h-3 w-3 mr-1" />
                 {post.author}
-              </div>
+              </span>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Article Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-4xl md:text-6xl font-bold text-[#2A2C53] mb-8 leading-tight"
-            style={{ fontFamily: 'Playfair Display, serif' }}
+          <h1
+            data-reveal="words"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-[0.95] tracking-tight"
+            style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
           >
             {post.title}
-          </motion.h1>
+          </h1>
 
-          {/* Article Excerpt - Speakable Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="article-excerpt text-xl text-gray-600 leading-relaxed mb-12 pb-8 border-b border-gray-200"
+          <div
+            data-reveal="fade-up"
+            className="text-xl leading-relaxed mb-12 pb-8 border-b"
+            style={{ color: "var(--fg-muted)", borderColor: "var(--border)" }}
           >
             {post.excerpt}
-          </motion.div>
+          </div>
 
-          {/* Share Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex items-center justify-between mb-12"
-          >
-            <div className="flex items-center space-x-4">
-              <span className="text-sm font-montserrat font-medium uppercase tracking-wide text-gray-500">
-                Share this analysis:
+          <div data-reveal="fade-up" className="flex items-center justify-between mb-12">
+            <div className="flex items-center gap-4">
+              <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--fg-muted)" }}>
+                Share:
               </span>
               <Button
-                variant="outline"
+                variant={null as any}
                 size="sm"
-                className="border-[#2A2C53] text-[#2A2C53] hover:bg-[#2A2C53] hover:text-white"
+                className="rounded-full border transition-all hover:scale-105"
+                style={{ borderColor: "var(--border)", color: "var(--fg-muted)", backgroundColor: "transparent" }}
                 onClick={() => {
                   handleShareClick()
                   if (navigator.share) {
@@ -147,63 +123,49 @@ export function BlogPostClient({ post, mdxContent }: BlogPostClientProps) {
                 Share
               </Button>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Mobile Audio Player - Below Title */}
           {post.audio && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="lg:hidden mb-8"
-            >
-              <AudioPlayer 
+            <div data-reveal="fade-up" className="lg:hidden mb-8">
+              <AudioPlayer
                 narrator={post.audio.narrator}
                 totalDuration={post.audio.totalDuration}
                 parts={post.audio.parts}
                 postSlug={post.slug}
                 postTitle={post.title}
               />
-            </motion.div>
+            </div>
           )}
 
-          {/* Article Content - Editorial Layout */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="editorial-content"
-          >
+          <div data-reveal="fade-up" className="editorial-content">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-              {/* Main Content Column */}
               <div className="lg:col-span-8">
-                <div className="prose prose-lg prose-gray max-w-none editorial-typography
-                  prose-headings:font-playfair prose-headings:text-[#2A2C53]
-                  prose-h2:text-3xl prose-h2:font-bold prose-h2:mb-6 prose-h2:mt-12
-                  prose-h3:text-2xl prose-h3:font-semibold prose-h3:mb-4 prose-h3:mt-8
-                  prose-p:text-lg prose-p:leading-relaxed prose-p:mb-6
-                  prose-strong:text-[#2A2C53] prose-strong:font-semibold
-                  prose-ul:mb-6 prose-li:mb-2
-                  prose-blockquote:border-l-4 prose-blockquote:border-[#2A2C53] prose-blockquote:italic"
-                tabIndex={-1}
+                <div
+                  className="prose prose-lg max-w-none editorial-typography
+                    prose-headings:text-[var(--fg)]
+                    prose-h2:text-3xl prose-h2:font-bold prose-h2:mb-6 prose-h2:mt-12
+                    prose-h3:text-2xl prose-h3:font-semibold prose-h3:mb-4 prose-h3:mt-8
+                    prose-p:text-lg prose-p:leading-relaxed prose-p:mb-6
+                    prose-strong:text-[var(--fg)] prose-strong:font-semibold
+                    prose-ul:mb-6 prose-li:mb-2
+                    prose-blockquote:border-l-4 prose-blockquote:border-[var(--accent)] prose-blockquote:italic"
+                  tabIndex={-1}
                 >
                   {mdxContent ? (
                     mdxContent
                   ) : (
-                    <div className="text-lg text-gray-700 leading-relaxed whitespace-pre-wrap">
+                    <div className="text-lg leading-relaxed whitespace-pre-wrap" style={{ color: "var(--fg)" }}>
                       {post.content}
                     </div>
                   )}
                 </div>
               </div>
-              
-              {/* Sidebar */}
+
               <div className="lg:col-span-4">
                 <div className="sticky top-24 space-y-8">
-                  {/* Desktop Audio Player - Sidebar */}
                   {post.audio && (
                     <div className="hidden lg:block">
-                      <AudioPlayer 
+                      <AudioPlayer
                         narrator={post.audio.narrator}
                         totalDuration={post.audio.totalDuration}
                         parts={post.audio.parts}
@@ -215,76 +177,68 @@ export function BlogPostClient({ post, mdxContent }: BlogPostClientProps) {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-
-          {/* Author Bio */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="mt-16 pt-8 border-t border-gray-200"
-          >
-            <div className="bg-gray-50 p-8 rounded-none">
-              <div className="flex items-start space-x-6">
-                <div className="w-16 h-16 bg-[#2A2C53] rounded-full flex items-center justify-center text-white text-xl font-bold">
-                  {post.author.split(' ').map(n => n[0]).join('')}
+          <div className="mt-16 pt-8 border-t" style={{ borderColor: "var(--border)" }}>
+            <div
+              className="p-8 rounded-lg"
+              style={{ backgroundColor: "var(--surface)" }}
+            >
+              <div className="flex items-start gap-6">
+                <div
+                  className="w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0"
+                  style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
+                >
+                  {post.author.split(" ").map(n => n[0]).join("")}
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-[#2A2C53] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  <h3
+                    className="text-lg font-bold mb-2"
+                    style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+                  >
                     {post.author}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed mb-4">
-                    {post.author} brings extensive experience and deep expertise to complex legal matters.
-                    Our team is dedicated to providing strategic counsel and vigorous representation for clients facing serious legal challenges.
+                  <p className="text-sm leading-relaxed mb-4" style={{ color: "var(--fg-muted)" }}>
+                    {post.author} brings extensive experience and deep expertise to complex matters.
+                    Our team is dedicated to providing strategic counsel and vigorous representation.
                   </p>
-                  <Link 
-                    href="/our-firm"
-                    className="inline-flex items-center text-[#2A2C53] hover:text-[#2A2C53]/80 font-montserrat font-medium text-sm uppercase tracking-wide transition-colors"
+                  <Link
+                    href="/about"
+                    className="inline-flex items-center text-xs font-semibold uppercase tracking-wider transition-opacity hover:opacity-70"
+                    style={{ color: "var(--accent)" }}
                   >
-                    Learn More About Our Firm
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    Learn More About Our Team
+                    <ArrowRight className="ml-2 h-3 w-3" />
                   </Link>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Navigation */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className="mt-16 pt-8 border-t border-gray-200"
-          >
+          <div className="mt-12 pt-8 border-t" style={{ borderColor: "var(--border)" }}>
             <div className="flex justify-between items-center">
-              <Link 
-                href="/justice-watch"
-                className="inline-flex items-center text-[#2A2C53] hover:text-[#2A2C53]/80 font-montserrat font-medium text-sm uppercase tracking-wide transition-colors"
+              <Link
+                href={siteConfig.blog.basePath}
+                className="inline-flex items-center text-sm font-semibold uppercase tracking-wider transition-opacity hover:opacity-70"
+                style={{ color: "var(--accent)" }}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 All Articles
               </Link>
-              
-              <Link 
-                href="/practice-areas"
-                className="inline-flex items-center text-[#2A2C53] hover:text-[#2A2C53]/80 font-montserrat font-medium text-sm uppercase tracking-wide transition-colors"
+              <Link
+                href="/services"
+                className="inline-flex items-center text-sm font-semibold uppercase tracking-wider transition-opacity hover:opacity-70"
+                style={{ color: "var(--accent)" }}
               >
-                Our Practice Areas
+                Our Services
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </article>
 
-      {/* Consistent Purple CTA */}
-      <BlogCTA 
-        title="Need Expert Legal Defense?"
-        description="Facing federal gun or drug charges in South Florida? The DOJ's aggressive enforcement climate demands experienced federal defense counsel. Our team understands the complex intersection of firearms and narcotics law."
-        buttonText="Schedule Consultation"
-        buttonAction={() => window.location.href = '/contact'}
-      />
+      <BlogCTA />
 
       <Footer />
     </div>

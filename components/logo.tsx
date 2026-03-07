@@ -4,49 +4,39 @@ import { siteConfig } from "@/site.config"
 
 interface LogoProps {
   className?: string
-  variant?: 'primary' | 'white'
+  variant?: "primary" | "white"
   isHovered?: boolean
 }
 
-export function Logo({ className = "", variant = 'primary', isHovered = false }: LogoProps) {
-  // Get theme primary color for hover effect
-  const defaultColor = variant === 'white' ? '#ffffff' : 'var(--theme-primary)'
-  
-  // Hover color - use a slightly muted version of theme primary
-  // For white variant, keep white
-  const hoverColor = variant === 'white' 
-    ? '#ffffff' 
-    : 'var(--theme-primary)' // Can be customized with CSS variable or specific color
-  
-  const fillColor = isHovered ? hoverColor : defaultColor
+export function Logo({ className = "", variant = "primary", isHovered = false }: LogoProps) {
+  const color = variant === "white" ? "#ffffff" : "var(--accent)"
 
   return (
     <svg
-      width="180"
-      height="48"
-      viewBox="0 0 180 48"
+      width="140"
+      height="36"
+      viewBox="0 0 140 36"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-label={`${siteConfig.name} logo`}
-      style={{
-        transition: 'all 0.3s ease-in-out'
-      }}
+      style={{ transition: "all 0.3s ease-in-out" }}
     >
       <text
-        x="90"
-        y="32"
-        fontFamily="Arial, sans-serif"
-        fontSize="20"
-        fontWeight="700"
-        fill={fillColor}
-        textAnchor="middle"
-        style={{ 
-          fill: fillColor,
-          transition: 'fill 0.3s ease-in-out'
+        x="0"
+        y="26"
+        fontFamily="var(--font-montserrat), system-ui, sans-serif"
+        fontSize="22"
+        fontWeight="800"
+        letterSpacing="-0.02em"
+        fill={color}
+        style={{
+          fill: color,
+          opacity: isHovered ? 0.8 : 1,
+          transition: "opacity 0.3s ease-in-out",
         }}
       >
-        YOUR LOGO
+        Logo Co.
       </text>
     </svg>
   )

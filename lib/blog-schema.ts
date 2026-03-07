@@ -81,7 +81,7 @@ export function generateBlogArticleSchema(post: BlogPost, slug: string) {
       "name": siteConfig.name,
       "logo": {
         "@type": "ImageObject",
-        "url": `${siteConfig.url}/img/logo.svg`
+        "url": `${siteConfig.url}/logo.svg`
       }
     },
     "mainEntityOfPage": {

@@ -184,12 +184,13 @@ export function AudioPlayer({ narrator, totalDuration, parts, postSlug = 'unknow
 
   return (
     <div 
-      className={`bg-white rounded-lg border border-gray-200 shadow-sm p-6 lg:sticky lg:top-6 ${className}`}
+      className={`rounded-lg border shadow-sm p-6 lg:sticky lg:top-6 ${className}`}
+      style={{ backgroundColor: 'var(--surface)', borderColor: 'var(--border)' }}
       role="region"
       aria-label="Audio player for article narration. Navigate with Tab, use arrows on timeline and volume, spacebar to pause when playing."
     >
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 mb-1">
+        <h3 className="text-lg font-semibold mb-1" style={{ color: 'var(--fg)' }}>
           Listen to Article
         </h3>
         {/* Total duration seems broken so commenting out for now */}
@@ -202,10 +203,10 @@ export function AudioPlayer({ narrator, totalDuration, parts, postSlug = 'unknow
 
       {/* Current Part Info */}
       <div className="mb-4">
-        <h4 className="font-medium text-gray-900 mb-1">
+        <h4 className="font-medium mb-1" style={{ color: 'var(--fg)' }}>
           Part {currentPartIndex + 1}: {currentPart.title}
         </h4>
-        <p className="text-sm text-gray-600 mb-2">
+        <p className="text-sm mb-2" style={{ color: 'var(--fg-muted)' }}>
           {currentPart.description}
         </p>
       </div>
@@ -213,7 +214,8 @@ export function AudioPlayer({ narrator, totalDuration, parts, postSlug = 'unknow
       {/* Progress Bar */}
       <div className="mb-4">
         <div 
-          className="w-full h-2 bg-gray-200 rounded-full cursor-pointer relative"
+          className="w-full h-2 rounded-full cursor-pointer relative"
+          style={{ backgroundColor: 'var(--muted)' }}
           onClick={handleSeek}
           role="progressbar"
           aria-label={`Audio progress: ${formatTime(currentTime)} of ${formatTime(duration)}. Use left and right arrows to scrub 10 seconds.`}
@@ -239,7 +241,7 @@ export function AudioPlayer({ narrator, totalDuration, parts, postSlug = 'unknow
             style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
           />
         </div>
-        <div className="flex justify-between text-xs text-gray-500 mt-1">
+        <div className="flex justify-between text-xs mt-1" style={{ color: 'var(--fg-muted)' }}>
           <span>{formatTime(currentTime)}</span>
           <span>{formatTime(duration)}</span>
         </div>
@@ -284,7 +286,7 @@ export function AudioPlayer({ narrator, totalDuration, parts, postSlug = 'unknow
 
       {/* Volume Control */}
       <div className="flex items-center gap-2 mb-4">
-        <Volume2 className="w-4 h-4 text-gray-500" aria-hidden="true" />
+        <Volume2 className="w-4 h-4" aria-hidden="true" style={{ color: 'var(--fg-muted)' }} />
         <input
           type="range"
           min="0"
@@ -292,7 +294,8 @@ export function AudioPlayer({ narrator, totalDuration, parts, postSlug = 'unknow
           step="0.1"
           value={volume}
           onChange={(e) => setVolume(parseFloat(e.target.value))}
-          className="flex-1 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+          className="flex-1 h-1 rounded-lg appearance-none cursor-pointer"
+          style={{ backgroundColor: 'var(--muted)' }}
           aria-label={`Volume: ${Math.round(volume * 100)}%. Use left and right arrows to adjust.`}
         />
       </div>
@@ -305,9 +308,13 @@ export function AudioPlayer({ narrator, totalDuration, parts, postSlug = 'unknow
             onClick={() => handlePartClick(index)}
             className={`w-full text-left p-2 rounded text-sm transition-colors ${
               index === currentPartIndex
-                ? 'bg-blue-50 text-blue-900 border border-blue-200'
-                : 'hover:bg-gray-50 text-gray-700'
+                ? 'border'
+                : 'hover:bg-[var(--muted)]'
             }`}
+            style={index === currentPartIndex 
+              ? { backgroundColor: 'var(--muted)', color: 'var(--accent)', borderColor: 'var(--accent)' }
+              : { color: 'var(--fg-muted)' }
+            }
             aria-label={`Part ${index + 1}: ${part.title} - Duration: ${part.duration}${
               index === currentPartIndex 
                 ? ` (currently ${isPlaying ? 'playing' : 'paused'} - press to ${isPlaying ? 'pause' : 'play'})`

@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   // FAQPage schema - customize per client
-  const faqSchema = siteConfig.contact?.faqSchema || {
+  const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "@id": `${siteConfig.url}/contact#faq`,

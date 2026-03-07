@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { getAllBlogPosts, getFeaturedBlogPosts, type BlogPost } from "@/lib/blog"
 import { BlogClient } from "./client"
 import { siteConfig } from "@/site.config"
+import { blogData } from "./data"
 
 // Revalidate every hour (3600 seconds)
 export const revalidate = 3600
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     type: "website",
     images: [{
-      url: `${siteConfig.url}/img/og-image.png`,
+      url: `${siteConfig.url}/og-image.png`,
       width: 1200,
       height: 630,
       alt: siteConfig.name
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `Blog - ${siteConfig.name}`,
     description: "Expert insights, industry news, and helpful resources.",
-    images: [`${siteConfig.url}/img/og-image.png`],
+    images: [`${siteConfig.url}/og-image.png`],
   }
 }
 
@@ -67,7 +68,7 @@ export default async function BlogPage() {
         }}
       />
 
-      <BlogClient allPosts={allPosts} featuredPosts={featuredPosts} />
+      <BlogClient allPosts={allPosts} featuredPosts={featuredPosts} data={blogData} />
     </>
   )
 }

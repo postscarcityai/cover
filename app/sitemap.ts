@@ -61,6 +61,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   }
 
+  // Additional pages not in navigation
+  const additionalPages = [
+    { path: '/achievements', priority: 0.6, changeFrequency: 'monthly' as const },
+    { path: '/team-member', priority: 0.7, changeFrequency: 'monthly' as const },
+    { path: '/disclaimer', priority: 0.3, changeFrequency: 'yearly' as const },
+  ]
+  additionalPages.forEach(({ path, priority, changeFrequency }) => {
+    staticPages.push({
+      url: `${baseUrl}${path}`,
+      lastModified: new Date(),
+      changeFrequency,
+      priority,
+    })
+  })
+
+  // Legal pages from siteConfig.legal
+  if (siteConfig.legal.accessibilityStatement) {
+    staticPages.push({
+      url: `${baseUrl}${siteConfig.legal.accessibilityStatement}`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    })
+  }
+  if (siteConfig.legal.nonDiscrimination) {
+    staticPages.push({
+      url: `${baseUrl}${siteConfig.legal.nonDiscrimination}`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    })
+  }
+
   // Dynamic blog post pages
   const blogPages = blogPosts.map((post) => ({
     url: `${baseUrl}${siteConfig.blog.basePath}/${post.slug}`,

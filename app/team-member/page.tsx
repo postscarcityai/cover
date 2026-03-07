@@ -39,7 +39,7 @@ export default function TeamMemberPage() {
     "jobTitle": siteConfig.business.founder.title,
     "description": siteConfig.teamMember?.personDescription || `${siteConfig.business.founder.name} is a recognized professional at ${siteConfig.name}.`,
     "url": `${siteConfig.url}/team-member`,
-    "image": siteConfig.teamMember?.imageSrc || "/img/team-member-placeholder.png",
+    "image": siteConfig.teamMember?.imageSrc || "",
     "worksFor": {
       "@type": siteConfig.business.type,
       "@id": siteConfig.url,

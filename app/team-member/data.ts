@@ -85,7 +85,7 @@ export const teamMemberData: TeamMemberData = {
     label: siteConfig.business.founder.title || "Team Leader",
     name: siteConfig.business.founder.name || "Team Member Name",
     title: siteConfig.teamMember?.heroTitle || "Professional Title",
-    imageSrc: siteConfig.teamMember?.imageSrc || "/img/team-member-placeholder.png",
+    imageSrc: siteConfig.teamMember?.imageSrc || "",
     imageAlt: siteConfig.teamMember?.imageAlt || `${siteConfig.business.founder.name} professional portrait`,
     stats: {
       experience: {

@@ -1,10 +1,13 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { Scale, CheckCircle, Calendar, MapPin, Gavel, Shield } from 'lucide-react'
+import { ArrowRight, Scale, CheckCircle, Calendar, MapPin, Gavel, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { MagneticButton } from "@/components/magnetic-button"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { SubpageHero } from "@/components/subpage-hero"
+import { SubpageSection } from "@/components/subpage-section"
+import { TaglineDivider } from "@/components/tagline-divider"
 import { usePageTracking, useScrollTracking } from "@/lib/analytics-hooks"
 import type { ResultsData } from "./data"
 
@@ -15,324 +18,264 @@ interface Props {
 export default function ResultsClient({ data }: Props) {
   const { hero, stats, featuredResults, additionalResults, testimonial, cta } = data
 
-  // Track page view once on mount
-  usePageTracking('Results', 'social_proof', 'results_page')
-  
-  // Track scroll depth milestones
+  usePageTracking("Results", "social_proof", "results_page")
   useScrollTracking()
 
+  const statBoxes = [
+    { icon: Scale, ...stats.federal },
+    { icon: Gavel, ...stats.state },
+    { icon: Shield, ...stats.postConviction },
+  ]
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <Navigation />
 
-      {/* Editorial Results Overview */}
-      <section className="relative pt-24 pb-16 bg-white overflow-hidden">
-        {/* Background Line Art */}
-        <div
-          className="absolute top-0 right-0 w-3/5 h-3/5 opacity-20 pointer-events-none"
-          style={{
-            backgroundImage: `url('/img/amc-line-art-1.svg')`,
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'top right'
-          }}
-        />
+      <SubpageHero
+        eyebrow="Results"
+        title={hero.title}
+        description={hero.subtitle}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Results" },
+        ]}
+      >
+        <p
+          className="text-base leading-relaxed max-w-2xl mt-4"
+          style={{ color: "var(--fg-muted)" }}
+        >
+          {hero.description}
+        </p>
+      </SubpageHero>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Main content - two column layout */}
-          <div className="grid lg:grid-cols-12 gap-12 items-start mb-16">
-            {/* Left column - main content */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="lg:col-span-8"
-            >
-              <div className="text-sm font-montserrat font-medium tracking-widest uppercase text-gray-500 mb-6">
-                Results
+      <main id="main-content">
+        <SubpageSection>
+          <div className="grid md:grid-cols-3 gap-6" data-reveal="stagger">
+            {statBoxes.map((stat) => (
+              <div
+                key={stat.label}
+                className="p-8 rounded-lg border transition-all duration-500 hover:border-[var(--accent)]"
+                style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center"
+                    style={{ backgroundColor: "color-mix(in srgb, var(--accent) 15%, transparent)" }}
+                  >
+                    <stat.icon className="h-5 w-5" style={{ color: "var(--accent)" }} />
+                  </div>
+                  <div>
+                    <p className="text-xs tracking-[0.2em] uppercase" style={{ color: "var(--accent)" }}>
+                      {stat.label}
+                    </p>
+                    <p className="text-lg font-bold" style={{ color: "var(--fg)" }}>{stat.title}</p>
+                  </div>
+                </div>
+                <ul className="text-sm space-y-1" style={{ color: "var(--fg-muted)" }}>
+                  {stat.items.map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <span style={{ color: "var(--accent)" }}>·</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h1 className="text-6xl md:text-8xl font-bold leading-none text-[#2A2C53] mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
-                {hero.title}
-              </h1>
-              <div className="text-3xl md:text-4xl font-light text-gray-600 mb-8 leading-tight">
-                {hero.subtitle}
-              </div>
-              <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                {hero.description}
-              </p>
-            </motion.div>
-
-            {/* Right column - empty */}
-            <div className="lg:col-span-4">
-              {/* Empty space for future content or visual balance */}
-            </div>
+            ))}
           </div>
+        </SubpageSection>
 
-          {/* Three boxes across the bottom */}
-          <div className="grid md:grid-cols-3 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="bg-gray-50 p-6 border-l-4 border-[#2A2C53]"
-            >
-              <div className="flex items-center space-x-3 mb-4">
-                <Scale className="h-6 w-6 text-[#2A2C53]" />
-                <div>
-                  <div className="text-sm font-montserrat font-semibold uppercase tracking-wide text-[#2A2C53] mb-1">
-                    {stats.federal.label}
-                  </div>
-                  <div className="text-2xl font-bold text-[#2A2C53]">{stats.federal.title}</div>
-                </div>
-              </div>
-              <ul className="text-sm text-gray-600 space-y-1">
-                {stats.federal.items.map((item) => (
-                  <li key={item}>• {item}</li>
-                ))}
-              </ul>
-            </motion.div>
+        <TaglineDivider text="Featured Results" />
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="bg-gray-50 p-6 border-l-4 border-[#2A2C53]"
-            >
-              <div className="flex items-center space-x-3 mb-4">
-                <Gavel className="h-6 w-6 text-[#2A2C53]" />
-                <div>
-                  <div className="text-sm font-montserrat font-semibold uppercase tracking-wide text-[#2A2C53] mb-1">
-                    {stats.state.label}
-                  </div>
-                  <div className="text-2xl font-bold text-[#2A2C53]">{stats.state.title}</div>
-                </div>
-              </div>
-              <ul className="text-sm text-gray-600 space-y-1">
-                {stats.state.items.map((item) => (
-                  <li key={item}>• {item}</li>
-                ))}
-              </ul>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-gray-50 p-6 border-l-4 border-[#2A2C53]"
-            >
-              <div className="flex items-center space-x-3 mb-4">
-                <Shield className="h-6 w-6 text-[#2A2C53]" />
-                <div>
-                  <div className="text-sm font-montserrat font-semibold uppercase tracking-wide text-[#2A2C53] mb-1">
-                    {stats.postConviction.label}
-                  </div>
-                  <div className="text-2xl font-bold text-[#2A2C53]">{stats.postConviction.title}</div>
-                </div>
-              </div>
-              <ul className="text-sm text-gray-600 space-y-1">
-                {stats.postConviction.items.map((item) => (
-                  <li key={item}>• {item}</li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Case Results */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-16">
+        <SubpageSection background="surface">
+          <div className="space-y-24">
             {featuredResults.map((result, index) => (
               <div key={result.id} id={result.id} className="scroll-mt-24">
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="grid lg:grid-cols-12 gap-12 items-center"
+                <div
+                  data-reveal="fade-up"
+                  className="grid lg:grid-cols-2 gap-16 items-start"
                 >
-                  {/* Case Details - Always on Left */}
-                  <div className="lg:col-span-5">
-                    <div className="bg-white p-8 border-l-4 border-[#2A2C53] shadow-lg">
-                      <div className="flex items-center space-x-3 mb-4">
-                        <Gavel className="h-6 w-6 text-[#2A2C53]" />
-                        <h3 className="text-2xl font-bold text-[#2A2C53]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                  <div>
+                    <div
+                      className="p-8 rounded-lg border"
+                      style={{ backgroundColor: "var(--muted)", borderColor: "var(--border)" }}
+                    >
+                      <div className="flex items-center gap-3 mb-6">
+                        <Gavel className="h-5 w-5" style={{ color: "var(--accent)" }} />
+                        <h3
+                          className="text-2xl font-bold"
+                          style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+                        >
                           {result.title}
                         </h3>
                       </div>
 
-                      <div className="space-y-4 mb-6">
+                      <div className="space-y-3 mb-6">
                         <div>
-                          <span className="font-semibold text-gray-700">Charge: </span>
-                          <span className="text-gray-600">{result.charge}</span>
+                          <span className="font-semibold text-sm" style={{ color: "var(--fg)" }}>Charge: </span>
+                          <span className="text-sm" style={{ color: "var(--fg-muted)" }}>{result.charge}</span>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <MapPin className="h-4 w-4 text-gray-500" />
-                          <span className="text-sm text-gray-600">{result.jurisdiction}</span>
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4" style={{ color: "var(--fg-muted)" }} />
+                          <span className="text-sm" style={{ color: "var(--fg-muted)" }}>{result.jurisdiction}</span>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <Calendar className="h-4 w-4 text-gray-500" />
-                          <span className="text-sm text-gray-600">{result.date}</span>
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4" style={{ color: "var(--fg-muted)" }} />
+                          <span className="text-sm" style={{ color: "var(--fg-muted)" }}>{result.date}</span>
                         </div>
                       </div>
 
-                      <div className="bg-red-50 p-4 rounded-lg mb-4">
-                        <div className="font-semibold text-red-800 mb-2">Worst Case Scenario:</div>
-                        <div className="text-red-700">{result.worstCase}</div>
+                      <div
+                        className="p-4 rounded-lg border-l-4 mb-4"
+                        style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
+                      >
+                        <div className="font-semibold text-sm mb-1" style={{ color: "var(--fg-muted)" }}>
+                          Worst Case Scenario:
+                        </div>
+                        <div className="text-sm" style={{ color: "var(--fg-muted)" }}>{result.worstCase}</div>
                       </div>
 
-                      <div className="bg-green-50 p-4 rounded-lg">
-                        <div className="font-semibold text-green-800 mb-2">Actual Results:</div>
-                        <div className="text-green-700 font-medium">{result.actualResults}</div>
+                      <div
+                        className="p-4 rounded-lg border-l-4"
+                        style={{ backgroundColor: "var(--surface)", borderColor: "var(--accent)" }}
+                      >
+                        <div className="font-semibold text-sm mb-1" style={{ color: "var(--accent)" }}>
+                          Actual Results:
+                        </div>
+                        <div className="text-sm font-medium" style={{ color: "var(--accent)" }}>
+                          {result.actualResults}
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Case Story - Always on Right */}
-                  <div className="lg:col-span-7">
-                    <div className="space-y-6">
-                      <div>
-                        <h4 className="text-xl font-bold text-[#2A2C53] mb-3">Arrested For:</h4>
-                        <p className="text-gray-700 leading-relaxed">{result.arrestedFor}</p>
-                      </div>
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="text-sm tracking-[0.2em] uppercase mb-3" style={{ color: "var(--accent)" }}>
+                        Arrested For
+                      </h4>
+                      <p className="leading-relaxed" style={{ color: "var(--fg)" }}>{result.arrestedFor}</p>
+                    </div>
 
-                      <div>
-                        <h4 className="text-xl font-bold text-[#2A2C53] mb-3">What Was Done:</h4>
-                        <p className="text-gray-700 leading-relaxed">{result.whatWasDone}</p>
-                      </div>
+                    <div>
+                      <h4 className="text-sm tracking-[0.2em] uppercase mb-3" style={{ color: "var(--accent)" }}>
+                        What Was Done
+                      </h4>
+                      <p className="leading-relaxed" style={{ color: "var(--fg)" }}>{result.whatWasDone}</p>
+                    </div>
 
-                      <div className="bg-[#2A2C53] text-white p-6 rounded-lg">
-                        <h4 className="text-lg font-bold mb-3 flex items-center">
-                          <Shield className="h-5 w-5 mr-2" />
-                          Unique Approach:
-                        </h4>
-                        <p className="leading-relaxed">{result.uniqueApproach}</p>
-                      </div>
+                    <div
+                      className="p-6 rounded-lg"
+                      style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
+                    >
+                      <h4 className="text-sm tracking-[0.2em] uppercase mb-3 flex items-center gap-2">
+                        <Shield className="h-4 w-4" />
+                        Unique Approach
+                      </h4>
+                      <p className="leading-relaxed opacity-90">{result.uniqueApproach}</p>
                     </div>
                   </div>
-                </motion.div>
+                </div>
 
-                {/* Horizontal Rule - Only show between cases, not after the last one */}
                 {index < featuredResults.length - 1 && (
-                  <motion.div
-                    initial={{ opacity: 0, scaleX: 0 }}
-                    whileInView={{ opacity: 1, scaleX: 1 }}
-                    transition={{ duration: 0.8, delay: 0.3 }}
-                    viewport={{ once: true }}
-                    className="flex items-center justify-center my-16"
-                  >
-                    <div className="w-full max-w-2xl h-px bg-gradient-to-r from-transparent via-[#2A2C53] to-transparent opacity-30"></div>
-                  </motion.div>
+                  <div className="flex items-center justify-center my-16">
+                    <div
+                      className="w-full max-w-2xl h-px opacity-20"
+                      style={{ backgroundColor: "var(--fg)" }}
+                    />
+                  </div>
                 )}
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </SubpageSection>
 
-      {/* Additional Results Grid */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#2A2C53] mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-              More Successful Outcomes
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              A comprehensive view of our track record across federal and state courts
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {additionalResults.map((result, index) => (
-              <motion.div
+        <SubpageSection
+          eyebrow="Track Record"
+          title="More Successful Outcomes"
+          description="A comprehensive view of our track record across federal and state courts"
+        >
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal="stagger">
+            {additionalResults.map((result) => (
+              <div
                 key={result.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-gray-50 p-6 border-l-4 border-[#2A2C53] hover:shadow-lg transition-shadow"
+                className="group p-6 rounded-lg border transition-all duration-500 hover:border-[var(--accent)]"
+                style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <h3 className="font-bold text-[#2A2C53] mb-2">{result.title}</h3>
-                    <p className="text-sm text-gray-600 mb-3">{result.charge}</p>
+                    <h3 className="font-bold mb-1" style={{ color: "var(--fg)" }}>{result.title}</h3>
+                    <p className="text-sm" style={{ color: "var(--fg-muted)" }}>{result.charge}</p>
                   </div>
-                  <span className="bg-[#2A2C53] text-white text-xs px-2 py-1 rounded">
+                  <span
+                    className="text-xs px-2 py-1 rounded-full"
+                    style={{ backgroundColor: "color-mix(in srgb, var(--accent) 15%, transparent)", color: "var(--accent)" }}
+                  >
                     {result.category}
                   </span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
-                  <span className="text-sm font-medium text-green-700">{result.result}</span>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 flex-shrink-0" style={{ color: "var(--accent)" }} />
+                  <span className="text-sm font-medium" style={{ color: "var(--accent)" }}>{result.result}</span>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </div>
-      </section>
+        </SubpageSection>
 
-      {/* Testimonial Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center"
-          >
-            <div className="bg-[#2A2C53] text-white p-12 rounded-lg">
-              <div className="text-6xl font-bold mb-6 opacity-20">"</div>
-              <blockquote className="text-2xl md:text-3xl font-light leading-relaxed mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
+        <SubpageSection background="surface">
+          <div className="max-w-4xl mx-auto text-center" data-reveal="fade-up">
+            <div
+              className="p-12 rounded-lg"
+              style={{ backgroundColor: "var(--muted)" }}
+            >
+              <div
+                className="text-6xl leading-none mb-6"
+                style={{ color: "var(--accent)" }}
+              >
+                &ldquo;
+              </div>
+              <blockquote
+                className="text-2xl md:text-3xl font-light leading-relaxed mb-8"
+                style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+              >
                 {testimonial.quote}
               </blockquote>
-              <div className="text-lg font-medium">
+              <div className="font-medium" style={{ color: "var(--fg)" }}>
                 {testimonial.author}
               </div>
-              <div className="text-white/70">
+              <div className="text-sm" style={{ color: "var(--fg-muted)" }}>
                 {testimonial.title}
               </div>
             </div>
-          </motion.div>
-        </div>
-      </section>
+          </div>
+        </SubpageSection>
 
-      {/* Call to Action */}
-      <section className="py-20 bg-purple-accent-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
+        <SubpageSection background="gradient">
+          <div className="text-center max-w-4xl mx-auto" data-reveal="fade-up">
+            <h2
+              className="text-4xl md:text-5xl lg:text-7xl font-bold mb-8"
+              style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+            >
               {cta.title}
             </h2>
-            <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+            <p className="text-lg md:text-xl mb-12 leading-relaxed" style={{ color: "var(--fg-muted)" }}>
               {cta.description}
             </p>
-            <Button
-              size="lg"
-              className="bg-purple-accent-700 hover:bg-purple-accent-800 text-white font-semibold font-montserrat tracking-wide uppercase px-8 py-4 rounded-none"
-              onClick={() => window.location.href = '/contact'}
-            >
-              {cta.buttonText}
-            </Button>
-          </motion.div>
-        </div>
-      </section>
+            <MagneticButton>
+              <Button
+                variant={null as any}
+                size="lg"
+                className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full transition-all hover:scale-105"
+                style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
+                onClick={() => (window.location.href = "/contact")}
+              >
+                {cta.buttonText}
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </MagneticButton>
+          </div>
+        </SubpageSection>
+      </main>
 
       <Footer />
     </div>

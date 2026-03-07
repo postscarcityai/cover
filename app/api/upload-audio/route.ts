@@ -66,7 +66,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Return the public URL
+    // Return the public URL (supabaseUrl exists since getSupabaseClient succeeded)
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
     const publicUrl = `${supabaseUrl}/storage/v1/object/public/audio-files/${fileName}`
 
     return NextResponse.json({

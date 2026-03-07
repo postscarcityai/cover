@@ -1,15 +1,18 @@
 /**
  * Site Configuration
  *
- * This is the central configuration file for your marketing site.
+ * Central configuration file for your marketing site.
  * Update these values for each new client project.
  */
 
+import type { DesignTokens } from "@/theme.config"
+
 export const siteConfig = {
-  // Theme Selection
-  // Available themes: 'professional', 'modern', 'elegant', 'minimal', 'warm'
-  // Or create your own custom theme in theme.config.ts
-  theme: 'professional' as 'professional' | 'modern' | 'elegant' | 'minimal' | 'warm',
+  // Color overrides (see theme.config.ts for defaults)
+  // Only set the tokens you want to change per client
+  colors: {
+    accent: "#1a6b52",
+  } as Partial<DesignTokens>,
 
   // Basic Site Information
   name: "Your Company Name",
@@ -170,7 +173,7 @@ export const siteConfig = {
       siteName: "Your Company Name",
       images: [
         {
-          url: "/img/og-image.png",
+          url: "/og-image.png",
           width: 1200,
           height: 630,
           alt: "Your Company Name"
@@ -191,9 +194,11 @@ export const siteConfig = {
     audioNarration: true, // Blog post audio narration
     whatsapp: false,
     liveChat: false,
-    cookieConsent: false,
-    smoothScroll: false, // GSAP smooth scrolling (requires gsap package)
-    navigationScrollHide: false // Hide navigation on scroll down, show on scroll up (requires smoothScroll)
+    cookieConsent: true,
+    exitIntentPopup: true,
+    floatingCTA: true,
+    smoothScroll: true,
+    navigationScrollHide: true
   },
 
   // Analytics & Tracking (IDs set in .env.local)
@@ -204,12 +209,25 @@ export const siteConfig = {
     linkedInInsight: false
   },
 
+  // Announcement Banner (fixed bar at top of page)
+  announcement: {
+    enabled: false,
+    text: "New: We've expanded our services. Check out what's new!",
+    href: "/blog",
+    dismissKey: "announcement-v1",
+  } as {
+    enabled: boolean
+    text: string
+    href?: string
+    dismissKey: string
+  },
+
   // Hero Section Configuration
   hero: {
     title: "Your Main Headline",
     subtitle: "Your Secondary Headline",
     ctaPrimary: "Get Started",
-    ctaSecondary: "Call Now"
+    ctaSecondary: "Learn More"
   },
 
   // Services Section Configuration
@@ -263,14 +281,43 @@ export const siteConfig = {
     }
   },
 
+  // Consent & TCPA Notices
+  // These are used across all forms. Variables like {companyName}, {phone}, and {emailDomain}
+  // are interpolated at runtime by the getConsentText() helper below.
+  consent: {
+    emailDomain: "@yoursite.com",
+    // Full TCPA checkbox notice (contact forms with explicit checkbox) — California-compliant
+    tcpaFull: 'I consent to receive calls, texts, and emails from {companyName} and partners at my contact info, including automated messages. Not required for service. Message and data rates may apply. Reply STOP to opt out or contact {phone}.',
+    // Shorter inline notice (consultation / quick forms without a checkbox)
+    tcpaShort: 'By submitting, you consent to contact via phone, text, and email. Not required for service. Rates may apply.',
+    // Newsletter-specific consent
+    newsletter: 'I consent to receive email updates from {companyName}. Unsubscribe anytime.',
+    // Contact page disclaimer paragraphs
+    contactDisclaimer: [
+      'Contacting {companyName} does not create a business relationship.',
+      'You consent to calls, texts, and emails. Not required for service. Rates may apply. Reply STOP to opt out or contact {phone}. Information submitted may not be confidential until a formal agreement exists.'
+    ]
+  },
+
   // Legal Pages
   legal: {
     privacyPolicy: "/privacy-policy",
     termsOfService: "/terms-of-service",
-    cookiePolicy: "/cookie-policy"
+    cookiePolicy: "/cookie-policy",
+    accessibilityStatement: "/accessibility-statement",
+    nonDiscrimination: "/non-discrimination-statement"
   },
 
   // Optional Page Configurations
+  contactPage: undefined as {
+    conversionHeadline?: string
+    conversionSubhead?: string
+    trustBullets?: string[]
+    testimonialQuote?: string
+    testimonialAuthor?: string
+    testimonialRole?: string
+  } | undefined,
+
   servicesPage: undefined as {
     heroTitle?: string[]
     heroSubtitle?: string
@@ -337,6 +384,39 @@ export const siteConfig = {
     imageSrc?: string
     imageAlt?: string
     heroTitle?: string
+    experience?: string
+    statsLabel?: string
+    statsValue?: string
+    overviewTitle?: string
+    overviewParagraphs?: string[]
+    expertiseTitle?: string
+    expertiseParagraphs?: string[]
+    highlights?: string[]
+    credentialsTitle?: string
+    credentialsDescription?: string
+    credentialsNote?: string
+    licenses?: string[]
+    certifications?: string[]
+    leadershipTitle?: string
+    leadershipParagraphs?: string[]
+    leadershipHighlightTitle?: string
+    leadershipHighlightItems?: string[]
+    ctaTitle?: string
+    ctaParagraphs?: string[]
+    ctaQuote?: string
+    ctaButton?: string
+  } | undefined,
+
+  // Credibility Badge Configuration (optional)
+  credibility: undefined as {
+    stats?: Array<{ value: string; label: string }>
+    credentials?: string[]
+    reviews?: Array<{
+      platform: string
+      rating: string
+      count: string
+      url: string
+    }>
   } | undefined,
 
   disclaimer: undefined as {
@@ -354,3 +434,22 @@ export const siteConfig = {
 
 // Type export for TypeScript autocomplete
 export type SiteConfig = typeof siteConfig
+
+/**
+ * Interpolates consent template strings with actual site config values.
+ * Supported tokens: {companyName}, {phone}, {emailDomain}
+ */
+function interpolateConsent(template: string): string {
+  return template
+    .replace(/\{companyName\}/g, siteConfig.name)
+    .replace(/\{phone\}/g, siteConfig.contact.phoneDisplay)
+    .replace(/\{emailDomain\}/g, siteConfig.consent.emailDomain)
+}
+
+export function getConsentText(variant: 'tcpaFull' | 'tcpaShort' | 'newsletter'): string {
+  return interpolateConsent(siteConfig.consent[variant])
+}
+
+export function getContactDisclaimer(): string[] {
+  return siteConfig.consent.contactDisclaimer.map(interpolateConsent)
+}

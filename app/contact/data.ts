@@ -43,7 +43,7 @@ export interface ContactData {
   }
 }
 
-import { siteConfig } from "@/site.config"
+import { siteConfig, getContactDisclaimer } from "@/site.config"
 
 export const contactData: ContactData = {
   breadcrumbSchema: {
@@ -66,8 +66,8 @@ export const contactData: ContactData = {
   },
   hero: {
     label: `Contact ${siteConfig.name}`,
-    title: siteConfig.contact?.heroTitle || ["Let's Connect.", "Get In Touch."],
-    subtitle: siteConfig.contact?.heroSubtitle || "We're here to help with your needs"
+    title: siteConfig.contactPage?.conversionHeadline ? [siteConfig.contactPage.conversionHeadline] : ["Let's Connect.", "Get In Touch."],
+    subtitle: siteConfig.contactPage?.conversionSubhead || "We're here to help with your needs"
   },
   emergency: {
     label: siteConfig.business.openingHours?.is24_7 ? "Available" : "Contact",
@@ -102,20 +102,16 @@ export const contactData: ContactData = {
   ],
   sectionTitle: "Choose Your Preferred Contact Method",
   map: {
-    embedUrl: siteConfig.contact?.mapEmbedUrl || `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d${siteConfig.business.coordinates.longitude}!3d${siteConfig.business.coordinates.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z${encodeURIComponent(siteConfig.contact.address.street)}!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus`,
+    embedUrl: `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d${siteConfig.business.coordinates.longitude}!3d${siteConfig.business.coordinates.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z${encodeURIComponent(siteConfig.contact.address.street)}!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus`,
     title: `${siteConfig.name} Office Location`
   },
   cta: {
-    title: siteConfig.contact?.ctaTitle || "Ready to Get Started?",
-    description: siteConfig.contact?.ctaDescription || "Contact us today to discuss how we can help with your needs.",
+    title: "Ready to Get Started?",
+    description: "Contact us today to discuss how we can help with your needs.",
     buttonText: `Call ${siteConfig.contact.phoneDisplay} Now`
   },
   disclaimer: {
     title: "Important Notice",
-    content: siteConfig.contact?.disclaimerContent || [
-      `Contacting ${siteConfig.name} through this website, phone, or email does not create a formal business relationship.`,
-      "Information you submit may not be confidential. Please do not submit sensitive information until a formal agreement has been established.",
-      "All consultations and services are subject to our terms of service and privacy policy."
-    ]
+    content: getContactDisclaimer()
   }
 }

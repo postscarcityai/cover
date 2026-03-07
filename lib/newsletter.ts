@@ -126,7 +126,8 @@ export async function isCaliforniaUser(): Promise<boolean> {
 }
 
 /**
- * Generate compliance text based on user location
+ * Generate compliance text based on user location.
+ * Consent copy is driven by site.config.ts consent templates.
  */
 export async function getComplianceText(): Promise<{
   consentText: string
@@ -134,17 +135,16 @@ export async function getComplianceText(): Promise<{
   requiresGDPR: boolean
   requiresCCPA: boolean
 }> {
+  const { getConsentText } = await import("@/site.config")
+
   const [location, isCalifornia] = await Promise.all([
     getUserLocation(),
     isCaliforniaUser()
   ])
 
-  const consentText = "I consent to receive email updates and newsletters."
-  const privacyNotice = "No spam. Unsubscribe anytime."
-
   return {
-    consentText,
-    privacyNotice,
+    consentText: getConsentText('newsletter'),
+    privacyNotice: "No spam. Unsubscribe anytime.",
     requiresGDPR: location.isEU,
     requiresCCPA: isCalifornia
   }

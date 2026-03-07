@@ -1,11 +1,18 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useState } from "react"
 import Image from "next/image"
-import { ArrowRight, CheckCircle, MapPin, Scale, Users, Award, BookOpen, Phone } from 'lucide-react'
+import { ArrowRight, CheckCircle, MapPin, Scale, Users, Award, BookOpen, Phone } from "lucide-react"
+import { usePageTracking, useScrollTracking } from "@/lib/analytics-hooks"
+import { siteConfig } from "@/site.config"
 import { Button } from "@/components/ui/button"
+import { MagneticButton } from "@/components/magnetic-button"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { SubpageHero } from "@/components/subpage-hero"
+import { SubpageSection } from "@/components/subpage-section"
+import { TaglineDivider } from "@/components/tagline-divider"
+import { PlaceholderImage } from "@/components/placeholder-image"
 import type { TeamMemberData } from "./data"
 
 interface Props {
@@ -13,375 +20,297 @@ interface Props {
 }
 
 export default function TeamMemberClient({ data }: Props) {
+  usePageTracking(
+    `${siteConfig.business.founder.name} - Team`,
+    "about",
+    "team_member"
+  )
+  useScrollTracking()
+
   const { hero, overview, highlights, expertise, credentials, leadership, cta } = data
+  const [imgFailed, setImgFailed] = useState(false)
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: "var(--bg)" }}>
       <Navigation />
 
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-16 bg-white" id="main-content">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            {/* Profile Image */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="lg:col-span-5"
-            >
-              <div className="aspect-[4/5] rounded-lg overflow-hidden shadow-2xl">
-                <Image
-                  src={hero.imageSrc}
-                  alt={hero.imageAlt}
-                  width={600}
-                  height={750}
-                  className="w-full h-full object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8VAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k="
-                />
-              </div>
-            </motion.div>
+      <section
+        className="relative min-h-[60vh] flex items-end overflow-hidden"
+        id="main-content"
+        style={{ backgroundColor: "var(--bg)" }}
+      >
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 40%, color-mix(in srgb, var(--accent) 6%, transparent), transparent)",
+          }}
+        />
+        <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 pb-16 md:pb-24 pt-32 md:pt-40 max-w-7xl">
+          <div className="grid lg:grid-cols-12 gap-12 items-end">
+            <div className="lg:col-span-5" data-reveal="scale">
+              {hero.imageSrc && !imgFailed ? (
+                <div className="aspect-[4/5] rounded-lg overflow-hidden">
+                  <Image
+                    src={hero.imageSrc}
+                    alt={hero.imageAlt}
+                    width={600}
+                    height={750}
+                    className="w-full h-full object-cover"
+                    sizes="(max-width: 768px) 100vw, 40vw"
+                    priority
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8VAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k="
+                    onError={() => setImgFailed(true)}
+                  />
+                </div>
+              ) : (
+                <PlaceholderImage label={hero.imageAlt || "Team Member"} aspectRatio="4/5" />
+              )}
+            </div>
 
-            {/* Attorney Info */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="lg:col-span-7"
-            >
-              <div className="text-sm font-montserrat font-medium tracking-widest uppercase text-gray-500 mb-4">
+            <div className="lg:col-span-7">
+              <p
+                data-reveal="fade-up"
+                className="text-xs tracking-[0.3em] uppercase mb-6"
+                style={{ color: "var(--accent)" }}
+              >
                 {hero.label}
-              </div>
-              <h1 className="text-3xl md:text-5xl font-bold leading-none text-[#2A2C53] mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
+              </p>
+              <h1
+                data-reveal="words"
+                className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[0.95] tracking-tight mb-4"
+                style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+              >
                 {hero.name}
               </h1>
-              <div className="text-xl md:text-2xl font-light text-gray-600 mb-8 leading-tight">
+              <p
+                data-reveal="fade-up"
+                className="text-xl md:text-2xl font-light mb-8"
+                style={{ color: "var(--fg-muted)" }}
+              >
                 {hero.title}
-              </div>
+              </p>
 
-              <div className="bg-gray-50 p-6 border-l-4 border-[#2A2C53] mb-8">
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <div className="text-sm font-montserrat font-semibold uppercase tracking-wide text-[#2A2C53] mb-1">
-                      {hero.stats.experience.label}
-                    </div>
-                    <div className="text-xl font-bold text-[#2A2C53]">{hero.stats.experience.value}</div>
-                  </div>
-                  <div>
-                    <div className="text-sm font-montserrat font-semibold uppercase tracking-wide text-[#2A2C53] mb-1">
-                      {hero.stats.jurisdictions.label}
-                    </div>
-                    <div className="text-xl font-bold text-[#2A2C53]">{hero.stats.jurisdictions.value}</div>
-                  </div>
+              <div data-reveal="fade-up" className="flex flex-wrap gap-8 mb-8">
+                <div className="flex flex-col">
+                  <span className="text-xs tracking-[0.2em] uppercase mb-1" style={{ color: "var(--accent)" }}>
+                    {hero.stats.experience.label}
+                  </span>
+                  <span className="text-2xl font-bold" style={{ color: "var(--fg)" }}>
+                    {hero.stats.experience.value}
+                  </span>
+                </div>
+                <div className="w-px opacity-20" style={{ backgroundColor: "var(--fg)" }} />
+                <div className="flex flex-col">
+                  <span className="text-xs tracking-[0.2em] uppercase mb-1" style={{ color: "var(--accent)" }}>
+                    {hero.stats.jurisdictions.label}
+                  </span>
+                  <span className="text-2xl font-bold" style={{ color: "var(--fg)" }}>
+                    {hero.stats.jurisdictions.value}
+                  </span>
                 </div>
               </div>
 
-              <Button
-                size="lg"
-                className="bg-[#2A2C53] hover:bg-[#2A2C53]/90 text-white font-montserrat font-semibold tracking-wide uppercase rounded-none"
-                onClick={() => window.location.href = '/contact'}
-              >
-                Schedule Consultation
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </motion.div>
+              <div data-reveal="fade-up">
+                <MagneticButton>
+                  <Button
+                    variant={null as any}
+                    size="lg"
+                    className="font-semibold tracking-wide uppercase rounded-full transition-all hover:scale-105"
+                    style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
+                    onClick={() => (window.location.href = "/contact")}
+                  >
+                    Schedule Consultation
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </MagneticButton>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Professional Overview */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#2A2C53] mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-              {overview.sectionTitle}
-            </h2>
-            <div className="w-24 h-1 bg-[#2A2C53] mx-auto"></div>
-          </motion.div>
-
+      <main>
+        <SubpageSection background="surface" title={overview.sectionTitle}>
           <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
+            <div data-reveal="fade-up">
               {overview.paragraphs.map((paragraph, index) => (
-                <p key={index} className="text-lg leading-relaxed text-gray-700 mb-6">
+                <p key={index} className="text-base leading-relaxed mb-6" style={{ color: "var(--fg-muted)" }}>
                   {paragraph}
                 </p>
               ))}
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-2xl font-bold text-[#2A2C53] mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
+            </div>
+            <div data-reveal="fade-up">
+              <h3 className="text-sm tracking-[0.2em] uppercase mb-6" style={{ color: "var(--accent)" }}>
                 Key Highlights
               </h3>
-              <div className="space-y-4">
-                {highlights.map((highlight, index) => (
-                  <motion.div
-                    key={highlight}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-start space-x-3"
-                  >
-                    <CheckCircle className="h-5 w-5 text-[#2A2C53] flex-shrink-0 mt-1" />
-                    <span className="text-gray-700">{highlight}</span>
-                  </motion.div>
+              <div className="space-y-3">
+                {highlights.map((highlight) => (
+                  <div key={highlight} className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 flex-shrink-0 mt-0.5" style={{ color: "var(--accent)" }} />
+                    <span className="text-sm" style={{ color: "var(--fg-muted)" }}>{highlight}</span>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           </div>
-        </div>
-      </section>
+        </SubpageSection>
 
-      {/* Expertise Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#2A2C53] mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-              {expertise.sectionTitle}
-            </h2>
-            <div className="w-24 h-1 bg-[#2A2C53] mx-auto"></div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="bg-gray-50 p-8 rounded-lg"
+        <SubpageSection title={expertise.sectionTitle}>
+          <div
+            data-reveal="fade-up"
+            className="p-8 rounded-lg"
+            style={{ backgroundColor: "var(--surface)" }}
           >
             {expertise.paragraphs.map((paragraph, index) => (
-              <p key={index} className="text-lg leading-relaxed text-gray-700 mb-6 last:mb-0">
+              <p key={index} className="text-base leading-relaxed mb-6 last:mb-0" style={{ color: "var(--fg-muted)" }}>
                 {paragraph}
               </p>
             ))}
-          </motion.div>
-        </div>
-      </section>
+          </div>
+        </SubpageSection>
 
-      {/* Credentials & Qualifications */}
-      <section className="py-20 bg-[#2A2C53] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-              {credentials.sectionTitle}
-            </h2>
-            <div className="w-24 h-1 bg-white mx-auto mb-8"></div>
-            <p className="text-xl text-white/90 max-w-4xl mx-auto">
-              {credentials.description}
-            </p>
-          </motion.div>
+        <TaglineDivider text="Credentials" />
 
+        <SubpageSection
+          background="accent"
+          title={credentials.sectionTitle}
+          description={credentials.description}
+        >
           <div className="grid lg:grid-cols-2 gap-16">
-            {/* Licenses */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-3xl font-bold mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
+            <div data-reveal="fade-up">
+              <h3 className="text-2xl font-bold mb-8" style={{ color: "var(--accent-fg)" }}>
                 Professional Licenses
               </h3>
-              <div className="space-y-4">
-                {credentials.licenses.map((license, index) => (
-                  <motion.div
+              <div className="space-y-3">
+                {credentials.licenses.map((license) => (
+                  <div
                     key={license}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-center space-x-3 p-4 bg-white/10 rounded"
+                    className="flex items-center gap-3 p-4 rounded-lg"
+                    style={{ backgroundColor: "color-mix(in srgb, var(--accent-fg) 10%, transparent)" }}
                   >
-                    <MapPin className="h-5 w-5 text-white flex-shrink-0" />
-                    <span className="text-lg font-medium">{license}</span>
-                  </motion.div>
+                    <MapPin className="h-5 w-5 flex-shrink-0" style={{ color: "var(--accent-fg)" }} />
+                    <span className="font-medium" style={{ color: "var(--accent-fg)" }}>{license}</span>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
-            {/* Certifications */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-3xl font-bold mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
+            <div data-reveal="fade-up">
+              <h3 className="text-2xl font-bold mb-8" style={{ color: "var(--accent-fg)" }}>
                 Certifications & Training
               </h3>
-              <div className="space-y-3 max-h-80 overflow-y-auto bg-white/5 p-4 rounded">
-                {credentials.certifications.map((cert, index) => (
-                  <motion.div
-                    key={cert}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    viewport={{ once: true }}
-                    className="flex items-center space-x-3 py-2"
-                  >
-                    <Scale className="h-4 w-4 text-white flex-shrink-0" />
-                    <span className="text-white/90">{cert}</span>
-                  </motion.div>
+              <div
+                className="space-y-2 max-h-80 overflow-y-auto p-4 rounded-lg"
+                style={{ backgroundColor: "color-mix(in srgb, var(--accent-fg) 5%, transparent)" }}
+              >
+                {credentials.certifications.map((cert) => (
+                  <div key={cert} className="flex items-center gap-3 py-2">
+                    <Scale className="h-4 w-4 flex-shrink-0 opacity-80" style={{ color: "var(--accent-fg)" }} />
+                    <span className="text-sm opacity-90" style={{ color: "var(--accent-fg)" }}>{cert}</span>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           </div>
 
-          {/* Note about availability */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="mt-12 text-center"
-          >
-            <div className="bg-white/10 p-6 rounded-lg max-w-4xl mx-auto">
-              <p className="text-xl text-white/90 italic">
+          {credentials.note && (
+            <div
+              data-reveal="fade-up"
+              className="mt-12 p-6 rounded-lg max-w-4xl mx-auto text-center"
+              style={{ backgroundColor: "color-mix(in srgb, var(--accent-fg) 10%, transparent)" }}
+            >
+              <p className="text-sm italic opacity-90" style={{ color: "var(--accent-fg)" }}>
                 <strong>Note:</strong> {credentials.note}
               </p>
             </div>
-          </motion.div>
-        </div>
-      </section>
+          )}
+        </SubpageSection>
 
-      {/* Leadership & Community */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="lg:col-span-7"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-[#2A2C53] mb-8" style={{ fontFamily: 'Playfair Display, serif' }}>
-                {leadership.sectionTitle}
-              </h2>
-
-              <div className="space-y-6">
-                {leadership.paragraphs.map((paragraph, index) => (
-                  <p key={index} className="text-lg leading-relaxed text-gray-700">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="lg:col-span-5"
-            >
-              <div className="bg-gray-50 p-8 rounded-lg">
-                <div className="flex items-center space-x-4 mb-6">
-                  <div className="w-16 h-16 bg-[#2A2C53] flex items-center justify-center rounded-full">
-                    <Users className="h-8 w-8 text-white" />
+        <SubpageSection title={leadership.sectionTitle}>
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            <div data-reveal="fade-up">
+              {leadership.paragraphs.map((paragraph, index) => (
+                <p key={index} className="text-base leading-relaxed mb-6" style={{ color: "var(--fg-muted)" }}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div data-reveal="fade-up">
+              <div className="p-8 rounded-lg" style={{ backgroundColor: "var(--surface)" }}>
+                <div className="flex items-center gap-4 mb-6">
+                  <div
+                    className="w-14 h-14 flex items-center justify-center rounded-full"
+                    style={{ backgroundColor: "color-mix(in srgb, var(--accent) 15%, transparent)" }}
+                  >
+                    <Users className="h-7 w-7" style={{ color: "var(--accent)" }} />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-[#2A2C53]">{leadership.highlights.title}</h3>
-                    <p className="text-gray-600">{leadership.highlights.subtitle}</p>
+                    <h3 className="text-lg font-bold" style={{ color: "var(--fg)" }}>{leadership.highlights.title}</h3>
+                    <p className="text-sm" style={{ color: "var(--fg-muted)" }}>{leadership.highlights.subtitle}</p>
                   </div>
                 </div>
-
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {leadership.highlights.items.map((item, index) => {
                     const icons = [Award, BookOpen, Users]
                     const Icon = icons[index] || Award
                     return (
-                      <div key={item} className="flex items-start space-x-3">
-                        <Icon className="h-5 w-5 text-[#2A2C53] flex-shrink-0 mt-1" />
-                        <span className="text-gray-700">{item}</span>
+                      <div key={item} className="flex items-start gap-3">
+                        <Icon className="h-5 w-5 flex-shrink-0 mt-0.5" style={{ color: "var(--accent)" }} />
+                        <span className="text-sm" style={{ color: "var(--fg-muted)" }}>{item}</span>
                       </div>
                     )
                   })}
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
-        </div>
-      </section>
+        </SubpageSection>
 
-      {/* Final CTA */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-5xl md:text-6xl font-bold text-[#2A2C53] mb-8 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+        <SubpageSection background="gradient">
+          <div className="text-center max-w-4xl mx-auto" data-reveal="fade-up">
+            <h2
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8"
+              style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+            >
               {cta.title}
             </h2>
-
-            <div className="max-w-3xl mx-auto mb-12">
-              {cta.paragraphs.map((paragraph, index) => (
-                <p key={index} className="text-xl text-gray-700 leading-relaxed mb-6">
-                  {paragraph.includes('<strong>') ? (
-                    <span dangerouslySetInnerHTML={{ __html: paragraph }} />
-                  ) : (
-                    paragraph
-                  )}
-                </p>
-              ))}
-
-              <div className="bg-[#2A2C53] text-white p-8 text-xl italic mb-8">
-                "{cta.quote}"
-              </div>
-            </div>
-
+            {cta.paragraphs.map((paragraph, index) => (
+              <p key={index} className="text-lg leading-relaxed mb-6" style={{ color: "var(--fg-muted)" }}>
+                {paragraph.includes("<strong>") ? (
+                  <span dangerouslySetInnerHTML={{ __html: paragraph }} />
+                ) : (
+                  paragraph
+                )}
+              </p>
+            ))}
+            <blockquote
+              className="p-8 text-lg italic rounded-lg mb-12"
+              style={{ backgroundColor: "var(--surface)", color: "var(--fg)" }}
+            >
+              &ldquo;{cta.quote}&rdquo;
+            </blockquote>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button
-                size="lg"
-                className="bg-[#2A2C53] hover:bg-[#2A2C53]/90 text-white font-montserrat font-semibold text-lg px-8 py-4 tracking-wide uppercase rounded-none"
-                onClick={() => window.location.href = '/contact'}
-              >
-                {cta.buttonText}
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-
-              <div className="flex items-center space-x-2 text-[#2A2C53]">
+              <MagneticButton>
+                <Button
+                  variant={null as any}
+                  size="lg"
+                  className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full transition-all hover:scale-105"
+                  style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
+                  onClick={() => (window.location.href = "/contact")}
+                >
+                  {cta.buttonText}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </MagneticButton>
+              <div className="flex items-center gap-2" style={{ color: "var(--accent)" }}>
                 <Phone className="h-5 w-5" />
                 <span className="font-semibold">{cta.phoneNumber}</span>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </section>
+          </div>
+        </SubpageSection>
+      </main>
 
       <Footer />
     </div>

@@ -177,8 +177,28 @@ export function VintageHeroSlider({
 
   if (!images.length) {
     return (
-      <div className={`relative ${height} bg-gray-900 ${className}`}>
-        {children}
+      <div className={`relative ${height} ${className}`} style={{ backgroundColor: "var(--surface)" }}>
+        <svg
+          className="absolute inset-0 w-full h-full"
+          viewBox="0 0 1200 600"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid slice"
+          aria-hidden="true"
+        >
+          <rect width="1200" height="600" fill="var(--surface)" />
+          <line x1="0" y1="0" x2="1200" y2="600" stroke="var(--border)" strokeWidth="0.5" />
+          <line x1="1200" y1="0" x2="0" y2="600" stroke="var(--border)" strokeWidth="0.5" />
+          <rect x="540" y="240" width="120" height="120" rx="12" stroke="var(--border)" strokeWidth="1.5" fill="none" />
+          <circle cx="575" cy="275" r="12" stroke="var(--border)" strokeWidth="1.5" fill="none" />
+          <path d="M550 340 L585 310 L615 330 L640 315 L650 330" stroke="var(--border)" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <div className="absolute inset-0 z-10" style={{ background: "linear-gradient(to bottom, transparent 30%, var(--bg) 100%)" }} />
+        {children && (
+          <div className="absolute inset-0 z-30 flex items-center justify-center">
+            {children}
+          </div>
+        )}
       </div>
     )
   }
@@ -214,7 +234,8 @@ export function VintageHeroSlider({
               animate={{ opacity: flickerIntensity * 0.3 }} // Much more subtle
               exit={{ opacity: 0 }}
               transition={{ duration: 0.08 }}
-              className="absolute inset-0 z-30 bg-yellow-50 mix-blend-overlay pointer-events-none"
+              className="absolute inset-0 z-30 mix-blend-overlay pointer-events-none"
+              style={{ backgroundColor: 'rgba(254,249,231,0.5)' }}
             />
             {/* Gentle contrast shift */}
             <motion.div
@@ -222,7 +243,8 @@ export function VintageHeroSlider({
               animate={{ opacity: flickerIntensity * 0.2 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.1 }}
-              className="absolute inset-0 z-29 bg-gray-100 mix-blend-soft-light pointer-events-none"
+              className="absolute inset-0 z-29 mix-blend-soft-light pointer-events-none"
+              style={{ backgroundColor: 'rgba(243,244,246,0.5)' }}
             />
           </>
         )}
@@ -238,7 +260,8 @@ export function VintageHeroSlider({
               animate={{ opacity: [0, 0.25, 0.1, 0.2, 0] }} // Much lower maximum
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, times: [0, 0.2, 0.5, 0.8, 1] }}
-              className="absolute inset-0 z-31 bg-yellow-100 mix-blend-overlay pointer-events-none"
+              className="absolute inset-0 z-31 mix-blend-overlay pointer-events-none"
+              style={{ backgroundColor: 'rgba(254,249,231,0.6)' }}
             />
             {/* Very gentle contrast shift */}
             <motion.div

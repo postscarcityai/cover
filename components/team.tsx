@@ -6,109 +6,67 @@ interface LawyerTeamProps {
   className?: string
 }
 
+function PersonPlaceholder({ height, label }: { height: string; label: string }) {
+  return (
+    <div className={`${height} w-auto aspect-[3/5]`} aria-hidden="true">
+      <svg
+        viewBox="0 0 120 200"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-full h-full"
+        aria-label={label}
+      >
+        <rect width="120" height="200" rx="4" fill="var(--surface)" />
+        <circle cx="60" cy="60" r="24" stroke="var(--border)" strokeWidth="1.5" fill="none" />
+        <path
+          d="M30 160 Q30 120 60 110 Q90 120 90 160"
+          stroke="var(--border)"
+          strokeWidth="1.5"
+          fill="none"
+        />
+      </svg>
+    </div>
+  )
+}
+
 export function LawyerTeam({ className = "" }: LawyerTeamProps) {
   const { scrollY } = useScroll()
 
-  // Extended scroll range with downward movement and fade out
-  const lawyer1X = useTransform(scrollY, [0, 600], [0, -40])
   const lawyer1Y = useTransform(scrollY, [0, 600], [0, 60])
-  const lawyer2X = useTransform(scrollY, [0, 600], [0, -35])
   const lawyer2Y = useTransform(scrollY, [0, 600], [0, 70])
-  const lawyer3X = useTransform(scrollY, [0, 600], [0, -20])
   const lawyer3Y = useTransform(scrollY, [0, 600], [0, 50])
-  const lawyer4X = useTransform(scrollY, [0, 600], [0, 20])
   const lawyer4Y = useTransform(scrollY, [0, 600], [0, 55])
   const lawyerCenterY = useTransform(scrollY, [0, 600], [0, 45])
-  const lawyer6X = useTransform(scrollY, [0, 600], [0, 35])
   const lawyer6Y = useTransform(scrollY, [0, 600], [0, 65])
-  const lawyer7X = useTransform(scrollY, [0, 600], [0, 30])
   const lawyer7Y = useTransform(scrollY, [0, 600], [0, 58])
 
-  // Fade out effect matching the hero text
   const teamOpacity = useTransform(scrollY, [0, 600], [1, 0])
 
   const lawyers = [
-    {
-      src: "/img/lawyer-1.png",
-      alt: "Defense attorney",
-      height: "h-36",
-      x: lawyer1X,
-      y: lawyer1Y,
-      zIndex: "z-10" // Outermost layer
-    },
-    {
-      src: "/img/lawyer-2.png",
-      alt: "Defense attorney", 
-      height: "h-40",
-      x: lawyer2X,
-      y: lawyer2Y,
-      zIndex: "z-20" // Second layer
-    },
-    {
-      src: "/img/lawyer-3.png",
-      alt: "Defense attorney",
-      height: "h-44",
-      x: lawyer3X,
-      y: lawyer3Y,
-      zIndex: "z-30" // Third layer
-    },
-    {
-      src: "/img/lawyer-center.png",
-      alt: "Principal attorney",
-      height: "h-48",
-      x: useTransform(scrollY, [0, 600], [0, 0]), // Center stays centered horizontally
-      y: lawyerCenterY,
-      zIndex: "z-50", // Highest - always on top
-      isCenter: true
-    },
-    {
-      src: "/img/lawyer-4.png",
-      alt: "Defense attorney",
-      height: "h-44",
-      x: lawyer4X, 
-      y: lawyer4Y,
-      zIndex: "z-30" // Third layer (mirror of lawyer-3)
-    },
-    {
-      src: "/img/lawyer-6.png",
-      alt: "Defense attorney",
-      height: "h-40",
-      x: lawyer6X,
-      y: lawyer6Y,
-      zIndex: "z-20" // Second layer (mirror of lawyer-2)
-    },
-    {
-      src: "/img/lawyer-7.png",
-      alt: "Defense attorney",
-      height: "h-36",
-      x: lawyer7X,
-      y: lawyer7Y,
-      zIndex: "z-10" // Outermost layer (mirror of lawyer-1)
-    }
+    { height: "h-36", y: lawyer1Y, zIndex: "z-10", label: "Team member" },
+    { height: "h-40", y: lawyer2Y, zIndex: "z-20", label: "Team member" },
+    { height: "h-44", y: lawyer3Y, zIndex: "z-30", label: "Team member" },
+    { height: "h-48", y: lawyerCenterY, zIndex: "z-50", label: "Principal team member" },
+    { height: "h-44", y: lawyer4Y, zIndex: "z-30", label: "Team member" },
+    { height: "h-40", y: lawyer6Y, zIndex: "z-20", label: "Team member" },
+    { height: "h-36", y: lawyer7Y, zIndex: "z-10", label: "Team member" },
   ]
 
   return (
-    <motion.div 
+    <motion.div
       className={`absolute bottom-0 right-8 flex items-end justify-center ${className}`}
       style={{ opacity: teamOpacity }}
       role="img"
-      aria-label="Team of attorneys arranged in formation with principal attorney prominently positioned at center, representing comprehensive legal expertise and layered defense strategy"
+      aria-label="Team of professionals arranged in formation"
     >
       {lawyers.map((lawyer, index) => (
-        <motion.img
-          key={lawyer.src}
-          src={lawyer.src}
-          alt={lawyer.alt}
-          className={`${lawyer.height} w-auto -mr-6 ${lawyer.zIndex}`}
-          style={{ 
-            x: lawyer.x, 
-            y: lawyer.y
-          }}
-          initial={{ 
-            y: 20 // Start with bottom bleed
-          }}
-          aria-hidden="true"
-        />
+        <motion.div
+          key={index}
+          className={`${lawyer.zIndex} -mr-6`}
+          style={{ y: lawyer.y }}
+        >
+          <PersonPlaceholder height={lawyer.height} label={lawyer.label} />
+        </motion.div>
       ))}
     </motion.div>
   )

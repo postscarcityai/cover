@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Button } from "@/components/ui/button"
+import { ArrowRight } from "lucide-react"
+import { MagneticButton } from "@/components/magnetic-button"
 import { subscribeToNewsletter, isValidEmail, getComplianceText, showSuccessMessage, showErrorMessage } from "@/lib/newsletter"
 import { trackNewsletterSignup } from "@/lib/analytics"
 
@@ -34,7 +35,6 @@ export function NewsletterSignup({
   
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Load compliance text based on user location
   useEffect(() => {
     getComplianceText().then(setComplianceText)
   }, [])
@@ -44,22 +44,20 @@ export function NewsletterSignup({
     
     if (isLoading) return
 
-    // Validation
     if (!email.trim()) {
-      showErrorMessage("Please enter your email address.", containerRef.current)
+      showErrorMessage("Please enter your email address.", containerRef.current ?? undefined)
       return
     }
 
     if (!isValidEmail(email)) {
-      showErrorMessage("Please enter a valid email address.", containerRef.current)
+      showErrorMessage("Please enter a valid email address.", containerRef.current ?? undefined)
       return
     }
 
     if (!consent) {
-      showErrorMessage("Please consent to receive newsletter updates.", containerRef.current)
+      showErrorMessage("Please consent to receive newsletter updates.", containerRef.current ?? undefined)
       return
     }
-
 
     setIsLoading(true)
 
@@ -72,22 +70,16 @@ export function NewsletterSignup({
       })
 
       if (result.success) {
-        showSuccessMessage(result.message, containerRef.current)
-        
-        // Extract email domain for analytics
+        showSuccessMessage(result.message, containerRef.current ?? undefined)
         const emailDomain = email.trim().split('@')[1] || 'unknown'
-        
-        // Track newsletter signup
         trackNewsletterSignup(source, emailDomain)
-        
-        // Reset form
         setEmail("")
         setConsent(false)
       } else {
-        showErrorMessage(result.message, containerRef.current)
+        showErrorMessage(result.message, containerRef.current ?? undefined)
       }
     } catch (error) {
-      showErrorMessage("An unexpected error occurred. Please try again.", containerRef.current)
+      showErrorMessage("An unexpected error occurred. Please try again.", containerRef.current ?? undefined)
     } finally {
       setIsLoading(false)
     }
@@ -95,54 +87,71 @@ export function NewsletterSignup({
 
   return (
     <div ref={containerRef} className={`newsletter-signup ${className}`}>
-      <div className="bg-gray-50 p-12 border border-gray-200">
-        <h3 className="text-3xl font-bold text-[#2A2C53] mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+      <div
+        className="px-8 py-10 md:px-14 md:py-14 rounded-xl border"
+        style={{ backgroundColor: "var(--muted)", borderColor: "var(--border)" }}
+      >
+        <h3
+          className="text-2xl md:text-3xl font-bold mb-4"
+          style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+        >
           {title}
         </h3>
-        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+        <p className="text-base md:text-lg mb-10 max-w-2xl leading-relaxed" style={{ color: "var(--fg-muted)" }}>
           {description}
         </p>
         
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-          {/* Email Input */}
-          <div className="flex items-stretch mb-4">
+        <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end gap-4">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={placeholder}
               disabled={isLoading}
-              className="flex-1 h-12 px-4 text-gray-900 bg-white border border-gray-300 border-r-0 focus:ring-2 focus:ring-[#2A2C53] focus:border-[#2A2C53] focus:z-10 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 h-12 bg-transparent border-b-2 px-1 pb-2 text-base transition-colors focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{
+                color: "var(--fg)",
+                borderColor: "var(--border)",
+              }}
               aria-label="Email address for newsletter subscription"
             />
-            <Button 
-              type="submit"
-              disabled={isLoading || !email.trim() || !consent}
-              className="h-12 bg-[#2A2C53] text-white hover:bg-[#2A2C53]/90 font-montserrat font-semibold uppercase tracking-wide px-6 rounded-none border-0 disabled:opacity-50 disabled:cursor-not-allowed"
+            <MagneticButton>
+              <button 
+                type="submit"
+                disabled={isLoading || !email.trim() || !consent}
+                className="h-12 px-8 font-semibold text-sm uppercase tracking-wide rounded-full transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center whitespace-nowrap"
+                style={{
+                  backgroundColor: "var(--accent)",
+                  color: "var(--accent-fg)",
+                }}
+              >
+                {isLoading ? "..." : buttonText}
+                {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
+              </button>
+            </MagneticButton>
+          </div>
+
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+              disabled={isLoading}
+              className="h-4 w-4 rounded shrink-0 disabled:opacity-50"
+              style={{ accentColor: "var(--accent)", borderColor: "var(--border)" }}
+              aria-describedby="consent-description"
+            />
+            <span
+              className="text-sm leading-snug"
+              id="consent-description"
+              style={{ color: "var(--fg-muted)" }}
             >
-              {isLoading ? "..." : buttonText}
-            </Button>
-          </div>
+              {complianceText.consentText}
+            </span>
+          </label>
 
-          {/* Consent Checkbox */}
-          <div className="text-left mb-4">
-            <label className="flex items-start space-x-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={consent}
-                onChange={(e) => setConsent(e.target.checked)}
-                disabled={isLoading}
-                className="mt-1 h-4 w-4 text-[#2A2C53] focus:ring-[#2A2C53] border-gray-300 rounded disabled:opacity-50"
-                aria-describedby="consent-description"
-              />
-              <span className="text-sm text-gray-700" id="consent-description">
-                {complianceText.consentText}
-              </span>
-            </label>
-          </div>
-
-          {/* Privacy Notice */}
-          <p className="text-sm text-gray-500">
+          <p className="text-xs" style={{ color: "var(--fg-muted)", opacity: 0.5 }}>
             {complianceText.privacyNotice}
           </p>
         </form>

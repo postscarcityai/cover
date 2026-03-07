@@ -4,25 +4,21 @@ import GoogleAnalytics from "@/components/google-analytics";
 import { UTMPreserver } from "@/components/utm-preserver";
 import { ThemeInjector } from "@/components/theme-injector";
 import { ScrollSmoother } from "@/components/scroll-smoother";
+import { CookieConsentWrapper } from "@/components/cookie-consent-wrapper";
+import { RouteAnnouncer } from "@/components/route-announcer";
+import { ExitIntentPopup } from "@/components/exit-intent-popup";
+import { FloatingCTA } from "@/components/floating-cta";
+import { AnnouncementBanner } from "@/components/announcement-banner";
+import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { siteConfig } from "@/site.config";
 import {
-  playfairDisplay,
+  sora,
   montserrat,
 } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: siteConfig.seo.defaultTitle,
   description: siteConfig.description,
-  icons: {
-    icon: [
-      { url: '/img/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/img/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/img/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
-      { url: '/img/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
-    ],
-    shortcut: '/img/favicon.ico',
-    apple: '/img/apple-touch-icon.png',
-  },
 };
 
 export default function RootLayout({
@@ -37,7 +33,7 @@ export default function RootLayout({
     "@id": siteConfig.url,
     "name": siteConfig.name,
     "url": siteConfig.url,
-    "logo": `${siteConfig.url}/img/logo.svg`,
+    "logo": `${siteConfig.url}/logo.svg`,
     "description": siteConfig.description,
     "foundingDate": siteConfig.business.foundedYear,
     "telephone": siteConfig.contact.phone,
@@ -83,7 +79,7 @@ export default function RootLayout({
       lang="en"
       className={`
         overflow-x-hidden
-        ${playfairDisplay.variable}
+        ${sora.variable}
         ${montserrat.variable}
       `}
     >
@@ -94,7 +90,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
       </head>
-      <body className="font-sans overflow-x-hidden">
+      <body className="font-sans overflow-x-hidden bg-[var(--bg)] text-[var(--fg)]">
         {/* Skip Links - Hidden until focused */}
         <div className="skip-links">
           <a href="#main-content" className="skip-link">
@@ -108,6 +104,9 @@ export default function RootLayout({
           </a>
         </div>
         <ThemeInjector />
+        <RouteAnnouncer />
+        {siteConfig.announcement?.enabled && <AnnouncementBanner />}
+        <ScrollRevealInit />
         {siteConfig.features.smoothScroll && (
           <ScrollSmoother 
             smooth={0.08}
@@ -127,6 +126,9 @@ export default function RootLayout({
         ) : (
           children
         )}
+        {siteConfig.features.cookieConsent && <CookieConsentWrapper />}
+        {siteConfig.features.exitIntentPopup && <ExitIntentPopup />}
+        {siteConfig.features.floatingCTA && <FloatingCTA />}
       </body>
     </html>
   );

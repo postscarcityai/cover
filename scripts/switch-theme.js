@@ -36,7 +36,7 @@ const themes = {
     description: 'Sophisticated, refined design',
     primary: '#6b21a8', // Deep Purple
     accent: '#9333ea',
-    font: 'Playfair Display, serif'
+    font: 'Sora, sans-serif'
   },
   minimal: {
     name: 'Minimal',

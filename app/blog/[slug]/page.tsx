@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import React from "react"
 import { getBlogPost, getAllBlogPosts } from "@/lib/blog"
 import { generateCompleteBlogSchema } from "@/lib/blog-schema"
 import { BlogPostClient } from "./client"
@@ -75,7 +76,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   // Generate complete blog schema using 2025-compliant utility
   const schemas = generateCompleteBlogSchema(post, slug)
 
-  const components = useMDXComponents({})
+  const components = useMDXComponents({
+    h1: ({ children }) => {
+      const text = React.Children.toArray(children)
+        .map((c) => (typeof c === "string" ? c : ""))
+        .join("")
+        .trim()
+      if (text === post.title) return null
+      return (
+        <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
+          {children}
+        </h1>
+      )
+    },
+  })
 
   // Render MDX content on server side for SEO (pre-rendered HTML)
   const mdxContent = post.content 

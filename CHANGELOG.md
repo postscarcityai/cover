@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the WCW Site Template will be documented in this file.
+All notable changes to the Cover Site Template will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Initial Release
 
-The WCW Site Template v1.0.0 is a production-ready Next.js website template for law firms and professional services.
+The Cover Site Template v1.0.0 is a production-ready Next.js marketing site template for professional services and businesses.
 
 ### Added
 
@@ -91,7 +91,6 @@ The WCW Site Template v1.0.0 is a production-ready Next.js website template for 
 - Open Graph meta tags
 - Twitter Card meta tags
 - Schema.org structured data:
-  - LegalService
   - Organization
   - Article (blog posts)
   - BreadcrumbList
@@ -122,7 +121,6 @@ The WCW Site Template v1.0.0 is a production-ready Next.js website template for 
 - **README.md** - Quick start and overview
 - **SETUP-GUIDE.md** - Comprehensive 675-line setup guide
 - **CHANGELOG.md** - Version history (this file)
-- **docs/THEME-SYSTEM.md** - Theme customization guide
 - **docs/blog-instructions/** - Blog authoring guides
 - **docs/status-reports/** - Implementation documentation
 - **docs/best-practices/** - Standards compliance

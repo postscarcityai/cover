@@ -1,322 +1,139 @@
-# WCW Site Template
+# Cover &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/postscarcityai/cover/blob/main/LICENSE) [![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](https://github.com/postscarcityai/cover) [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/postscarcityai/cover/pulls)
 
-A professional, fully-featured Next.js 14 website template designed for law firms and professional services. Built with modern technologies, comprehensive SEO optimization, and a powerful theming system that allows complete customization without touching code.
+**Site template that personalizes on first run.** A professional Next.js template with 5 theme presets, MDX blog, newsletter, contact form, GDPR/CCPA compliance, and comprehensive SEO. Run the setup wizard once and ship.
 
-![Next.js](https://img.shields.io/badge/Next.js-14.2-black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)
-![License](https://img.shields.io/badge/license-MIT-green)
+Part of the [PostScarcity AI](https://github.com/postscarcityai) suite of open source repositories.
 
 ---
 
-## ✨ Features
+## What It Does
 
-### 🎯 Core Features
-- ⚡ **Next.js 14** with App Router
-- 📝 **MDX Blog** with custom components
-- 🎵 **Audio Narration** with multi-part player
-- 📧 **Newsletter System** (GDPR/CCPA compliant)
-- 📊 **Google Analytics 4** integration
-- 🔍 **Advanced SEO** with Schema.org markup
-- 📱 **Fully Responsive** design
-- ♿ **ADA Compliant** with accessibility features
-- 🚀 **Performance Optimized** (90+ Lighthouse scores)
+Cover is a marketing site template that adapts to your brand on first run. Define your company info, pick a theme, and the wizard configures everything. No hardcoded values — site config, contact details, and theme tokens all flow from a single source.
 
-### 🎨 Design System
-- **Tailwind CSS 3.4** for styling
-- **Radix UI** components
-- **Framer Motion** animations
-- Custom color palette (easily customizable)
-- Typography system with web fonts
-
-### 📦 What's Included
-- 170 files, 26,000+ lines of production code
-- 441 npm packages configured
-- 24 custom React components
-- 5 API routes (newsletter, audio upload)
-- Comprehensive documentation (7,400+ lines)
+- **5 theme presets** — Professional, Modern, Elegant, Minimal, Warm — switch instantly with `pnpm run theme`
+- **Interactive setup wizard** — company name, contact info, address, theme selection, and env vars in one flow
+- **MDX blog** — write posts with custom components, audio narration, and full schema.org markup
+- **Newsletter + contact form** — Supabase-backed, GDPR/CCPA compliant with cookie consent
+- **Centralized config** — `site.config.ts` drives navigation, footer, SEO, and business schema
+- **Configuration verification** — `pnpm run verify` checks env vars and config before you deploy
+- **Accessibility** — ADA-compliant patterns, route announcer, and WCAG-aligned components
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
-### Option A: Interactive Setup (Recommended)
-
-Run the setup wizard to configure everything automatically:
+### Option 1: Setup wizard (recommended)
 
 ```bash
+# Clone
+git clone https://github.com/postscarcityai/cover.git
+cd cover
+
+# Install (requires pnpm: npm install -g pnpm)
 pnpm install
-pnpm setup
+
+# Run the setup wizard — configures site info, theme, and env
+pnpm run setup
+
+# Start
+pnpm run dev
+# Open http://localhost:3000
 ```
 
-The wizard will guide you through:
-- Company information
-- Contact details
-- Theme selection
-- Environment variables
+The wizard walks you through company name, description, URL, contact details, address, theme selection, and environment variables. It writes `site.config.ts` and `.env.local` for you.
 
-### Option B: Manual Setup
+### Option 2: Manual setup
 
-### 1. Install Dependencies
 ```bash
+git clone https://github.com/postscarcityai/cover.git
+cd cover
 pnpm install
+
+# Copy env template
+cp .env.example .env.local
+# Edit .env.local with Supabase, SendGrid, etc.
+
+# Edit site.config.ts with your company info
+# Then run verify
+pnpm run verify
+
+pnpm run dev
 ```
-
-### 2. Configure Site Settings
-
-Edit `site.config.ts` with your client's information:
-```typescript
-export const siteConfig = {
-  name: "Your Company Name",
-  description: "Your company tagline",
-  contact: {
-    phone: "+1 (555) 123-4567",
-    email: "contact@yoursite.com",
-    address: { /* ... */ }
-  },
-  // ... see file for all options
-}
-```
-
-### 3. Set Up Environment Variables
-
-Create `.env.local`:
-```env
-SUPABASE_URL=https://xxxxx.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your_key_here
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-NEXT_PUBLIC_SITE_URL=https://yoursite.com
-```
-
-### 4. Verify Configuration
-
-Run the verification script to check for issues:
-```bash
-pnpm verify
-```
-
-### 5. Run Development Server
-```bash
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 📝 Full Setup Guide
+## Architecture
 
-For complete setup instructions including external services configuration, deployment, and customization, see **`SETUP-GUIDE.md`**.
-
----
-
-## ⚙️ Configuration
-
-### Site Config (`site.config.ts`)
-
-Central configuration file for all customizable values. Update this file to change:
-
-- Basic info (name, description, URL)
-- Contact information (phone, email, address)
-- Navigation menu items
-- Business details for schema.org
-- Social media links
-- Blog settings
-- SEO defaults
-- Feature toggles
-
-**Navigation and footer automatically pull from this file** - update once, changes everywhere!
-
----
-
-## 📄 Content Management
-
-### Blog Posts
-
-Create new posts in `/content/blog/`:
-
-```mdx
----
-title: "Your Post Title"
-excerpt: "SEO description (150-160 chars)"
-author: "Author Name"
-date: "2025-01-15T10:00:00-05:00"
-readTime: "5 min read"
-category: "Category Name"
-featured: true
-slug: "url-slug"
----
-
-# Your Post Title
-
-Your content here...
+```
+app/
+  layout.tsx              Root layout, metadata, schema.org
+  page.tsx                 Home page
+  about/                   About page
+  blog/                    Blog listing and [slug] posts
+  contact/                 Contact page
+  services/                Services page
+  landing/[slug]/          Dynamic landing pages
+  team-member/             Team member pages
+  api/                     API routes
+    contact/               Contact form handler
+    tts/                   Text-to-speech (fal.ai)
+    admin/image-edit/      Image editing (fal.ai)
+  privacy-policy/         Legal pages
+  terms-of-service/
+  accessibility-statement/
+components/
+  navigation.tsx           Main nav
+  footer.tsx               Footer
+  contact-form.tsx         Contact form
+  newsletter-signup.tsx    Newsletter signup
+  cookie-consent.tsx       GDPR/CCPA consent
+  mdx-components.tsx       MDX custom components
+  sections/                Hero, CTA, FAQ, testimonials, etc.
+lib/
+  supabase.ts              Supabase client
+  email.ts                 SendGrid integration
+  theme-utils.ts           Theme token helpers
+  fonts.ts                 Font loading
+site.config.ts             Central site config (name, contact, nav, SEO)
+theme.config.ts            Theme presets and design tokens
+scripts/
+  setup.js                 Interactive setup wizard
+  switch-theme.js          Theme switcher
+  verify-config.js         Config verification
 ```
 
-**See example blog posts:**
-- `example-blog-post-with-all-features.mdx` - Complete component showcase
-- `getting-started-with-your-new-website.mdx` - Site guide for clients
-- `simple-blog-post-example.mdx` - Basic post structure
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 14 (App Router) |
+| React | 18 |
+| Language | TypeScript |
+| Styling | Tailwind CSS 3.4, Radix UI |
+| Content | MDX 3.1 |
+| Database | Supabase (PostgreSQL, Storage) |
+| Email | SendGrid |
+| AI | fal.ai (TTS, image edit) |
 
 ---
 
-## 🎨 Theme System
-
-The template includes **5 professionally designed theme presets** that can be switched instantly:
-
-| Theme | Description | Primary Color | Font |
-|-------|-------------|---------------|------|
-| **Professional** | Traditional, trustworthy | Navy Blue (#1e3a8a) | Georgia |
-| **Modern** | Clean, contemporary | Teal (#0d9488) | Inter |
-| **Elegant** | Sophisticated, refined | Deep Purple (#6b21a8) | Playfair Display |
-| **Minimal** | Simple, clean | Charcoal (#374151) | Helvetica Neue |
-| **Warm** | Approachable, friendly | Burnt Orange (#E87722) | Merriweather |
-
-### Switch Themes
+## Scripts
 
 ```bash
-# Interactive theme switcher
-pnpm theme
-
-# Or specify theme directly
-pnpm theme professional
-pnpm theme modern
-pnpm theme elegant
-pnpm theme minimal
-pnpm theme warm
-```
-
-Themes are configured in `theme.config.ts` and can be fully customized.
-
----
-
-## 🎨 Customization
-
-### Colors
-Update `tailwind.config.ts`:
-```typescript
-colors: {
-  primary: '#YOUR_COLOR',
-}
-```
-
-### Logos
-Replace files in `/public/img/`:
-- `logo.svg` - Main logo
-- `logo-white.svg` - White version
-
-### Fonts
-Add to `/public/fonts/` and update `styles/globals.css`
-
----
-
-## 🚢 Deployment
-
-### Vercel (Recommended)
-
-1. Push to GitHub
-2. Import in [vercel.com](https://vercel.com)
-3. Add environment variables
-4. Deploy
-
-See `SETUP-GUIDE.md` for detailed deployment instructions.
-
----
-
-## 📂 Project Structure
-
-```
-/
-├── app/                   # Pages and routes
-├── components/            # React components
-├── content/blog/          # MDX blog posts
-├── docs/                  # Documentation
-├── lib/                   # Utilities
-├── public/               # Static assets
-├── site.config.ts        # ⭐ Main config file
-├── next.config.mjs       # Next.js config
-└── tailwind.config.ts    # Tailwind config
+pnpm run dev              # Start dev server
+pnpm run build            # Production build
+pnpm run setup            # Interactive setup wizard
+pnpm run theme            # Switch theme (professional, modern, elegant, minimal, warm)
+pnpm run verify           # Verify configuration
+pnpm run test:accessibility # Run accessibility checks
 ```
 
 ---
 
-## 🔧 Helper Scripts
+## License
 
-The template includes several utility scripts:
-
-```bash
-pnpm setup       # Interactive setup wizard
-pnpm theme       # Switch between theme presets
-pnpm verify      # Verify configuration
-pnpm dev         # Start development server
-pnpm build       # Build for production
-pnpm lint        # Run linter
-```
+MIT — see [LICENSE](./LICENSE).
 
 ---
 
-## 📚 Documentation
-
-Comprehensive guides in the repository:
-
-- **`README.md`** - Quick start and overview (this file)
-- **`SETUP-GUIDE.md`** - Complete setup guide (675 lines)
-- **`CHANGELOG.md`** - Version history and updates
-- **`docs/THEME-SYSTEM.md`** - Theme customization
-- **`docs/blog-instructions/`** - Blog authoring guides
-- **`docs/status-reports/`** - Implementation docs
-- **`docs/best-practices/`** - Standards compliance
-
----
-
-## 🛠 Tech Stack
-
-- Next.js 14 + React 18 + TypeScript 5
-- Tailwind CSS 3.4 + Radix UI
-- MDX 3.1 for content
-- Supabase (PostgreSQL + Storage)
-- Google Analytics 4
-- Framer Motion
-
----
-
-## 📊 Performance
-
-**Target Lighthouse Scores:**
-- Performance: 90+
-- Accessibility: 95+
-- Best Practices: 95+
-- SEO: 100
-
----
-
-## 📞 Support
-
-- [GitHub Repository](https://github.com/CJohnDesign/wcw-site-template)
-- [Setup Guide](./SETUP-GUIDE.md)
-- [Changelog](./CHANGELOG.md)
-- [Documentation](./docs/)
-
----
-
-## 📝 License
-
-Private template for CJohnDesign client projects.
-
----
-
-## 🎉 Version
-
-**v1.0.0** - January 2025
-
-**What's New:**
-- 🎨 **5 Theme Presets** - Switch themes instantly with `pnpm theme`
-- ⚙️ **Interactive Setup Wizard** - Configure everything with `pnpm setup`
-- ✅ **Configuration Verification** - Check setup with `pnpm verify`
-- 📝 **Centralized Config** - All settings in `site.config.ts`
-- 📖 **3 Example Blog Posts** - Complete feature demonstrations
-- 🔒 **No Hardcoded Values** - Everything configurable via env vars
-- 📚 **Comprehensive Documentation** - 675-line setup guide + changelog
-
----
-
-**Developed by CJohnDesign** | **Template Version 1.0.0**
+*PostScarcity AI. Unlock Abundance.*

@@ -1,8 +1,8 @@
-# WCW Site Template - Conversion Status
+# Cover Site Template - Conversion Status
 
 ## ✅ **TEMPLATE READY - Version 1.0**
 
-This document tracks the conversion of the AMC Defense Law site into the WCW Site Template.
+This document tracks the conversion into the Cover Site Template.
 
 ---
 
@@ -16,11 +16,8 @@ This document tracks the conversion of the AMC Defense Law site into the WCW Sit
 ### **Components Updated**
 - ✅ `components/navigation.tsx` - Uses `siteConfig` for menu, phone, logo
 - ✅ `components/footer.tsx` - Uses `siteConfig` for all contact info
-- ✅ `components/hero-section.tsx` - Uses `siteConfig` for hero content, CTAs, phone
-- ✅ `components/practice-areas.tsx` - Uses `siteConfig` for services section
-- ✅ `components/results-ticker.tsx` - Uses `siteConfig` for achievements
-- ✅ `components/jurisdictional-reach.tsx` - Uses `siteConfig` for service locations
-- ✅ `components/client-commitment.tsx` - Uses `siteConfig` for commitment section
+- ✅ `components/sections/hero-section.tsx` - Uses `siteConfig` for hero content, CTAs, phone
+- ✅ `components/section-renderer.tsx` - Renders sections from config (hero, features, stats, testimonials, FAQ)
 - ✅ `app/layout.tsx` - Uses `siteConfig` for metadata and schema
 - ✅ `app/page.tsx` - Uses `siteConfig` for SEO metadata
 - ✅ `app/client.tsx` - Uses `siteConfig` for breadcrumb schema
@@ -114,26 +111,22 @@ This document tracks the conversion of the AMC Defense Law site into the WCW Sit
 
 ## **📝 Components Status Update**
 
-### **✅ Fully Templatized Homepage Components** (`/components/`)
-All homepage components now pull from `site.config.ts`:
-- ✅ `hero-section.tsx` - Generic hero with configurable title, subtitle, CTAs
-- ✅ `practice-areas.tsx` - Generic services grid with configurable items
-- ✅ `results-ticker.tsx` - Generic achievements ticker with configurable items
-- ✅ `jurisdictional-reach.tsx` - Generic service area map with configurable locations
-- ✅ `client-commitment.tsx` - Generic commitment section with configurable text
+### **✅ Fully Templatized Components** (`/components/`)
+All components pull from `site.config.ts`:
+- ✅ `sections/hero-section.tsx` - Hero with configurable title, subtitle, CTAs
+- ✅ `sections/features-section.tsx` - Services/features grid
+- ✅ `sections/stats-section.tsx` - Achievements and stats
+- ✅ `sections/testimonials-section.tsx` - Testimonials
+- ✅ `sections/faq-section.tsx` - FAQ accordion
+- ✅ `section-renderer.tsx` - Renders sections from config
 
-### **📝 Components with Example Content**
-These still have example content to demonstrate capabilities:
-- `lawyer-team.tsx` - Team member display (shows photo grid functionality)
-
-### **📝 Page Routes with Example Content** (`/app/`)
-- `/our-firm` - About page (law firm example)
-- `/practice-areas` - Services detail page (legal services example)
-- `/results` - Portfolio/results detail page (case outcomes example)
-- `/aaron-cohen` - Team member bio (attorney example)
-- `/contact` - Contact page (works generically, minor updates needed)
-
-**Note:** Homepage is now 95% template-ready. Internal pages demonstrate advanced features with example content.
+### **📝 Page Routes** (`/app/`)
+- `/about` - About page
+- `/services` - Services page
+- `/contact` - Contact page with form
+- `/blog` - Blog listing and posts
+- `/landing/[slug]` - Dynamic landing pages
+- `/team-member` - Team member bios
 
 ---
 
@@ -180,11 +173,8 @@ These still have example content to demonstrate capabilities:
 ### **Fully Template-Ready (No Changes Needed)**
 ✅ Navigation system
 ✅ Footer system
-✅ Hero section (pulls from config)
-✅ Services/practice areas (pulls from config)
-✅ Results/achievements ticker (pulls from config)
-✅ Service locations map (pulls from config)
-✅ Commitment section (pulls from config)
+✅ Section renderer (hero, features, stats, testimonials, FAQ)
+✅ Landing pages
 ✅ Schema.org markup
 ✅ Blog infrastructure
 ✅ Newsletter system
@@ -196,11 +186,9 @@ These still have example content to demonstrate capabilities:
 ✅ Deployment setup
 
 ### **Has Example Content (Optional to Update)**
-📝 Team member bios (`lawyer-team.tsx`)
-📝 About page content (`/our-firm`)
-📝 Individual service pages (`/practice-areas`)
-📝 Results detail page (`/results`)
-📝 Personal bio pages (e.g., `/aaron-cohen`)
+📝 Team member bios (`components/team.tsx`)
+📝 About page content (`/about`)
+📝 Services page (`/services`)
 
 **Note:** All homepage components now pull from `site.config.ts`. Simply update the config file and all content automatically updates across the site.
 
@@ -226,9 +214,10 @@ These still have example content to demonstrate capabilities:
 
 ### **Integrations**
 - `.env.local` - API keys and credentials
-- Supabase (newsletter + audio storage)
+- Supabase (newsletter + audio storage + contact)
+- SendGrid (contact form email)
 - GA4 (analytics)
-- ElevenLabs (TTS audio generation)
+- fal.ai (TTS and image editing)
 
 ---
 
@@ -308,13 +297,14 @@ All optimizations in place to achieve these scores.
 - `app/layout.tsx` - Root layout + schema
 - `app/page.tsx` - Homepage metadata
 - `app/client.tsx` - Homepage structure
-- `app/justice-watch/page.tsx` - Blog listing
+- `app/blog/page.tsx` - Blog listing
 
 ### **Libraries**
-- `lib/analytics.ts` - GA4 event tracking
-- `lib/blog.ts` - Blog post utilities
+- `lib/engagement-tracker.ts` - Event tracking
+- `lib/blog-schema.ts` - Blog schema generation
 - `lib/newsletter.ts` - Newsletter functions
-- `lib/blog-schema.ts` - Schema generation
+- `lib/email.ts` - SendGrid integration
+- `lib/supabase.ts` - Supabase client
 
 ### **Documentation**
 - `README.md` - Quick start

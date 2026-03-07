@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * WCW Site Template - Theme Switcher
+ * Cover Site Template - Theme Switcher
  *
  * Quickly switch between the 5 available theme presets.
  *
@@ -123,7 +123,7 @@ function showInteractiveMenu() {
   });
 
   log('\n========================================', 'bright');
-  log('  WCW Site Template - Theme Switcher', 'bright');
+  log('  Cover Site Template - Theme Switcher', 'bright');
   log('========================================\n', 'bright');
 
   log('Available Themes:', 'cyan');

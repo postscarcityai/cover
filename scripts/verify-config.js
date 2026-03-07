@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * WCW Site Template - Configuration Verification
+ * Cover Site Template - Configuration Verification
  *
  * Checks your template configuration for common issues and missing values.
  * Helps ensure everything is set up correctly before deployment.
@@ -62,7 +62,7 @@ function checkFileExists(filePath, displayName) {
 
 function verifyConfig() {
   log('\n========================================', 'bright');
-  log('  WCW Site Template - Config Verification', 'bright');
+  log('  Cover Site Template - Config Verification', 'bright');
   log('========================================\n', 'bright');
 
   // Check 1: Required Files

@@ -1,4 +1,4 @@
-# WCW Site Template - Setup Guide
+# Cover Site Template - Setup Guide
 
 This guide will walk you through setting up this template for a new client project.
 
@@ -19,7 +19,7 @@ This guide will walk you through setting up this template for a new client proje
 ### 1.1 Create New Repository for Client
 ```bash
 # Clone this template
-git clone https://github.com/CJohnDesign/wcw-site-template.git client-site-name
+git clone https://github.com/postscarcityai/cover.git client-site-name
 cd client-site-name
 
 # Remove existing git history
@@ -28,7 +28,7 @@ rm -rf .git
 # Initialize new repository
 git init
 git add .
-git commit -m "Initial commit from WCW template"
+git commit -m "Initial commit from Cover template"
 
 # Create private GitHub repo and push
 gh repo create client-site-name --private --source=. --remote=origin
@@ -145,21 +145,15 @@ In GA4 > Configure > Events, mark these as conversions:
 - `contact_form_submit`
 - `newsletter_signup`
 
-### 2.3 ElevenLabs (Optional - For Audio Generation)
+### 2.3 fal.ai (Optional - For TTS and Image Editing)
 
 **Create Account:**
-1. Go to https://elevenlabs.io
+1. Go to https://fal.ai
 2. Sign up for account
-3. Choose plan based on character needs:
-   - Free: 10,000 chars/month
-   - Starter: 30,000 chars/month ($5)
-   - Creator: 100,000 chars/month ($22)
-4. Get API key from Profile > API Keys
+3. Get API key from dashboard
+4. Add `FAL_KEY` to `.env.local`
 
-**Find Voice ID:**
-1. Go to Voices
-2. Select voice (or clone client's voice)
-3. Copy Voice ID (e.g., `dmCLGygDdYCfuLYTkfjl` for Matthew Angelo)
+Used for text-to-speech blog narration and admin image editing features.
 
 ---
 
@@ -174,18 +168,22 @@ touch .env.local
 ### 3.2 Add Environment Variables
 ```env
 # Supabase Configuration
-SUPABASE_URL=https://xxxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 # Google Analytics
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 
-# ElevenLabs (Optional)
-ELEVENLABS_API_KEY=your_api_key_here
-ELEVENLABS_VOICE_ID=dmCLGygDdYCfuLYTkfjl
+# SendGrid (Contact Form)
+SENDGRID_API_KEY=your_api_key_here
+SENDGRID_FROM_EMAIL=notifications@clientsite.com
+SENDGRID_TO_EMAIL=contact@clientsite.com
+
+# fal.ai (Optional - TTS and Image Editing)
+FAL_KEY=your_fal_key_here
 
 # Site Configuration
-NEXT_PUBLIC_SITE_URL=https://clientsite.com
+NEXT_PUBLIC_SITE_NAME=Client Site Name
 ```
 
 ### 3.3 Add .env.local to .gitignore
@@ -206,42 +204,14 @@ cat .gitignore | grep .env.local
 - `app/api/newsletter/unsubscribe/[token]/route.ts` (if exists)
 - `app/api/upload-audio/route.ts:6`
 
-**Replace:**
+**Replace hardcoded Supabase URLs with:**
 ```typescript
-const supabaseUrl = 'https://luctiepxpgsjfdlotubw.supabase.co'
-```
-
-**With:**
-```typescript
-const supabaseUrl = process.env.SUPABASE_URL || ''
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 ```
 
 ### 4.2 Google Analytics ID
 
-**File:** `components/google-analytics.tsx:7`
-
-**Replace:**
-```typescript
-<Script
-  src="https://www.googletagmanager.com/gtag/js?id=G-7FTPKV8KLS"
-  strategy="afterInteractive"
-/>
-```
-
-**With:**
-```typescript
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-7FTPKV8KLS'
-
-<Script
-  src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-  strategy="afterInteractive"
-/>
-```
-
-**And update the config call:**
-```typescript
-gtag('config', '${GA_ID}');
-```
+Analytics uses `NEXT_PUBLIC_GA_MEASUREMENT_ID` from `.env.local`. No code changes needed — set the env var and analytics will work.
 
 ### 4.3 Next.js Config - Remote Image Patterns
 
@@ -357,8 +327,10 @@ Update LegalService schema:
 
 **Files to update:**
 - `components/footer.tsx` - Phone, email, address
-- `components/hero-section.tsx` - Phone number
+- `components/sections/hero-section.tsx` - Phone number
 - `components/navigation.tsx` - Phone in header
+
+All contact info is driven by `site.config.ts` — update the config and it flows everywhere.
 
 **Search and replace:**
 - Phone: Search for phone numbers in all files
@@ -399,12 +371,12 @@ Follow structure in `docs/blog-instructions/blog-structure-guide.md`
 ### 7.3 Update Page Content
 
 **Pages to customize:**
-- `app/page.tsx` - Homepage
-- `app/our-firm/page.tsx` → Rename to client's about page
-- `app/practice-areas/page.tsx` → Client's services
-- `app/results/page.tsx` → Client's portfolio/results
-- `app/contact/page.tsx` - Contact page
-- Remove or repurpose: `app/aaron-cohen/*`, `app/attorney-advertising/*`
+- `app/page.tsx` - Homepage (uses section renderer)
+- `app/about/` - About page
+- `app/services/` - Services page
+- `app/contact/` - Contact page
+- `app/blog/` - Blog listing
+- `app/landing/[slug]/` - Dynamic landing pages
 
 ---
 
@@ -436,8 +408,8 @@ Open http://localhost:3000
 4. Verify events are sent to GA4
 
 **Blog Posts:**
-1. Create test blog post
-2. Visit `/justice-watch` (or rename this route)
+1. Create test blog post in `content/blog/`
+2. Visit `/blog`
 3. Verify post appears
 4. Click to view individual post
 
@@ -467,10 +439,13 @@ Open http://localhost:3000
 In Vercel project settings > Environment Variables, add:
 
 ```
-SUPABASE_URL=https://xxxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-NEXT_PUBLIC_SITE_URL=https://clientsite.com
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_SITE_NAME=Client Site Name
+SENDGRID_API_KEY=...
+SENDGRID_FROM_EMAIL=...
+SENDGRID_TO_EMAIL=...
 ```
 
 **Important:** Add to all environments (Production, Preview, Development)
@@ -592,7 +567,7 @@ pnpm build
 ### Analytics Not Tracking
 
 **Events not appearing in GA4**
-- Check `NEXT_PUBLIC_GA_ID` is set (must have NEXT_PUBLIC prefix)
+- Check `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set (must have NEXT_PUBLIC prefix)
 - Verify GA4 property is created
 - Check browser DevTools for gtag requests
 - Disable ad blockers during testing
@@ -630,13 +605,11 @@ pnpm build
 - `/app/api/newsletter/unsubscribe/[token]` - Unsubscribe
 
 ### Critical Files to Customize
-1. `app/layout.tsx` - Site metadata + schema
-2. `components/google-analytics.tsx` - GA4 tracking ID
+1. `site.config.ts` - Company info, contact, nav, SEO (single source of truth)
+2. `app/layout.tsx` - Site metadata + schema
 3. `components/navigation.tsx` - Logo + menu
 4. `components/footer.tsx` - Contact info
-5. `app/api/newsletter/subscribe/route.ts` - Supabase URL
-6. `app/api/upload-audio/route.ts` - Supabase URL
-7. `next.config.mjs` - Remote image domains
+5. `.env.local` - Supabase, SendGrid, GA, fal.ai keys
 
 ---
 
@@ -685,5 +658,5 @@ pnpm build
 ---
 
 **Template Version**: 1.0.0
-**Last Updated**: October 2025
-**Maintained by**: CJohnDesign
+**Last Updated**: March 2025
+**Maintained by**: PostScarcity AI

@@ -4,7 +4,6 @@
   "description": "Professional site template with 5 theme presets, MDX blog, newsletter, contact form, GDPR/CCPA compliance, and comprehensive SEO",
   "author": "CJohnDesign",
   "license": "MIT",
-  "private": true,
   "keywords": [
     "nextjs",
     "website-template",

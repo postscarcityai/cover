@@ -41,11 +41,66 @@ export function ScrollRevealInit() {
         initScrollProgress(gsap, ScrollTrigger)
 
         ScrollTrigger.refresh()
+
+        // Animate elements already in view on load (prevents invisible above-the-fold content)
+        animateElementsInViewport(gsap)
       })
       .catch(() => showAll())
   }, [])
 
   return null
+}
+
+/** Elements are "in view" when their top is above 85% of viewport (matches ScrollTrigger start) */
+function isInViewport(el: Element): boolean {
+  const rect = el.getBoundingClientRect()
+  const threshold = window.innerHeight * 0.85
+  return rect.top < threshold
+}
+
+/** Animate elements already in view on page load - prevents hero/content flash */
+function animateElementsInViewport(gsap: any) {
+  document.querySelectorAll('[data-reveal="fade-up"]').forEach((el) => {
+    if (isInViewport(el)) {
+      gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", overwrite: true })
+    }
+  })
+
+  document.querySelectorAll('[data-reveal="fade-in"]').forEach((el) => {
+    if (isInViewport(el)) {
+      gsap.to(el, { opacity: 1, duration: 0.8, ease: "power2.out", overwrite: true })
+    }
+  })
+
+  document.querySelectorAll('[data-reveal="scale"]').forEach((el) => {
+    if (isInViewport(el)) {
+      gsap.to(el, { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out", overwrite: true })
+    }
+  })
+
+  document.querySelectorAll('[data-reveal="stagger"]').forEach((parent) => {
+    if (!isInViewport(parent)) return
+    const children = Array.from(parent.children) as HTMLElement[]
+    gsap.to(children, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out",
+      stagger: 0.1,
+      overwrite: true,
+    })
+  })
+
+  document.querySelectorAll('[data-reveal="words"]').forEach((el) => {
+    if (!isInViewport(el)) return
+    const inners = el.querySelectorAll(".word-inner")
+    gsap.to(inners, {
+      y: "0%",
+      duration: 0.8,
+      ease: "power3.out",
+      stagger: 0.05,
+    })
+  })
 }
 
 function showAll() {

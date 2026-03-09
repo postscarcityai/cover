@@ -118,6 +118,28 @@ html {
   100% { transform: scale(1.15); }
 }
 
+/* ========================================
+   Vintage Hero - Film grain & scanlines
+   ======================================== */
+
+@keyframes filmNoise {
+  0%, 100% { opacity: 1; transform: translate(0, 0); }
+  10% { opacity: 0.95; transform: translate(-1px, -1px); }
+  20% { opacity: 1; transform: translate(1px, 0); }
+  30% { opacity: 0.98; transform: translate(0, 1px); }
+  40% { opacity: 1; transform: translate(-1px, 1px); }
+  50% { opacity: 0.96; transform: translate(1px, -1px); }
+  60% { opacity: 1; transform: translate(0, 0); }
+  70% { opacity: 0.97; transform: translate(-1px, 0); }
+  80% { opacity: 1; transform: translate(1px, 1px); }
+  90% { opacity: 0.99; transform: translate(0, -1px); }
+}
+
+@keyframes scanlines {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 4px; }
+}
+
 .ken-burns-slide {
   will-change: opacity;
 }

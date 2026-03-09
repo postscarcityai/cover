@@ -2,7 +2,7 @@
 
 **Site template that personalizes on first run.** A professional Next.js template with 5 theme presets, MDX blog, newsletter, contact form, GDPR/CCPA compliance, and comprehensive SEO. Run the setup wizard once and ship.
 
-Part of the [PostScarcity AI](https://github.com/postscarcityai) suite of open source repositories.
+Part of the [PostScarcity AI](https://github.com/postscarcityai) suite of open source applications.
 
 ---
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 
@@ -21,6 +21,7 @@ export function VintageHeroSlider({
 }: VintageHeroSliderProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isFlickering, setIsFlickering] = useState(false)
+  const isFirstMount = useRef(true)
   const [flickerIntensity, setFlickerIntensity] = useState(0.8)
   const [isHeavyFlicker, setIsHeavyFlicker] = useState(false)
   const [projectionFlicker, setProjectionFlicker] = useState(1)
@@ -96,15 +97,18 @@ export function VintageHeroSlider({
     }
   }
 
+  const baseVariants = getKenBurnsVariants()
   const kenBurnsVariants = {
-    ...getKenBurnsVariants(),
+    ...baseVariants,
+    initial: { ...baseVariants.initial, opacity: 0 },
+    animate: { ...baseVariants.animate, opacity: 1 },
     exit: { 
-      scale: 1.18, // Gentler exit scale for smoother transition
+      scale: 1.12,
       opacity: 0,
       filter: "brightness(1.02) contrast(0.98)",
       transition: { 
-        duration: 2.0, // Even longer, ultra-smooth exit
-        ease: "linear" // Perfectly smooth linear scaling for exit too
+        duration: 0.8, // Snappier exit - prevents long blank between slides
+        ease: "easeInOut"
       }
     }
   }
@@ -119,6 +123,11 @@ export function VintageHeroSlider({
   const heavyFlickerEffect = useCallback(() => {
     setIsHeavyFlicker(true)
     setTimeout(() => setIsHeavyFlicker(false), 120 + Math.random() * 180) // Shorter duration
+  }, [])
+
+  // Mark first mount complete after hydration - prevents flash on subsequent renders
+  useEffect(() => {
+    isFirstMount.current = false
   }, [])
 
   // Auto-advance slides
@@ -292,12 +301,12 @@ export function VintageHeroSlider({
         />
       </div>
 
-      {/* Image Slider with Enhanced Effects */}
-      <AnimatePresence mode="wait">
+      {/* Image Slider - mode="sync" for smooth crossfade, no blank flash between slides */}
+      <AnimatePresence mode="sync">
         <motion.div
           key={currentImageIndex}
           variants={kenBurnsVariants}
-          initial="initial"
+          initial={isFirstMount.current ? false : "initial"}
           animate="animate"
           exit="exit"
           className="absolute inset-0"

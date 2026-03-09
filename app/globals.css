@@ -179,6 +179,8 @@ html {
 [data-reveal="words"] .word {
   display: inline-block;
   overflow: hidden;
+  padding-bottom: 0.15em;
+  margin-bottom: -0.15em;
 }
 
 [data-reveal="words"] .word-inner {

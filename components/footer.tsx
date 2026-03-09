@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Phone, Mail, MapPin, Copy, Check } from "lucide-react"
 import { Logo } from "@/components/logo"
+import { TransitionLink } from "@/components/transition-link"
 import { trackPhoneCallClick, trackCopyToClipboard } from "@/lib/analytics"
 import { resetCookieConsent } from "@/components/cookie-consent"
 import { siteConfig } from "@/site.config"
@@ -192,13 +193,13 @@ export function Footer({ className = "" }: FooterProps) {
             <ul className="space-y-3">
               {resourceLinks.map((link) => (
                 <li key={link.label}>
-                  <a
+                  <TransitionLink
                     href={link.href}
                     className="text-sm transition-colors hover:text-[var(--accent)]"
                     style={{ color: "var(--fg-muted)" }}
                   >
                     {link.label}
-                  </a>
+                  </TransitionLink>
                 </li>
               ))}
             </ul>
@@ -275,14 +276,14 @@ export function Footer({ className = "" }: FooterProps) {
                     {link.label}
                   </button>
                 ) : (
-                  <a
+                  <TransitionLink
                     key={link.label}
                     href={link.href}
                     className="text-xs transition-colors hover:text-[var(--fg)]"
                     style={{ color: "var(--fg-muted)" }}
                   >
                     {link.label}
-                  </a>
+                  </TransitionLink>
                 )
               )}
             </nav>

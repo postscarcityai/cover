@@ -3,12 +3,10 @@
 import { useEffect, useRef } from "react"
 
 export function ScrollRevealInit() {
-  const initialized = useRef(false)
+  const gsapRef = useRef<any>(null)
+  const ScrollTriggerRef = useRef<any>(null)
 
   useEffect(() => {
-    if (initialized.current) return
-    initialized.current = true
-
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches
@@ -18,47 +16,72 @@ export function ScrollRevealInit() {
       return
     }
 
-    Promise.all([
-      import("gsap").catch(() => null),
-      import("gsap/ScrollTrigger").catch(() => null),
-    ])
-      .then(([gsapModule, stModule]) => {
-        if (!gsapModule || !stModule) {
-          showAll()
-          return
-        }
+    const run = () => {
+      const gsap = gsapRef.current
+      const ScrollTrigger = ScrollTriggerRef.current
+      if (!gsap || !ScrollTrigger) return
 
-        const gsap = (gsapModule as any).default || gsapModule
-        const ScrollTrigger = (stModule as any).default || stModule
-        gsap.registerPlugin(ScrollTrigger)
+      ScrollTrigger.getAll().forEach((t: any) => t.kill())
 
-        initFadeUp(gsap, ScrollTrigger)
-        initFadeIn(gsap, ScrollTrigger)
-        initScale(gsap, ScrollTrigger)
-        initStagger(gsap, ScrollTrigger)
-        initWords(gsap, ScrollTrigger)
-        initParallax(gsap, ScrollTrigger)
-        initScrollProgress(gsap, ScrollTrigger)
+      initFadeUp(gsap, ScrollTrigger)
+      initFadeIn(gsap, ScrollTrigger)
+      initScale(gsap, ScrollTrigger)
+      initStagger(gsap, ScrollTrigger)
+      initWords(gsap, ScrollTrigger)
+      initParallax(gsap, ScrollTrigger)
+      initScrollProgress(gsap, ScrollTrigger)
 
-        ScrollTrigger.refresh()
+      ScrollTrigger.refresh()
+      animateElementsInViewport(gsap)
+    }
 
-        // Animate elements already in view on load (prevents invisible above-the-fold content)
-        animateElementsInViewport(gsap)
-      })
-      .catch(() => showAll())
+    const handlePageEnterComplete = () => {
+      if (gsapRef.current && ScrollTriggerRef.current) {
+        requestAnimationFrame(() => run())
+        return
+      }
+
+      Promise.all([
+        import("gsap").catch(() => null),
+        import("gsap/ScrollTrigger").catch(() => null),
+      ])
+        .then(([gsapModule, stModule]) => {
+          if (!gsapModule || !stModule) {
+            showAll()
+            return
+          }
+
+          const gsap = (gsapModule as any).default || gsapModule
+          const ScrollTrigger = (stModule as any).default || stModule
+          gsap.registerPlugin(ScrollTrigger)
+
+          gsapRef.current = gsap
+          ScrollTriggerRef.current = ScrollTrigger
+
+          requestAnimationFrame(() => run())
+        })
+        .catch(() => showAll())
+    }
+
+    window.addEventListener("page-enter-complete", handlePageEnterComplete)
+
+    return () => {
+      window.removeEventListener("page-enter-complete", handlePageEnterComplete)
+      if (ScrollTriggerRef.current) {
+        ScrollTriggerRef.current.getAll().forEach((t: any) => t.kill())
+      }
+    }
   }, [])
 
   return null
 }
 
-/** Elements are "in view" when their top is above 85% of viewport (matches ScrollTrigger start) */
 function isInViewport(el: Element): boolean {
   const rect = el.getBoundingClientRect()
   const threshold = window.innerHeight * 0.85
   return rect.top < threshold
 }
 
-/** Animate elements already in view on page load - prevents hero/content flash */
 function animateElementsInViewport(gsap: any) {
   document.querySelectorAll('[data-reveal="fade-up"]').forEach((el) => {
     if (isInViewport(el)) {
@@ -189,6 +212,7 @@ function initStagger(gsap: any, ScrollTrigger: any) {
 
 function initWords(gsap: any, ScrollTrigger: any) {
   document.querySelectorAll('[data-reveal="words"]').forEach((el) => {
+    const htmlEl = el as HTMLElement
     const text = el.textContent || ""
     const words = text.split(/\s+/).filter(Boolean)
 
@@ -198,6 +222,9 @@ function initWords(gsap: any, ScrollTrigger: any) {
           `<span class="word"><span class="word-inner">${word}</span></span>`
       )
       .join(" ")
+
+    // Container can be visible now -- word-inner translateY(110%) handles hiding
+    htmlEl.style.opacity = "1"
 
     const inners = el.querySelectorAll(".word-inner")
     ScrollTrigger.create({

@@ -9,7 +9,9 @@ import { RouteAnnouncer } from "@/components/route-announcer";
 import { ExitIntentPopup } from "@/components/exit-intent-popup";
 import { FloatingCTA } from "@/components/floating-cta";
 import { AnnouncementBanner } from "@/components/announcement-banner";
-import { ScrollRevealInit } from "@/components/scroll-reveal";
+import { ScrollRevealInit } from "@/components/scroll-reveal"
+import { TransitionProvider } from "@/components/transition-context";
+import { PageTransition } from "@/components/page-transition";
 import { siteConfig } from "@/site.config";
 import {
   sora,
@@ -117,15 +119,17 @@ export default function RootLayout({
           />
         )}
         <UTMPreserver />
-        {siteConfig.features.smoothScroll ? (
-          <div id="smooth-wrapper" className="overflow-x-hidden">
-            <div id="smooth-content" className="overflow-x-hidden">
-              {children}
+        <TransitionProvider>
+          {siteConfig.features.smoothScroll ? (
+            <div id="smooth-wrapper" className="overflow-x-hidden">
+              <div id="smooth-content" className="overflow-x-hidden">
+                <PageTransition>{children}</PageTransition>
+              </div>
             </div>
-          </div>
-        ) : (
-          children
-        )}
+          ) : (
+            <PageTransition>{children}</PageTransition>
+          )}
+        </TransitionProvider>
         {siteConfig.features.cookieConsent && <CookieConsentWrapper />}
         {siteConfig.features.exitIntentPopup && <ExitIntentPopup />}
         {siteConfig.features.floatingCTA && <FloatingCTA />}

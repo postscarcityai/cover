@@ -172,6 +172,10 @@ html {
   transform: translateY(40px);
 }
 
+[data-reveal="words"] {
+  opacity: 0;
+}
+
 [data-reveal="words"] .word {
   display: inline-block;
   overflow: hidden;

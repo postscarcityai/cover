@@ -191,13 +191,13 @@ export const siteConfig = {
   features: {
     blog: true,
     newsletter: true,
-    audioNarration: true, // Blog post audio narration
+    audioNarration: false, // Blog post audio narration
     whatsapp: false,
     liveChat: false,
     cookieConsent: true,
-    exitIntentPopup: true,
+    exitIntentPopup: false,
     floatingCTA: true,
-    smoothScroll: true,
+    smoothScroll: false,
     navigationScrollHide: true
   },
 

@@ -2,11 +2,12 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Menu, X, ChevronDown } from "lucide-react"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
+import { TransitionLink } from "@/components/transition-link"
+import { usePageTransition } from "@/components/transition-context"
 import { trackPhoneCallClick, trackNavClick } from "@/lib/analytics"
 import { siteConfig } from "@/site.config"
 
@@ -16,6 +17,7 @@ interface NavigationProps {
 
 export function Navigation({ className = "" }: NavigationProps) {
   const pathname = usePathname()
+  const { navigateTo } = usePageTransition()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
@@ -150,7 +152,7 @@ export function Navigation({ className = "" }: NavigationProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center">
-              <Link
+              <TransitionLink
                 href="/"
                 className="flex items-center group"
                 onMouseEnter={() => setIsLogoHovered(true)}
@@ -161,7 +163,7 @@ export function Navigation({ className = "" }: NavigationProps) {
                   variant="white"
                   isHovered={isLogoHovered}
                 />
-              </Link>
+              </TransitionLink>
             </div>
 
             <div className="hidden lg:flex items-center space-x-8">
@@ -175,7 +177,7 @@ export function Navigation({ className = "" }: NavigationProps) {
                     onMouseLeave={handleMouseLeave}
                   >
                     {item.submenu ? (
-                      <a
+                      <TransitionLink
                         href={item.href}
                         onClick={() => handleNavClick(item.label)}
                         className="flex items-center space-x-1 transition-colors duration-300 font-medium text-sm tracking-wider uppercase"
@@ -189,9 +191,9 @@ export function Navigation({ className = "" }: NavigationProps) {
                             activeDropdown === item.label ? "rotate-180" : ""
                           }`}
                         />
-                      </a>
+                      </TransitionLink>
                     ) : (
-                      <a
+                      <TransitionLink
                         href={item.href}
                         onClick={() => handleNavClick(item.label)}
                         className="transition-colors duration-300 font-medium text-sm tracking-wider uppercase"
@@ -200,7 +202,7 @@ export function Navigation({ className = "" }: NavigationProps) {
                         onMouseOut={(e) => (e.currentTarget.style.color = "var(--fg-muted)")}
                       >
                         {item.label}
-                      </a>
+                      </TransitionLink>
                     )}
                   </div>
                 ))}
@@ -215,7 +217,7 @@ export function Navigation({ className = "" }: NavigationProps) {
                   backgroundColor: "var(--accent)",
                   color: "var(--accent-fg)",
                 }}
-                onClick={() => (window.location.href = "/contact")}
+                onClick={() => navigateTo("/contact")}
               >
                 Contact
               </Button>
@@ -285,26 +287,29 @@ export function Navigation({ className = "" }: NavigationProps) {
                           </h3>
                           <div className="space-y-1">
                             {section.items.map((subItem, ii) => (
-                              <motion.a
+                              <motion.div
                                 key={subItem.href}
-                                href={subItem.href}
-                                onClick={() => { handleNavClick(subItem.label); setActiveDropdown(null) }}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.4, delay: si * 0.1 + 0.15 + ii * 0.05 }}
-                                className="block px-3 py-2 text-sm rounded-md transition-all duration-200 hover:translate-x-1"
-                                style={{ color: "var(--fg-muted)" }}
-                                onMouseOver={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                                  e.currentTarget.style.color = "var(--fg)"
-                                  e.currentTarget.style.backgroundColor = "var(--muted)"
-                                }}
-                                onMouseOut={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                                  e.currentTarget.style.color = "var(--fg-muted)"
-                                  e.currentTarget.style.backgroundColor = "transparent"
-                                }}
                               >
-                                {subItem.label}
-                              </motion.a>
+                                <TransitionLink
+                                  href={subItem.href}
+                                  onClick={() => { handleNavClick(subItem.label); setActiveDropdown(null) }}
+                                  className="block px-3 py-2 text-sm rounded-md transition-all duration-200 hover:translate-x-1"
+                                  style={{ color: "var(--fg-muted)" }}
+                                  onMouseOver={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                                    e.currentTarget.style.color = "var(--fg)"
+                                    e.currentTarget.style.backgroundColor = "var(--muted)"
+                                  }}
+                                  onMouseOut={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                                    e.currentTarget.style.color = "var(--fg-muted)"
+                                    e.currentTarget.style.backgroundColor = "transparent"
+                                  }}
+                                >
+                                  {subItem.label}
+                                </TransitionLink>
+                              </motion.div>
                             ))}
                           </div>
                         </motion.div>
@@ -355,14 +360,14 @@ export function Navigation({ className = "" }: NavigationProps) {
                   {item.submenu ? (
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <a
+                        <TransitionLink
                           href={item.href}
                           onClick={() => { handleNavClick(item.label); setIsMenuOpen(false) }}
                           className="text-3xl font-bold"
                           style={{ color: "var(--fg)" }}
                         >
                           {item.label}
-                        </a>
+                        </TransitionLink>
                         <button
                           onClick={() => handleDropdownToggle(item.label)}
                           style={{ color: "var(--fg-muted)" }}
@@ -379,7 +384,7 @@ export function Navigation({ className = "" }: NavigationProps) {
                                 {section.label}
                               </h4>
                               {section.items.map((sub) => (
-                                <a
+                                <TransitionLink
                                   key={sub.href}
                                   href={sub.href}
                                   onClick={() => { handleNavClick(sub.label); setIsMenuOpen(false) }}
@@ -387,7 +392,7 @@ export function Navigation({ className = "" }: NavigationProps) {
                                   style={{ color: "var(--fg-muted)" }}
                                 >
                                   {sub.label}
-                                </a>
+                                </TransitionLink>
                               ))}
                             </div>
                           ))}
@@ -395,14 +400,14 @@ export function Navigation({ className = "" }: NavigationProps) {
                       )}
                     </div>
                   ) : (
-                    <a
+                    <TransitionLink
                       href={item.href}
                       onClick={() => { handleNavClick(item.label); setIsMenuOpen(false) }}
                       className="text-3xl font-bold block"
                       style={{ color: "var(--fg)" }}
                     >
                       {item.label}
-                    </a>
+                    </TransitionLink>
                   )}
                 </motion.div>
               ))}

@@ -1,6 +1,6 @@
-# Cover &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/postscarcityai/cover/blob/main/LICENSE) [![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](https://github.com/postscarcityai/cover) [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/postscarcityai/cover/pulls)
+# Cover &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/postscarcityai/cover/blob/main/LICENSE) [![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](https://github.com/postscarcityai/cover) [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/) [![Demo](https://img.shields.io/badge/demo-live-blue)](https://psai-cover.vercel.app/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/postscarcityai/cover/pulls)
 
-**Site template that personalizes on first run.** A professional Next.js template with 5 theme presets, MDX blog, newsletter, contact form, GDPR/CCPA compliance, and comprehensive SEO. Run the setup wizard once and ship.
+**Site template that personalizes on first run.** [Live demo →](https://psai-cover.vercel.app/) A professional Next.js template with 5 theme presets, MDX blog, newsletter, contact form, GDPR/CCPA compliance, and comprehensive SEO. Run the setup wizard once and ship.
 
 Part of the [PostScarcity AI](https://github.com/postscarcityai) suite of open source applications.
 

@@ -108,6 +108,15 @@ export function Navigation({ className = "" }: NavigationProps) {
     setActiveDropdown(null)
   }, [pathname])
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => { document.body.style.overflow = "" }
+  }, [isMenuOpen])
+
   const handlePhoneClick = () => {
     trackPhoneCallClick("header_navigation", "call_now_button")
     window.location.href = `tel:${siteConfig.contact.phone}`
@@ -337,7 +346,7 @@ export function Navigation({ className = "" }: NavigationProps) {
         )}
       </AnimatePresence>
 
-      {/* Mobile Menu - Full Screen Overlay */}
+      {/* Mobile Menu - Viewport-constrained overlay */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -346,74 +355,93 @@ export function Navigation({ className = "" }: NavigationProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             ref={mobileMenuRef}
-            className="fixed inset-0 lg:hidden z-50 flex flex-col"
-            style={{ backgroundColor: "var(--bg)", top: "calc(var(--banner-height, 0px) + 80px)" }}
+            className="fixed inset-x-0 bottom-0 lg:hidden z-50 flex flex-col overflow-hidden"
+            style={{
+              backgroundColor: "var(--bg)",
+              top: "calc(var(--banner-height, 0px) + 80px)",
+            }}
           >
-            <div className="flex-1 flex flex-col justify-center px-8 space-y-6">
-              {navItems.map((item, i) => (
-                <motion.div
-                  key={item.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08, duration: 0.4 }}
-                >
-                  {item.submenu ? (
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <TransitionLink
-                          href={item.href}
-                          onClick={() => { handleNavClick(item.label); setIsMenuOpen(false) }}
-                          className="text-3xl font-bold"
-                          style={{ color: "var(--fg)" }}
-                        >
-                          {item.label}
-                        </TransitionLink>
-                        <button
-                          onClick={() => handleDropdownToggle(item.label)}
-                          style={{ color: "var(--fg-muted)" }}
-                          aria-label={`Toggle ${item.label} submenu`}
-                        >
-                          <ChevronDown className={`h-5 w-5 transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`} />
-                        </button>
-                      </div>
-                      {activeDropdown === item.label && (
-                        <div className="ml-4 space-y-2 border-l pl-4" style={{ borderColor: "var(--border)" }}>
-                          {item.submenu.map((section) => (
-                            <div key={section.label} className="space-y-1">
-                              <h4 className="text-xs uppercase tracking-widest" style={{ color: "var(--fg-muted)" }}>
-                                {section.label}
-                              </h4>
-                              {section.items.map((sub) => (
-                                <TransitionLink
-                                  key={sub.href}
-                                  href={sub.href}
-                                  onClick={() => { handleNavClick(sub.label); setIsMenuOpen(false) }}
-                                  className="block py-1 text-base"
-                                  style={{ color: "var(--fg-muted)" }}
-                                >
-                                  {sub.label}
-                                </TransitionLink>
-                              ))}
-                            </div>
-                          ))}
+            <div className="flex-1 overflow-y-auto overscroll-contain">
+              <div className="flex flex-col justify-center min-h-full px-8 py-8 space-y-5">
+                {navItems.map((item, i) => (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.08, duration: 0.4 }}
+                  >
+                    {item.submenu ? (
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <TransitionLink
+                            href={item.href}
+                            onClick={() => { handleNavClick(item.label); setIsMenuOpen(false) }}
+                            className="text-2xl sm:text-3xl font-bold"
+                            style={{ color: "var(--fg)" }}
+                          >
+                            {item.label}
+                          </TransitionLink>
+                          <button
+                            onClick={() => handleDropdownToggle(item.label)}
+                            className="p-2 -mr-2"
+                            style={{ color: "var(--fg-muted)" }}
+                            aria-label={`Toggle ${item.label} submenu`}
+                          >
+                            <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${activeDropdown === item.label ? "rotate-180" : ""}`} />
+                          </button>
                         </div>
-                      )}
-                    </div>
-                  ) : (
-                    <TransitionLink
-                      href={item.href}
-                      onClick={() => { handleNavClick(item.label); setIsMenuOpen(false) }}
-                      className="text-3xl font-bold block"
-                      style={{ color: "var(--fg)" }}
-                    >
-                      {item.label}
-                    </TransitionLink>
-                  )}
-                </motion.div>
-              ))}
+                        <AnimatePresence>
+                          {activeDropdown === item.label && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                              className="overflow-hidden"
+                            >
+                              <div className="ml-4 space-y-2 border-l pl-4 pb-1" style={{ borderColor: "var(--border)" }}>
+                                {item.submenu.map((section) => (
+                                  <div key={section.label} className="space-y-1">
+                                    <h4 className="text-xs uppercase tracking-widest pt-1" style={{ color: "var(--fg-muted)" }}>
+                                      {section.label}
+                                    </h4>
+                                    {section.items.map((sub) => (
+                                      <TransitionLink
+                                        key={sub.href}
+                                        href={sub.href}
+                                        onClick={() => { handleNavClick(sub.label); setIsMenuOpen(false) }}
+                                        className="block py-1.5 text-base"
+                                        style={{ color: "var(--fg-muted)" }}
+                                      >
+                                        {sub.label}
+                                      </TransitionLink>
+                                    ))}
+                                  </div>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <TransitionLink
+                        href={item.href}
+                        onClick={() => { handleNavClick(item.label); setIsMenuOpen(false) }}
+                        className="text-2xl sm:text-3xl font-bold block"
+                        style={{ color: "var(--fg)" }}
+                      >
+                        {item.label}
+                      </TransitionLink>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
-            <div className="px-8 pb-12">
+            <div
+              className="flex-shrink-0 px-8 pb-8 pt-4 border-t"
+              style={{ borderColor: "var(--border)" }}
+            >
               <Button
                 variant={null as any}
                 size={null as any}

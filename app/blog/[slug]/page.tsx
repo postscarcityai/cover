@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         .trim()
       if (text === post.title) return null
       return (
-        <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
+        <h1 className="text-5xl md:text-6xl font-light mb-8 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
           {children}
         </h1>
       )

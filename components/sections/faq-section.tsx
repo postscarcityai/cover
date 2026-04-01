@@ -1,6 +1,7 @@
 "use client"
 
 import { FAQAccordion } from "@/components/faq-accordion"
+import { ScrambleEyebrow } from "@/components/scramble-eyebrow"
 import type { FAQContent } from "@/app/data"
 
 interface FAQSectionProps {
@@ -15,12 +16,11 @@ export function FAQSection({ content, sectionNumber, className = "" }: FAQSectio
       <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
         <div className="mb-16" data-reveal="fade-up">
           {content.eyebrow && (
-            <p className="text-xs tracking-[0.3em] uppercase mb-6" style={{ color: "var(--accent)" }}>
-              {sectionNumber && <span className="mr-3 font-bold">{sectionNumber}</span>}
+            <ScrambleEyebrow sectionNumber={sectionNumber}>
               {content.eyebrow}
-            </p>
+            </ScrambleEyebrow>
           )}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4" style={{ color: "var(--fg)" }}>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-4" style={{ color: "var(--fg)" }}>
             {content.title}
           </h2>
           {content.description && (

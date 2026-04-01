@@ -214,8 +214,9 @@ export function VintageHeroSlider({
 
   return (
     <div 
-      className={`relative ${height} overflow-hidden bg-black ${className}`}
+      className={`relative ${height} overflow-hidden ${className}`}
       style={{
+        backgroundColor: 'var(--bg)',
         filter: `brightness(${projectionFlicker})`,
         transition: 'filter 0.1s ease-out'
       }}
@@ -401,10 +402,11 @@ export function VintageHeroSlider({
               key={index}
               onClick={() => setCurrentImageIndex(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentImageIndex 
-                  ? 'bg-white scale-110' 
-                  : 'bg-white/50 hover:bg-white/75'
+                index === currentImageIndex
+                  ? 'scale-110'
+                  : 'opacity-50 hover:opacity-75'
               }`}
+              style={{ backgroundColor: 'var(--fg)' }}
             />
           ))}
         </div>

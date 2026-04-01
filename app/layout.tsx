@@ -12,11 +12,11 @@ import { AnnouncementBanner } from "@/components/announcement-banner";
 import { ScrollRevealInit } from "@/components/scroll-reveal"
 import { TransitionProvider } from "@/components/transition-context";
 import { PageTransition } from "@/components/page-transition";
+import { CustomCursor } from "@/components/custom-cursor";
+import { ScrollVelocitySkew } from "@/components/scroll-velocity";
+import { Navigation } from "@/components/navigation";
 import { siteConfig } from "@/site.config";
-import {
-  sora,
-  montserrat,
-} from "@/lib/fonts";
+import { openSans } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: siteConfig.seo.defaultTitle,
@@ -81,8 +81,7 @@ export default function RootLayout({
       lang="en"
       className={`
         overflow-x-hidden
-        ${sora.variable}
-        ${montserrat.variable}
+        ${openSans.variable}
       `}
     >
       <head>
@@ -106,20 +105,22 @@ export default function RootLayout({
           </a>
         </div>
         <ThemeInjector />
+        <CustomCursor />
+        <ScrollVelocitySkew />
         <RouteAnnouncer />
         {siteConfig.announcement?.enabled && <AnnouncementBanner />}
         <ScrollRevealInit />
         {siteConfig.features.smoothScroll && (
-          <ScrollSmoother 
-            smooth={0.08}
+          <ScrollSmoother
+            smooth={1.2}
             speed={1}
-            ease="power2.out"
-            normalizeScroll={true}
+            normalizeScroll={false}
             effects={true}
           />
         )}
         <UTMPreserver />
         <TransitionProvider>
+          <Navigation />
           {siteConfig.features.smoothScroll ? (
             <div id="smooth-wrapper" className="overflow-x-hidden">
               <div id="smooth-content" className="overflow-x-hidden">

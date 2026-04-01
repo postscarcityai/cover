@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { ArrowRight, Home, BookOpen, Briefcase, Users, Mail } from "lucide-react"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
@@ -18,7 +17,7 @@ export default function NotFound() {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "var(--bg)" }}>
-      <Navigation />
+      
 
       <main className="flex-1" id="main-content">
         <SubpageHero

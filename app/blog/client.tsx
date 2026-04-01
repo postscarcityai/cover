@@ -5,7 +5,6 @@ import { Calendar, Clock, ArrowRight, User, Search } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { MagneticButton } from "@/components/magnetic-button"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
@@ -71,7 +70,7 @@ export function BlogClient({ allPosts, featuredPosts, data }: BlogClientProps) {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
+      
 
       <SubpageHero
         eyebrow={data.hero.eyebrow}
@@ -279,7 +278,7 @@ export function BlogClient({ allPosts, featuredPosts, data }: BlogClientProps) {
               <Button
                 variant={null as any}
                 size="lg"
-                className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full transition-all hover:scale-105"
+                className="font-semibold text-base px-10 py-5 tracking-wide uppercase transition-all"
                 style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
                 onClick={() => (window.location.href = "/contact")}
               >

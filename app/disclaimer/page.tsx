@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
@@ -58,7 +57,7 @@ export default function DisclaimerPage() {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
+      
       <SubpageHero
         eyebrow={data.hero.eyebrow}
         title={data.hero.title}

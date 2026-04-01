@@ -188,6 +188,23 @@ html {
   transform: translateY(110%);
 }
 
+[data-reveal="chars"] {
+  opacity: 0;
+}
+
+[data-reveal="chars"] .char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+[data-reveal="lines"] {
+  opacity: 0;
+}
+
+[data-reveal="lines"] .line {
+  will-change: transform, opacity;
+}
+
 /* ========================================
    Scroll Progress Bar
    ======================================== */

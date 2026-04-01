@@ -1,10 +1,16 @@
 "use client"
 
-import { ArrowRight, ChevronDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import dynamic from "next/dynamic"
 import { MagneticButton } from "@/components/magnetic-button"
+import { FillButton } from "@/components/ui/fill-button"
+import { CTALink } from "@/components/ui/cta-link"
 import { trackScheduleConsultation } from "@/lib/analytics"
 import type { HeroContent } from "@/app/data"
+
+const HeroShader = dynamic(
+  () => import("@/components/hero-shader").then((m) => m.HeroShader),
+  { ssr: false }
+)
 
 interface HeroSectionProps {
   content: HeroContent
@@ -27,106 +33,67 @@ export function HeroSection({ content, className = "" }: HeroSectionProps) {
     <section
       data-hero-section
       className={`relative h-[100dvh] flex items-center overflow-hidden ${className}`}
-      style={{ backgroundColor: "var(--bg)" }}
+      style={{ backgroundColor: "#ffffff" }}
     >
+      {/* WebGL shader — square canvas, pushed right so it bleeds off edge */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute pointer-events-none"
         style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 40%, color-mix(in srgb, var(--accent) 8%, transparent), transparent)",
+          top: "5%",
+          left: "35%",
+          width: "min(140vw, 140vh)",
+          height: "min(140vw, 140vh)",
         }}
-      />
+      >
+        <HeroShader />
+      </div>
 
-      {content.backgroundImages?.[0] && (
-        <div
-          data-reveal="parallax"
-          className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: `url(${content.backgroundImages[0]})` }}
-        />
-      )}
-
-      <div className="relative z-10 px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 max-w-5xl">
+      {/* Content */}
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
         <h1
-          data-reveal="words"
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold leading-[0.95] tracking-tight mb-8"
-          style={{ color: "var(--fg)" }}
+          data-reveal="chars"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-[1] tracking-tight mb-8 font-heading max-w-3xl"
+          style={{ color: "#111827" }}
         >
           {content.title}
         </h1>
 
         {content.subtitle && (
           <p
-            data-reveal="fade-up"
-            className="text-xl sm:text-2xl md:text-3xl font-light mb-6"
-            style={{ color: "var(--fg-muted)" }}
+            data-reveal="lines"
+            className="text-base sm:text-lg md:text-xl font-light mb-12 max-w-3xl leading-relaxed"
+            style={{ color: "#6B7280" }}
           >
             {content.subtitle}
           </p>
         )}
 
-        <p
-          data-reveal="fade-up"
-          className="text-base md:text-lg mb-12 max-w-2xl leading-relaxed"
-          style={{ color: "var(--fg-muted)" }}
-        >
-          {content.description}
-        </p>
-
         <div
           data-reveal="fade-up"
-          className="flex flex-col sm:flex-row gap-4 items-start"
+          className="flex flex-col sm:flex-row gap-6 items-start sm:items-center"
         >
           <MagneticButton>
-            <Button
-              variant={null as any}
-              size="lg"
-              className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full transition-all hover:scale-105"
-              style={{
-                backgroundColor: "var(--accent)",
-                color: "var(--accent-fg)",
-              }}
-              onClick={handlePrimaryClick}
-            >
+            <FillButton onClick={handlePrimaryClick}>
               {content.ctaPrimaryText}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            </FillButton>
           </MagneticButton>
 
           {content.ctaSecondaryText && (
-            <MagneticButton>
-              <Button
-                variant={null as any}
-                size="lg"
-                className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full border transition-all hover:scale-105"
-                style={{
-                  borderColor: "var(--border)",
-                  color: "var(--fg-muted)",
-                  backgroundColor: "transparent",
-                }}
-                onClick={handleSecondaryClick}
-              >
-                {content.ctaSecondaryText}
-              </Button>
-            </MagneticButton>
+            <CTALink onClick={handleSecondaryClick} muted>
+              {content.ctaSecondaryText}
+            </CTALink>
           )}
         </div>
 
         {content.trustText && (
           <p
             data-reveal="fade-in"
-            className="mt-10 text-xs tracking-[0.25em] uppercase"
-            style={{ color: "var(--fg-muted)", opacity: 0.5 }}
+            className="mt-12 text-xs tracking-[0.25em] uppercase"
+            style={{ color: "#6B7280", opacity: 0.5 }}
           >
             {content.trustText}
           </p>
         )}
-      </div>
-
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
-        <ChevronDown
-          className="w-6 h-6 animate-bounce"
-          style={{ color: "var(--fg-muted)", opacity: 0.4 }}
-        />
       </div>
     </section>
   )

@@ -2,7 +2,6 @@
 
 import { Phone } from "lucide-react"
 import { MagneticButton } from "@/components/magnetic-button"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { ContactConversionForm } from "@/components/contact-conversion-form"
 import { trackPhoneCallClick, trackScheduleConsultation } from "@/lib/analytics"
@@ -45,7 +44,7 @@ export default function ContactClient({ data }: Props) {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
+      
 
       <main id="main-content">
         <section
@@ -120,7 +119,7 @@ export default function ContactClient({ data }: Props) {
                     <a
                       href={phoneHref}
                       onClick={handleCallClick}
-                      className="inline-flex items-center gap-2 px-6 py-3 font-semibold text-sm rounded-xl transition-all hover:scale-[1.02]"
+                      className="inline-flex items-center gap-2 px-6 py-3 font-semibold text-sm rounded-none transition-all hover:scale-[1.02]"
                       style={{
                         backgroundColor: "var(--surface)",
                         color: "var(--accent)",

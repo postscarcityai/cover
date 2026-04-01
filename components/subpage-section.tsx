@@ -63,14 +63,14 @@ export function SubpageSection({
                 style={{ color: accentColor }}
               >
                 {sectionNumber && (
-                  <span className="mr-3 font-bold">{sectionNumber}</span>
+                  <span className="mr-3 font-medium">{sectionNumber}</span>
                 )}
                 {eyebrow}
               </p>
             )}
             {title && (
               <h2
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+                className="text-4xl md:text-5xl lg:text-6xl font-light mb-6"
                 style={{ fontFamily: "var(--font-heading)", color: fgColor }}
               >
                 {title}

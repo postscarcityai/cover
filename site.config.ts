@@ -9,119 +9,103 @@ import type { DesignTokens } from "@/theme.config"
 
 export const siteConfig = {
   // Color overrides (see theme.config.ts for defaults)
-  // Only set the tokens you want to change per client
   colors: {
-    accent: "#1a6b52",
+    background: "#FAFAFA",
+    surface: "#FFFFFF",
+    muted: "#F3F3F5",
+    border: "#E2E2E8",
+    foreground: "#111118",
+    mutedForeground: "#6B6B80",
+    accent: "#B8941F",
+    accentForeground: "#FFFFFF",
+    fontHeading: "var(--font-open-sans), system-ui, sans-serif",
+    fontBody: "var(--font-open-sans), system-ui, sans-serif",
   } as Partial<DesignTokens>,
 
   // Basic Site Information
-  name: "Your Company Name",
-  description: "Your company tagline or brief description",
-  url: "https://yoursite.com",
+  name: "PostScarcity AI",
+  description: "We build the AI infrastructure that separates leaders from everyone else. Autonomous agents. Self-hosted intelligence. Production systems that compound while your competitors are still evaluating vendors.",
+  url: "https://postscarcity.ai",
 
   // Contact Information
   contact: {
-    phone: "+1 (555) 123-4567",
-    phoneDisplay: "(555) 123-4567",
-    email: "contact@yoursite.com",
+    phone: "+1 (305) 555-0100",
+    phoneDisplay: "(305) 555-0100",
+    email: "chris@postscarcity.ai",
     address: {
-      street: "123 Main Street",
-      city: "Your City",
-      state: "ST",
-      zip: "12345",
+      street: "",
+      city: "Miami",
+      state: "FL",
+      zip: "33101",
       country: "United States"
     }
   },
 
   // Business Information (for Schema.org)
   business: {
-    type: "Organization", // Organization, LocalBusiness, ProfessionalService, etc.
+    type: "ProfessionalService",
     foundedYear: "2024",
     founder: {
-      name: "Founder Name",
-      title: "CEO & Founder"
+      name: "Chris Johnston",
+      title: "Founder"
     },
     employees: "1-10",
-    // Service areas (states, regions, or "Nationwide")
     serviceAreas: [
-      "California",
-      "New York",
-      "Texas",
-      // Add more as needed
+      "Miami-Dade",
+      "Broward",
+      "Palm Beach",
+      "South Florida",
     ],
-    // What your business specializes in
     expertise: [
-      "Service Area 1",
-      "Service Area 2",
-      "Service Area 3",
+      "AI Infrastructure",
+      "Agent Setup & Management",
+      "Claude Cowork",
+      "Marketing Sites",
+      "Custom Product Builds",
+      "AI Training & Workshops",
+      "Creative Production",
     ],
-    // Payment methods accepted
     paymentMethods: [
       "Credit Card",
-      "Debit Card",
       "Wire Transfer",
       "Check"
     ],
-    // Operating hours (24/7 or specific hours)
     openingHours: {
       enabled: true,
       is24_7: false,
-      // If not 24/7, specify hours:
       schedule: {
-        monday: "9:00 AM - 5:00 PM",
-        tuesday: "9:00 AM - 5:00 PM",
-        wednesday: "9:00 AM - 5:00 PM",
-        thursday: "9:00 AM - 5:00 PM",
-        friday: "9:00 AM - 5:00 PM",
+        monday: "9:00 AM - 6:00 PM",
+        tuesday: "9:00 AM - 6:00 PM",
+        wednesday: "9:00 AM - 6:00 PM",
+        thursday: "9:00 AM - 6:00 PM",
+        friday: "9:00 AM - 6:00 PM",
         saturday: "Closed",
         sunday: "Closed"
       }
     },
-    // Geographic coordinates for local SEO
     coordinates: {
-      latitude: "40.7128",
-      longitude: "-74.0060"
+      latitude: "25.7617",
+      longitude: "-80.1918"
     }
   },
 
   // Social Media Links
   social: {
-    twitter: "https://twitter.com/yourcompany",
-    linkedin: "https://linkedin.com/company/yourcompany",
-    facebook: "https://facebook.com/yourcompany",
-    instagram: "https://instagram.com/yourcompany",
-    youtube: "https://youtube.com/@yourcompany"
+    twitter: "https://twitter.com/postscarcityai",
+    linkedin: "https://linkedin.com/company/postscarcityai",
+    facebook: "",
+    instagram: "",
+    youtube: ""
   },
 
   // Navigation Menu Items
   // Supports optional submenu structure for dropdown navigation
   navigation: [
-    { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
     { label: "Services", href: "/services" },
-    { label: "Blog", href: "/blog" },
+    { label: "Products", href: "/products" },
+    { label: "Work", href: "/work" },
+    { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
-    // Example with submenu (uncomment to use):
-    // {
-    //   label: "About",
-    //   href: "/about",
-    //   submenu: [
-    //     {
-    //       label: "Meet the Team",
-    //       items: [
-    //         { label: "Team Member 1", href: "/about/team-member-1" },
-    //         { label: "Team Member 2", href: "/about/team-member-2" }
-    //       ]
-    //     },
-    //     {
-    //       label: "Our Practice",
-    //       items: [
-    //         { label: "Our Office", href: "/about/office" },
-    //         { label: "History", href: "/about/history" }
-    //       ]
-    //     }
-    //   ]
-    // }
   ] as Array<{
     label: string
     href: string
@@ -133,15 +117,16 @@ export const siteConfig = {
 
   // Blog Configuration
   blog: {
-    title: "Blog", // or "News", "Articles", "Insights", etc.
-    basePath: "/blog", // URL path for blog
-    author: "Company Name", // Default author name
+    title: "Articles",
+    basePath: "/blog",
+    author: "Chris Johnston",
     postsPerPage: 10,
     categories: [
-      "Industry News",
-      "How-To Guides",
+      "AI Infrastructure",
       "Case Studies",
-      "Company Updates"
+      "Claude Cowork",
+      "Engineering",
+      "Practice"
     ]
   },
 
@@ -158,31 +143,36 @@ export const siteConfig = {
 
   // SEO & Metadata
   seo: {
-    defaultTitle: "Your Company Name - Your Tagline",
-    titleTemplate: "%s | Your Company Name",
+    defaultTitle: "PostScarcity AI — AI Infrastructure for Leaders.",
+    titleTemplate: "%s | PostScarcity AI",
     keywords: [
-      "keyword 1",
-      "keyword 2",
-      "keyword 3",
-      "keyword 4",
-      "keyword 5"
+      "AI infrastructure",
+      "AI agents",
+      "Claude Cowork",
+      "self-hosted AI",
+      "South Florida AI",
+      "business automation",
+      "AI systems",
+      "marketing sites",
+      "custom AI builds",
+      "local AI inference"
     ],
     openGraph: {
       type: "website",
       locale: "en_US",
-      siteName: "Your Company Name",
+      siteName: "PostScarcity AI",
       images: [
         {
           url: "/og-image.png",
           width: 1200,
           height: 630,
-          alt: "Your Company Name"
+          alt: "PostScarcity AI — AI Infrastructure for Leaders."
         }
       ]
     },
     twitter: {
-      handle: "@yourcompany",
-      site: "@yourcompany",
+      handle: "@postscarcityai",
+      site: "@postscarcityai",
       cardType: "summary_large_image"
     }
   },
@@ -194,10 +184,10 @@ export const siteConfig = {
     audioNarration: false, // Blog post audio narration
     whatsapp: false,
     liveChat: false,
-    cookieConsent: true,
+    cookieConsent: false,
     exitIntentPopup: false,
-    floatingCTA: true,
-    smoothScroll: false,
+    floatingCTA: false,
+    smoothScroll: true,
     navigationScrollHide: true
   },
 
@@ -224,29 +214,29 @@ export const siteConfig = {
 
   // Hero Section Configuration
   hero: {
-    title: "Your Main Headline",
-    subtitle: "Your Secondary Headline",
-    ctaPrimary: "Get Started",
-    ctaSecondary: "Learn More"
+    title: "The companies that move first will own the next decade.",
+    subtitle: "We build the AI infrastructure that separates leaders from everyone else. Autonomous agents. Self-hosted intelligence. Production systems that compound while your competitors are still evaluating vendors.",
+    ctaPrimary: "Book a Call",
+    ctaSecondary: "See the Work"
   },
 
   // Services Section Configuration
   servicesSection: {
-    title: "What We Do",
-    description: "Explore our comprehensive range of services designed to meet your needs."
+    title: "What We Build",
+    description: "AI systems that ship in weeks, not quarters. We scope, build, and deploy — then stay as long as the advantage demands it."
   },
 
   // Achievements Section Configuration
   achievementsSection: {
-    title: "Our Track Record",
-    description: "Recent achievements and milestones that demonstrate our commitment to excellence"
+    title: "Shipped & Running",
+    description: "Production systems generating real results for companies that moved early."
   },
 
   // Commitment Section Configuration
   commitment: {
-    title: "Our Commitment to Excellence",
-    description: "We're dedicated to delivering exceptional results and building lasting relationships with every client we serve.",
-    ctaText: "Get Started"
+    title: "How We Work",
+    description: "Fast scope. Rapid build. Continuous edge. We don't do roadmaps that collect dust — we ship systems that compound.",
+    ctaText: "Book a Call"
   },
 
   // Service Locations Configuration (for map component)
@@ -268,16 +258,16 @@ export const siteConfig = {
   // Call-to-Action Settings
   cta: {
     primary: {
-      text: "Get Started",
+      text: "Book a Call",
       href: "/contact"
     },
     secondary: {
-      text: "Learn More",
-      href: "/about"
+      text: "See the Work",
+      href: "/work"
     },
     phone: {
       text: "Call Now",
-      enabled: true
+      enabled: false
     }
   },
 
@@ -285,7 +275,7 @@ export const siteConfig = {
   // These are used across all forms. Variables like {companyName}, {phone}, and {emailDomain}
   // are interpolated at runtime by the getConsentText() helper below.
   consent: {
-    emailDomain: "@yoursite.com",
+    emailDomain: "@postscarcity.ai",
     // Full TCPA checkbox notice (contact forms with explicit checkbox) — California-compliant
     tcpaFull: 'I consent to receive calls, texts, and emails from {companyName} and partners at my contact info, including automated messages. Not required for service. Message and data rates may apply. Reply STOP to opt out or contact {phone}.',
     // Shorter inline notice (consultation / quick forms without a checkbox)
@@ -350,7 +340,50 @@ export const siteConfig = {
     additionalAreas?: string[]
   } | undefined,
 
-  about: undefined as {
+  about: {
+    description: "PostScarcity AI builds quiet infrastructure for businesses ready to operate with more space and less noise. Based in South Florida, serving everywhere.",
+    heroTitle: "About PostScarcity AI",
+    heroLocation: "in Miami, FL",
+    introduction: "We named it PostScarcity because we believe you already have enough — enough ideas, enough ambition, enough work worth doing. What you don't have is the infrastructure to support it all. We build that infrastructure. AI agents, marketing sites, custom products, creative pipelines — quietly, on your hardware, under your control. So the repetitive parts run themselves and you can return your attention to the parts that actually need you.",
+    stats: {
+      experience: { value: "15+ Years", subtext: "Building Technology" },
+      coverage: { label: "Service Area", value: "South Florida & Remote", subtext: "In-person or virtual, wherever you are" }
+    },
+    mission: {
+      heading: "Our Approach",
+      paragraphs: [
+        "We're not here to add more tools to your stack. We're here to remove noise from your day. Every system we build — whether it's a Claude Cowork agent managing your inbox, a marketing site running on Cover, or a custom product we scope and ship — is designed to run quietly and stay out of your way.",
+        "We believe the best infrastructure is the kind you forget about. It's just there, working, every morning when you open your laptop. Your data stays on your hardware. Your systems belong to you. We show up, build something that works, and stay involved as long as it makes sense.",
+        "Every tool we've built is open source. Every system we deploy is yours. We don't rent you capability — we install it."
+      ],
+      quote: "The goal isn't more output. It's more space — for the work that actually matters."
+    },
+    coreValues: [
+      {
+        iconName: "Scale" as const,
+        title: "Quiet Infrastructure",
+        description: "We build systems that run without asking for your attention. Morning briefs before your day starts. Lead engines that surface prospects overnight. Content pipelines that deploy on their own. The best systems disappear into your routine."
+      },
+      {
+        iconName: "Target" as const,
+        title: "Yours Completely",
+        description: "Your data stays on your hardware. Your systems belong to you — not a SaaS vendor. Self-hosted agents, local AI inference, zero cloud dependency. We install capability. We don't rent it."
+      },
+      {
+        iconName: "Shield" as const,
+        title: "Open Source, Open Handed",
+        description: "Cover, Forge, Close, Recon — all MIT licensed. Clone them and build. Or let us deploy and manage them for you. Either way, nothing is locked behind a subscription. The tools are free. The craft is the service."
+      }
+    ],
+    cta: {
+      heading: "Start With a Conversation",
+      paragraphs: [
+        "Every engagement begins the same way. We listen. We learn your business, your tools, and where your time goes. No pitch deck. No urgency. Just honest questions about what you wish was already handled.",
+      ],
+      quote: "The goal isn't to automate people out of work — it's to automate the repetitive so the parts that matter get more attention, more energy, and more care.",
+      buttonText: "Start a Conversation"
+    }
+  } as {
     description?: string
     heroTitle?: string
     heroLocation?: string

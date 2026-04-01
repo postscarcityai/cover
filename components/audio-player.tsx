@@ -237,8 +237,8 @@ export function AudioPlayer({ narrator, totalDuration, parts, postSlug = 'unknow
           }}
         >
           <div 
-            className="h-full bg-blue-600 rounded-full transition-all duration-150"
-            style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
+            className="h-full rounded-full transition-all duration-150"
+            style={{ backgroundColor: 'var(--accent)', width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
           />
         </div>
         <div className="flex justify-between text-xs mt-1" style={{ color: 'var(--fg-muted)' }}>
@@ -262,13 +262,14 @@ export function AudioPlayer({ narrator, totalDuration, parts, postSlug = 'unknow
         
         <Button
           onClick={togglePlay}
-          className="w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-700"
+          className="w-12 h-12 rounded-full"
+          style={{ backgroundColor: 'var(--accent)' }}
           aria-label={isPlaying ? `Pause: ${currentPart.title}. Spacebar also pauses anywhere on page.` : `Play: ${currentPart.title}. Spacebar pauses when playing.`}
         >
           {isPlaying ? (
-            <Pause className="w-5 h-5 text-white" />
+            <Pause className="w-5 h-5" style={{ color: 'var(--accent-fg)' }} />
           ) : (
-            <Play className="w-5 h-5 text-white ml-0.5" />
+            <Play className="w-5 h-5 ml-0.5" style={{ color: 'var(--accent-fg)' }} />
           )}
         </Button>
         

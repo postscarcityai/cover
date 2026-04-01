@@ -1,6 +1,5 @@
 "use client"
 
-import { Navigation } from "@/components/navigation"
 import { SectionRenderer } from "@/components/section-renderer"
 import { usePageTracking, useScrollTracking } from "@/lib/analytics-hooks"
 import { Footer } from "@/components/footer"
@@ -32,7 +31,6 @@ export default function HomePageClient() {
       />
       {/* Scroll progress bar */}
       <div className="scroll-progress" />
-      <Navigation />
       <main id="main-content">
         <SectionRenderer sections={homepageSections} />
       </main>

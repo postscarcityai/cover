@@ -31,7 +31,7 @@ export function CredibilityBadge({ className = "", align = 'center' }: Credibili
               <p className="font-bold text-lg" style={{ color: 'var(--accent)' }}>
                 {stat.value}
               </p>
-              <p className="text-xs text-gray-500">{stat.label}</p>
+              <p className="text-xs" style={{ color: 'var(--fg-muted)' }}>{stat.label}</p>
             </div>
           ))}
         </div>
@@ -41,7 +41,7 @@ export function CredibilityBadge({ className = "", align = 'center' }: Credibili
       {cred.credentials && cred.credentials.length > 0 && (
         <div className="flex flex-wrap items-center justify-center gap-3">
           {cred.credentials.map((credential, index) => (
-            <div key={index} className="flex items-center gap-1.5 text-gray-700">
+            <div key={index} className="flex items-center gap-1.5" style={{ color: 'var(--fg-muted)' }}>
               <CheckCircle className="w-4 h-4" style={{ color: 'var(--accent)' }} />
               <span className="text-sm">{credential}</span>
             </div>
@@ -62,8 +62,8 @@ export function CredibilityBadge({ className = "", align = 'center' }: Credibili
               aria-label={`${review.rating} stars on ${review.platform} with ${review.count} reviews`}
             >
               <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              <span className="font-semibold text-gray-900">{review.rating}</span>
-              <span className="text-xs text-gray-600">
+              <span className="font-semibold" style={{ color: 'var(--fg)' }}>{review.rating}</span>
+              <span className="text-xs" style={{ color: 'var(--fg-muted)' }}>
                 {review.platform} ({review.count})
               </span>
             </a>

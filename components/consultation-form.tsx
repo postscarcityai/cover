@@ -218,7 +218,7 @@ export function ConsultationForm({
           <button
             type="submit"
             disabled={status === "submitting"}
-            className="inline-flex items-center justify-center px-10 py-4 font-semibold text-sm uppercase tracking-wide rounded-full transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center justify-center px-10 py-4 font-semibold text-sm uppercase tracking-wide transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
           >
             {status === "submitting" ? "Sending..." : (

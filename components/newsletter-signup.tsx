@@ -120,7 +120,7 @@ export function NewsletterSignup({
               <button 
                 type="submit"
                 disabled={isLoading || !email.trim() || !consent}
-                className="h-12 px-8 font-semibold text-sm uppercase tracking-wide rounded-full transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center whitespace-nowrap"
+                className="h-12 px-8 font-semibold text-sm uppercase tracking-wide transition-all disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center whitespace-nowrap"
                 style={{
                   backgroundColor: "var(--accent)",
                   color: "var(--accent-fg)",

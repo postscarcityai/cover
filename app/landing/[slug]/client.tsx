@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { ArrowRight, CheckCircle } from "lucide-react"
-import { Navigation } from "@/components/navigation"
 import { usePageTracking, useScrollTracking } from "@/lib/analytics-hooks"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
@@ -24,7 +23,7 @@ export default function LandingPageClient({ landingPage, searchParams }: Landing
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "var(--bg)" }}>
-      <Navigation />
+      
 
       <main id="main-content">
         <SubpageHero
@@ -96,7 +95,7 @@ export default function LandingPageClient({ landingPage, searchParams }: Landing
                 <div className="max-w-4xl mx-auto text-center">
                   {section.title && (
                     <h2
-                      className="text-3xl md:text-4xl font-bold mb-6"
+                      className="text-3xl md:text-4xl font-light mb-6"
                       style={{
                         fontFamily: "var(--font-heading)",
                         color: "var(--accent-fg)",

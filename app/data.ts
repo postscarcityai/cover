@@ -118,101 +118,143 @@ export const homepageSections: HomepageSection[] = [
     id: "hero",
     type: "hero",
     content: {
-      title: siteConfig.hero?.title || "Your Main Headline",
-      subtitle: siteConfig.hero?.subtitle || "Your Secondary Headline",
+      title: siteConfig.hero?.title || "The companies that move first will own the next decade.",
+      subtitle: siteConfig.hero?.subtitle || "We build the AI infrastructure that separates leaders from everyone else.",
       description: siteConfig.description,
-      ctaPrimaryText: siteConfig.hero?.ctaPrimary || "Get Started",
+      ctaPrimaryText: siteConfig.hero?.ctaPrimary || "Book a Call",
       ctaPrimaryHref: "/contact",
-      ctaSecondaryText: siteConfig.hero?.ctaSecondary || "Learn More",
-      ctaSecondaryHref: "/about",
-      trustText: "Trusted by businesses nationwide",
+      ctaSecondaryText: siteConfig.hero?.ctaSecondary || "See the Work",
+      ctaSecondaryHref: "/work",
+      trustText: "Autonomous agents. Self-hosted intelligence. Zero vendor lock-in.",
     } satisfies HeroContent,
   },
   {
-    id: "stats",
-    type: "stats",
+    id: "what-we-do",
+    type: "content",
     content: {
-      stats: [
-        { value: "500", label: "Clients Served", suffix: "+" },
-        { value: "98", label: "Satisfaction Rate", suffix: "%" },
-        { value: "15", label: "Years Experience", suffix: "+" },
-        { value: "24/7", label: "Support Available" },
+      blocks: [
+        {
+          eyebrow: "The Thesis",
+          title: "AI Isn't a Feature. It's the New Operating System.",
+          description:
+            "Every company will run on AI agents within five years. The ones building that infrastructure now will have a compounding advantage that's nearly impossible to close. The ones waiting will be hiring consultants to catch up.",
+          paragraphs: [
+            "We build the systems that give you that head start. Autonomous agents that handle lead generation, client onboarding, content production, intelligence gathering, and operational workflows — running on hardware you own, trained on data you control.",
+            "This isn't about saving time on email. It's about building an operational layer that gets smarter every week, scales without headcount, and belongs entirely to you.",
+          ],
+          imageAlt: "PostScarcity AI infrastructure",
+          ctaText: "See What We Build",
+          ctaHref: "/services",
+        },
       ],
-    } satisfies StatsContent,
+    } satisfies ContentSectionContent,
   },
   {
-    id: "features",
+    id: "principles",
     type: "features",
-    numbered: true,
+    numbered: false,
     content: {
-      eyebrow: "What We Offer",
-      title: "Services Designed for Your Success",
+      eyebrow: "Why Us",
+      title: "Built for the Long Game",
       description:
-        "Comprehensive solutions tailored to meet your unique needs.",
+        "We don't build demos. We build production infrastructure that compounds over time — systems that get more valuable the longer they run.",
       features: [
         {
           icon: "Shield",
-          title: "Expert Guidance",
+          title: "Self-Hosted. Self-Owned.",
           description:
-            "Strategic advice to help you navigate complex challenges with confidence.",
-        },
-        {
-          icon: "Target",
-          title: "Results-Driven Approach",
-          description:
-            "Measurable outcomes that make a real difference for your business.",
+            "Your AI runs on your hardware. Your data never touches a third-party cloud. When the vendor landscape shifts — and it will — you're insulated.",
         },
         {
           icon: "Zap",
-          title: "Fast Turnaround",
+          title: "Agents, Not Chatbots",
           description:
-            "Quality results delivered efficiently, because your time matters.",
+            "Systems that reason, decide, and execute across your entire stack. Email, CRM, Slack, GitHub, calendar — orchestrated without human prompting.",
+        },
+        {
+          icon: "Target",
+          title: "Compounding Returns",
+          description:
+            "Every workflow we automate feeds data back into your system. Your AI gets sharper every week. That's the moat your competitors can't buy off the shelf.",
         },
         {
           icon: "Users",
-          title: "Dedicated Support",
+          title: "Ship Fast, Stay Sharp",
           description:
-            "Personalized attention from a team that genuinely cares about your success.",
-        },
-        {
-          icon: "BarChart",
-          title: "Data-Driven Insights",
-          description:
-            "Informed decisions backed by thorough analysis and industry expertise.",
-        },
-        {
-          icon: "Globe",
-          title: "Nationwide Reach",
-          description:
-            "Localized knowledge and broad capabilities across the country.",
+            "Production in weeks, not quarters. We scope, build, deploy, and iterate. No roadmaps gathering dust. No committees. Just velocity.",
         },
       ],
     } satisfies FeaturesContent,
   },
   {
-    id: "content",
+    id: "tools",
+    type: "features",
+    numbered: false,
+    content: {
+      eyebrow: "Open Source Arsenal",
+      title: "The Stack That Powers Everything",
+      description:
+        "Four production-grade tools, MIT licensed. Battle-tested across real engagements. Fork them. Deploy them. Or let us run them for you at scale.",
+      features: [
+        {
+          icon: "Globe",
+          title: "Cover",
+          description:
+            "High-performance marketing sites in days. Single config, infinite themes, built-in analytics. The foundation under every site we ship.",
+        },
+        {
+          icon: "Zap",
+          title: "Forge",
+          description:
+            "AI-native creative production. 21-tool MCP server wired directly into coding agents. Image, video, and asset generation at machine speed.",
+        },
+        {
+          icon: "BarChart",
+          title: "Close",
+          description:
+            "Contract CRM built for operators. Pipeline tracking, auto-generated MSA/SOW docs, deal intelligence. No enterprise bloat.",
+        },
+        {
+          icon: "Target",
+          title: "Recon",
+          description:
+            "Autonomous lead intelligence. Scans markets, enriches contacts, scores prospects — all on local AI inference. Zero cloud cost. Full data ownership.",
+        },
+      ],
+    } satisfies FeaturesContent,
+  },
+  {
+    id: "selected-work",
     type: "content",
     content: {
       blocks: [
         {
-          eyebrow: "Our Story",
-          title: "Committed to Excellence Since Day One",
+          eyebrow: "Case Study",
+          title: "AMC Defense Law",
           description:
-            "We believe in building lasting relationships through transparency, dedication, and exceptional service.",
-          paragraphs: [
-            "Every client deserves a team that listens, understands, and delivers. That's been our philosophy since we opened our doors.",
-          ],
-          imageAlt: "Our team at work",
-          ctaText: "About Us",
-          ctaHref: "/about",
+            "Full marketing site with AI-powered Justice Watch blog — generated imagery, audio narration, and a morning intelligence brief that pulls DoJ and FBI feeds before the attorney's first coffee.",
+          imageAlt: "AMC Defense Law website",
+          ctaText: "See the Build",
+          ctaHref: "/work/amc-defense-law",
         },
         {
-          eyebrow: "Our Process",
-          title: "A Streamlined Experience",
+          eyebrow: "Case Study",
+          title: "Finesse Plastic Surgery",
           description:
-            "We've refined our process to ensure every engagement is smooth, efficient, and effective.",
-          imageAlt: "Our streamlined process",
+            "Premium practice site with consultation booking, patient resources, and a Vitest test suite gating every deploy. HIPAA-aware. Zero regressions shipped. Consultations up sharply since launch.",
+          imageAlt: "Finesse Plastic Surgery website",
           reverse: true,
+          ctaText: "See the Build",
+          ctaHref: "/work/finesse",
+        },
+        {
+          eyebrow: "Case Study",
+          title: "Moon — Heathos Lead Intelligence",
+          description:
+            "A nationwide autonomous lead engine. Scans every major metro, enriches contacts through local AI inference, and delivers qualified prospects by morning. 1,800+ leads enriched. Zero cloud AI cost. The CEO said it \"mapped their known universe.\"",
+          imageAlt: "Moon lead intelligence engine",
+          ctaText: "See the Build",
+          ctaHref: "/work/heathos-moon",
         },
       ],
     } satisfies ContentSectionContent,
@@ -221,29 +263,29 @@ export const homepageSections: HomepageSection[] = [
     id: "testimonials",
     type: "testimonials",
     content: {
-      eyebrow: "Testimonials",
-      title: "What Our Clients Say",
+      eyebrow: "From the Field",
+      title: "Early Movers",
       testimonials: [
         {
           quote:
-            "Working with this team was a game-changer for our business. Their expertise and dedication exceeded our expectations.",
-          author: "Sarah Johnson",
+            "The agent has mapped our known universe.",
+          author: "Matt Paul",
           role: "CEO",
-          company: "Acme Corp",
+          company: "Heathos",
         },
         {
           quote:
-            "The level of professionalism and attention to detail is unmatched. I couldn't recommend them more highly.",
-          author: "Michael Chen",
-          role: "Director of Operations",
-          company: "TechStart Inc",
+            "People rave about the site, no one doesn't like it!",
+          author: "Aaron",
+          role: "Attorney",
+          company: "AMC Defense Law",
         },
         {
           quote:
-            "They took the time to understand our unique situation and delivered results that truly made a difference.",
-          author: "Emily Rodriguez",
-          role: "Founder",
-          company: "GreenLeaf Solutions",
+            "We have seen a sharp growth in consultations since we launched.",
+          author: "Dr. Justin West",
+          role: "Board-Certified Plastic Surgeon",
+          company: "Finesse Plastic Surgery",
         },
       ],
     } satisfies TestimonialsContent,
@@ -252,13 +294,13 @@ export const homepageSections: HomepageSection[] = [
     id: "cta",
     type: "cta",
     content: {
-      title: "Ready to Get Started?",
+      title: "The window is open. Not for long.",
       description:
-        "Take the first step today. Schedule a free consultation and discover how we can help you achieve your goals.",
-      ctaText: siteConfig.cta?.primary?.text || "Get Started",
-      ctaHref: siteConfig.cta?.primary?.href || "/contact",
-      secondaryCtaText: siteConfig.cta?.secondary?.text || "Learn More",
-      secondaryCtaHref: siteConfig.cta?.secondary?.href || "/about",
+        "The AI infrastructure you build this year becomes the competitive moat you defend for the next ten. We're taking on a limited number of engagements. Let's talk about yours.",
+      ctaText: "Book a Call",
+      ctaHref: "/contact",
+      secondaryCtaText: "See the Work",
+      secondaryCtaHref: "/work",
     } satisfies CTAContent,
   },
   {
@@ -266,33 +308,47 @@ export const homepageSections: HomepageSection[] = [
     type: "faq",
     content: {
       eyebrow: "FAQ",
-      title: "Frequently Asked Questions",
-      description: "Get answers to the questions we hear most often.",
+      title: "Questions We Get",
       faqs: [
         {
-          question: "What services do you offer?",
+          question: "What does PostScarcity AI actually build?",
           answer:
-            "We offer a comprehensive range of services designed to meet your specific needs. Contact us for a detailed consultation.",
+            "Production AI infrastructure — autonomous agents for lead generation, content production, intelligence gathering, client onboarding, and operational workflows. We also ship marketing sites, custom products, and creative production. Everything runs on our open-source stack (Cover, Forge, Close, Recon) paired with Claude Cowork for agent orchestration.",
         },
         {
-          question: "How do I get started?",
+          question: "What's Claude Cowork?",
           answer:
-            "Simply reach out through our contact form or give us a call, and we'll schedule a free consultation.",
+            "An AI agent orchestration layer that connects to your email, calendar, Slack, CRM, and other tools. It reasons, decides, and acts — handling real operational workflows without constant human prompting. We configure it, write the skills, and keep it running.",
         },
         {
-          question: "What areas do you serve?",
+          question: "How is this different from hiring an AI vendor?",
           answer:
-            "We proudly serve clients across multiple states. Check our service areas page for complete coverage details.",
+            "Vendors rent you capability on their cloud. We install it on yours. Your data stays on your hardware. Your systems belong to you — no subscription cliffs, no vendor lock-in, no API rate limits. When the landscape shifts, you're insulated because you own the infrastructure.",
         },
         {
-          question: "How long does the process take?",
+          question: "How fast can you ship?",
           answer:
-            "Timelines vary depending on your situation. During our initial consultation, we'll provide a realistic timeline.",
+            "Marketing sites in days. Agent systems in weeks. Full company transformation in 1-2 months. We scope fast, build fast, and iterate continuously. No six-month roadmaps.",
         },
         {
-          question: "Do you offer free consultations?",
+          question: "Do I need a technical team?",
           answer:
-            "Yes! We offer complimentary initial consultations to understand your needs and discuss how we can help.",
+            "No. Our systems run without technical oversight. Your team learns to interact with the agents and adjust basic settings. Our care plan handles updates, monitoring, and optimization. Most clients treat it like electricity — it's just on.",
+        },
+        {
+          question: "Is my data secure?",
+          answer:
+            "Self-hosted means your data never leaves your infrastructure. We configure sandboxing, firewall rules, and credential isolation on every engagement. No third-party vendor touches your business data.",
+        },
+        {
+          question: "What does it cost?",
+          answer:
+            "Sites from $2K. Training from $500/session. Agent management from $2K/month. Custom builds from $5K. Full transformation is custom-scoped. We always scope before we quote.",
+        },
+        {
+          question: "Are the tools really open source?",
+          answer:
+            "MIT licensed on GitHub. Fork them, deploy them, modify them. The tools are free. The expertise to deploy and orchestrate them at production scale — that's the service.",
         },
       ],
     } satisfies FAQContent,

@@ -141,7 +141,7 @@ export function FloatingCTA() {
         onClick={() => setIsOpen(!isOpen)}
         className="w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-colors duration-200"
         style={{
-          backgroundColor: isOpen ? '#4b5563' : 'var(--accent)',
+          backgroundColor: isOpen ? 'var(--fg-muted)' : 'var(--accent)',
         }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}

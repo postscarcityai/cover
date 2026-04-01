@@ -13,12 +13,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     // Allows customizing built-in components, e.g. to add styling.
     h1: ({ children }) => (
-      <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
+      <h1 className="text-5xl md:text-6xl font-light mb-8 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
         {children}
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="text-3xl md:text-4xl font-bold mb-6 mt-12 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
+      <h2 className="text-3xl md:text-4xl font-light mb-6 mt-12 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
         {children}
       </h2>
     ),
@@ -112,14 +112,14 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a 
             href={href || '/contact'}
-            className="inline-block font-semibold uppercase tracking-wide px-8 py-4 rounded-full transition-all hover:scale-105"
+            className="inline-block font-semibold uppercase tracking-wide px-8 py-4 transition-all"
             style={{ backgroundColor: 'color-mix(in srgb, var(--accent) 80%, black)', color: 'var(--accent-fg)' }}
           >
             Get Help Now
           </a>
           <a
             href={`tel:${siteConfig.contact.phone.replace(/[^\d]/g, '')}`}
-            className="inline-block border-2 bg-transparent font-semibold uppercase tracking-wide px-8 py-4 rounded-full transition-all hover:scale-105"
+            className="inline-block border-2 bg-transparent font-semibold uppercase tracking-wide px-8 py-4 transition-all"
             style={{ borderColor: 'var(--accent-fg)', color: 'var(--accent-fg)' }}
           >
             Call {siteConfig.contact.phone}

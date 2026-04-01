@@ -42,9 +42,9 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        sora: ["var(--font-sora)", "system-ui", "sans-serif"],
-        montserrat: ["var(--font-montserrat)", "sans-serif"],
-        sans: ["var(--font-montserrat)", "system-ui", "sans-serif"],
+        heading: ["var(--font-open-sans)", "system-ui", "sans-serif"],
+        body: ["var(--font-open-sans)", "system-ui", "sans-serif"],
+        sans: ["var(--font-open-sans)", "system-ui", "sans-serif"],
       },
     },
   },

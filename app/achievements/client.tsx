@@ -3,7 +3,6 @@
 import { ArrowRight, Scale, CheckCircle, Calendar, MapPin, Gavel, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { MagneticButton } from "@/components/magnetic-button"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
@@ -29,7 +28,7 @@ export default function ResultsClient({ data }: Props) {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
+      
 
       <SubpageHero
         eyebrow="Results"
@@ -265,7 +264,7 @@ export default function ResultsClient({ data }: Props) {
               <Button
                 variant={null as any}
                 size="lg"
-                className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full transition-all hover:scale-105"
+                className="font-semibold text-base px-10 py-5 tracking-wide uppercase transition-all"
                 style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
                 onClick={() => (window.location.href = "/contact")}
               >

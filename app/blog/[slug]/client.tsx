@@ -3,7 +3,6 @@
 import { Calendar, Clock, User, ArrowLeft, ArrowRight, Share2 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { BlogCTA } from "@/components/blog-cta"
 import { AudioPlayer } from "@/components/audio-player"
@@ -38,7 +37,7 @@ export function BlogPostClient({ post, mdxContent }: BlogPostClientProps) {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
+      
 
       <article className="pt-32 md:pt-40 pb-16" id="main-content" style={{ backgroundColor: "var(--bg)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">

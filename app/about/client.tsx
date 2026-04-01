@@ -3,7 +3,6 @@
 import { ArrowRight, CheckCircle, MapPin, Scale, Target, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { MagneticButton } from "@/components/magnetic-button"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
@@ -26,7 +25,7 @@ export default function OurFirmClient({ data }: Props) {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
+      
 
       <SubpageHero
         eyebrow={hero.subtitle}
@@ -156,7 +155,7 @@ export default function OurFirmClient({ data }: Props) {
                 Services
               </p>
               <h2
-                className="text-4xl md:text-5xl font-bold mb-8"
+                className="text-4xl md:text-5xl font-light mb-8"
                 style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
               >
                 Our Services
@@ -180,7 +179,7 @@ export default function OurFirmClient({ data }: Props) {
                 Coverage
               </p>
               <h2
-                className="text-4xl md:text-5xl font-bold mb-8"
+                className="text-4xl md:text-5xl font-light mb-8"
                 style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
               >
                 Where We Serve
@@ -262,7 +261,7 @@ export default function OurFirmClient({ data }: Props) {
                 <Button
                   variant={null as any}
                   size="lg"
-                  className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full transition-all hover:scale-105"
+                  className="font-semibold text-base px-10 py-5 tracking-wide uppercase transition-all"
                   style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
                   onClick={() => (window.location.href = "/contact")}
                 >

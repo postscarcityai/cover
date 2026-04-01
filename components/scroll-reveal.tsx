@@ -2,9 +2,13 @@
 
 import { useEffect, useRef } from "react"
 
+// Track SplitText instances for cleanup/revert
+const splitInstances: any[] = []
+
 export function ScrollRevealInit() {
   const gsapRef = useRef<any>(null)
   const ScrollTriggerRef = useRef<any>(null)
+  const SplitTextRef = useRef<any>(null)
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -19,15 +23,20 @@ export function ScrollRevealInit() {
     const run = () => {
       const gsap = gsapRef.current
       const ScrollTrigger = ScrollTriggerRef.current
+      const SplitText = SplitTextRef.current
       if (!gsap || !ScrollTrigger) return
 
       ScrollTrigger.getAll().forEach((t: any) => t.kill())
+      splitInstances.forEach((s) => s.revert?.())
+      splitInstances.length = 0
 
       initFadeUp(gsap, ScrollTrigger)
       initFadeIn(gsap, ScrollTrigger)
       initScale(gsap, ScrollTrigger)
       initStagger(gsap, ScrollTrigger)
-      initWords(gsap, ScrollTrigger)
+      initWords(gsap, ScrollTrigger, SplitText)
+      initChars(gsap, ScrollTrigger, SplitText)
+      initLines(gsap, ScrollTrigger, SplitText)
       initParallax(gsap, ScrollTrigger)
       initScrollProgress(gsap, ScrollTrigger)
 
@@ -44,8 +53,9 @@ export function ScrollRevealInit() {
       Promise.all([
         import("gsap").catch(() => null),
         import("gsap/ScrollTrigger").catch(() => null),
+        import("gsap/SplitText").catch(() => null),
       ])
-        .then(([gsapModule, stModule]) => {
+        .then(([gsapModule, stModule, splitModule]) => {
           if (!gsapModule || !stModule) {
             showAll()
             return
@@ -57,6 +67,12 @@ export function ScrollRevealInit() {
 
           gsapRef.current = gsap
           ScrollTriggerRef.current = ScrollTrigger
+
+          if (splitModule) {
+            const SplitText = (splitModule as any).default || splitModule
+            gsap.registerPlugin(SplitText)
+            SplitTextRef.current = SplitText
+          }
 
           requestAnimationFrame(() => run())
         })
@@ -70,6 +86,8 @@ export function ScrollRevealInit() {
       if (ScrollTriggerRef.current) {
         ScrollTriggerRef.current.getAll().forEach((t: any) => t.kill())
       }
+      splitInstances.forEach((s) => s.revert?.())
+      splitInstances.length = 0
     }
   }, [])
 
@@ -116,12 +134,37 @@ function animateElementsInViewport(gsap: any) {
 
   document.querySelectorAll('[data-reveal="words"]').forEach((el) => {
     if (!isInViewport(el)) return
-    const inners = el.querySelectorAll(".word-inner")
+    const inners = el.querySelectorAll(".word-inner, div")
     gsap.to(inners, {
       y: "0%",
       duration: 0.8,
       ease: "power3.out",
       stagger: 0.05,
+    })
+  })
+
+  document.querySelectorAll('[data-reveal="chars"]').forEach((el) => {
+    if (!isInViewport(el)) return
+    const chars = el.querySelectorAll(".char")
+    gsap.to(chars, {
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      duration: 0.6,
+      ease: "power3.out",
+      stagger: 0.02,
+    })
+  })
+
+  document.querySelectorAll('[data-reveal="lines"]').forEach((el) => {
+    if (!isInViewport(el)) return
+    const lines = el.querySelectorAll(".line")
+    gsap.to(lines, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out",
+      stagger: 0.1,
     })
   })
 }
@@ -210,33 +253,198 @@ function initStagger(gsap: any, ScrollTrigger: any) {
   })
 }
 
-function initWords(gsap: any, ScrollTrigger: any) {
+/**
+ * Word-by-word reveal using SplitText (with manual fallback)
+ */
+function initWords(gsap: any, ScrollTrigger: any, SplitText: any) {
   document.querySelectorAll('[data-reveal="words"]').forEach((el) => {
     const htmlEl = el as HTMLElement
-    const text = el.textContent || ""
-    const words = text.split(/\s+/).filter(Boolean)
 
-    el.innerHTML = words
-      .map(
-        (word) =>
-          `<span class="word"><span class="word-inner">${word}</span></span>`
-      )
-      .join(" ")
+    if (SplitText) {
+      const split = new SplitText(el, {
+        type: "words",
+        wordsClass: "word",
+      })
+      splitInstances.push(split)
 
-    // Container can be visible now -- word-inner translateY(110%) handles hiding
+      // Wrap each word's content in an inner span for the clip/translate reveal
+      split.words.forEach((word: HTMLElement) => {
+        word.style.overflow = "hidden"
+        word.style.display = "inline-block"
+        word.style.paddingBottom = "0.15em"
+        word.style.marginBottom = "-0.15em"
+        const inner = document.createElement("span")
+        inner.className = "word-inner"
+        inner.style.display = "inline-block"
+        inner.style.transform = "translateY(110%)"
+        while (word.firstChild) inner.appendChild(word.firstChild)
+        word.appendChild(inner)
+      })
+
+      htmlEl.style.opacity = "1"
+
+      const inners = el.querySelectorAll(".word-inner")
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 85%",
+        once: true,
+        onEnter: () => {
+          gsap.to(inners, {
+            y: "0%",
+            duration: 1,
+            ease: "power3.out",
+            stagger: 0.05,
+          })
+        },
+      })
+    } else {
+      // Manual fallback (original implementation)
+      const text = el.textContent || ""
+      const words = text.split(/\s+/).filter(Boolean)
+      el.innerHTML = words
+        .map(
+          (word) =>
+            `<span class="word"><span class="word-inner">${word}</span></span>`
+        )
+        .join(" ")
+
+      htmlEl.style.opacity = "1"
+
+      const inners = el.querySelectorAll(".word-inner")
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 85%",
+        once: true,
+        onEnter: () => {
+          gsap.to(inners, {
+            y: "0%",
+            duration: 1,
+            ease: "power3.out",
+            stagger: 0.05,
+          })
+        },
+      })
+    }
+  })
+}
+
+/**
+ * Character-by-character reveal with 3D rotateX flip using SplitText
+ */
+function initChars(gsap: any, ScrollTrigger: any, SplitText: any) {
+  if (!SplitText) {
+    // Fallback: treat as fade-up
+    document.querySelectorAll('[data-reveal="chars"]').forEach((el) => {
+      const htmlEl = el as HTMLElement
+      htmlEl.style.opacity = "0"
+      htmlEl.style.transform = "translateY(60px)"
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 85%",
+        once: true,
+        onEnter: () => {
+          gsap.to(el, { opacity: 1, y: 0, duration: 1, ease: "power3.out" })
+        },
+      })
+    })
+    return
+  }
+
+  document.querySelectorAll('[data-reveal="chars"]').forEach((el) => {
+    const htmlEl = el as HTMLElement
+
+    const split = new SplitText(el, {
+      type: "chars,words",
+      charsClass: "char",
+      wordsClass: "word",
+    })
+    splitInstances.push(split)
+
+    // Set initial state on each char
+    gsap.set(split.chars, {
+      opacity: 0,
+      y: 40,
+      rotateX: -90,
+      transformOrigin: "50% 50% -20px",
+    })
+
     htmlEl.style.opacity = "1"
 
-    const inners = el.querySelectorAll(".word-inner")
     ScrollTrigger.create({
       trigger: el,
       start: "top 85%",
       once: true,
       onEnter: () => {
-        gsap.to(inners, {
-          y: "0%",
-          duration: 1,
+        gsap.to(split.chars, {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          duration: 0.8,
           ease: "power3.out",
-          stagger: 0.05,
+          stagger: 0.025,
+        })
+      },
+    })
+  })
+}
+
+/**
+ * Line-by-line reveal using SplitText
+ */
+function initLines(gsap: any, ScrollTrigger: any, SplitText: any) {
+  if (!SplitText) {
+    // Fallback: treat as fade-up
+    document.querySelectorAll('[data-reveal="lines"]').forEach((el) => {
+      const htmlEl = el as HTMLElement
+      htmlEl.style.opacity = "0"
+      htmlEl.style.transform = "translateY(60px)"
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 85%",
+        once: true,
+        onEnter: () => {
+          gsap.to(el, { opacity: 1, y: 0, duration: 1, ease: "power3.out" })
+        },
+      })
+    })
+    return
+  }
+
+  document.querySelectorAll('[data-reveal="lines"]').forEach((el) => {
+    const htmlEl = el as HTMLElement
+
+    const split = new SplitText(el, {
+      type: "lines",
+      linesClass: "line",
+    })
+    splitInstances.push(split)
+
+    // Wrap each line in a clip container for the masked reveal
+    split.lines.forEach((line: HTMLElement) => {
+      const wrapper = document.createElement("div")
+      wrapper.style.overflow = "hidden"
+      line.parentNode?.insertBefore(wrapper, line)
+      wrapper.appendChild(line)
+    })
+
+    gsap.set(split.lines, {
+      opacity: 0,
+      y: "100%",
+    })
+
+    htmlEl.style.opacity = "1"
+
+    ScrollTrigger.create({
+      trigger: el,
+      start: "top 85%",
+      once: true,
+      onEnter: () => {
+        gsap.to(split.lines, {
+          opacity: 1,
+          y: "0%",
+          duration: 0.9,
+          ease: "power3.out",
+          stagger: 0.08,
         })
       },
     })

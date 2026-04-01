@@ -39,7 +39,7 @@ export function BlogCTA({
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 text-center">
         <div data-reveal="fade-up">
           <h2
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8"
+            className="text-4xl md:text-5xl lg:text-6xl font-light mb-8"
             style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}
           >
             {title}
@@ -55,7 +55,7 @@ export function BlogCTA({
               <Button 
                 variant={null as any}
                 size="lg"
-                className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full transition-all hover:scale-105"
+                className="font-semibold text-base px-10 py-5 tracking-wide uppercase transition-all"
                 style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }}
                 onClick={handleScheduleClick}
               >

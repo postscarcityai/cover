@@ -7,7 +7,6 @@ import { usePageTracking, useScrollTracking } from "@/lib/analytics-hooks"
 import { siteConfig } from "@/site.config"
 import { Button } from "@/components/ui/button"
 import { MagneticButton } from "@/components/magnetic-button"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
@@ -32,7 +31,7 @@ export default function TeamMemberClient({ data }: Props) {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "var(--bg)" }}>
-      <Navigation />
+      
 
       <section
         className="relative min-h-[60vh] flex items-end overflow-hidden"
@@ -78,7 +77,7 @@ export default function TeamMemberClient({ data }: Props) {
               </p>
               <h1
                 data-reveal="words"
-                className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[0.95] tracking-tight mb-4"
+                className="text-4xl sm:text-5xl md:text-6xl font-light leading-[0.95] tracking-tight mb-4"
                 style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
               >
                 {hero.name}
@@ -116,7 +115,7 @@ export default function TeamMemberClient({ data }: Props) {
                   <Button
                     variant={null as any}
                     size="lg"
-                    className="font-semibold tracking-wide uppercase rounded-full transition-all hover:scale-105"
+                    className="font-semibold tracking-wide uppercase transition-all"
                     style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
                     onClick={() => (window.location.href = "/contact")}
                   >
@@ -270,7 +269,7 @@ export default function TeamMemberClient({ data }: Props) {
         <SubpageSection background="gradient">
           <div className="text-center max-w-4xl mx-auto" data-reveal="fade-up">
             <h2
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8"
+              className="text-4xl md:text-5xl lg:text-6xl font-light mb-8"
               style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
             >
               {cta.title}
@@ -295,7 +294,7 @@ export default function TeamMemberClient({ data }: Props) {
                 <Button
                   variant={null as any}
                   size="lg"
-                  className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full transition-all hover:scale-105"
+                  className="font-semibold text-base px-10 py-5 tracking-wide uppercase transition-all"
                   style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
                   onClick={() => (window.location.href = "/contact")}
                 >

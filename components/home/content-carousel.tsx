@@ -174,7 +174,7 @@ export function ContentCarousel({ posts, className = "" }: ContentCarouselProps)
     >
       <div className="mx-4 sm:mx-6 lg:px-8 mb-8">
         <h2
-          className="text-3xl md:text-4xl font-bold mb-2"
+          className="text-3xl md:text-4xl font-light mb-2"
           style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent)' }}
         >
           Latest from the {siteConfig.blog.title}

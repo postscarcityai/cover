@@ -1,10 +1,16 @@
 "use client"
 
-import { ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import dynamic from "next/dynamic"
 import { MagneticButton } from "@/components/magnetic-button"
+import { FillButton } from "@/components/ui/fill-button"
+import { CTALink } from "@/components/ui/cta-link"
 import { trackScheduleConsultation } from "@/lib/analytics"
 import type { CTAContent } from "@/app/data"
+
+const CloudShader = dynamic(
+  () => import("@/components/cloud-shader").then((m) => m.CloudShader),
+  { ssr: false }
+)
 
 interface CTASectionProps {
   content: CTAContent
@@ -23,15 +29,16 @@ export function CTASection({ content, className = "" }: CTASectionProps) {
 
   return (
     <section
-      className={`py-24 md:py-40 ${className}`}
-      style={{
-        background: "linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%)",
-      }}
+      className={`relative py-24 md:py-40 overflow-hidden ${className}`}
+      style={{ backgroundColor: "#FAFAFA" }}
     >
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
+      {/* Volumetric cloud shader background */}
+      <CloudShader />
+
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
         <h2
           data-reveal="words"
-          className="text-4xl md:text-5xl lg:text-7xl font-bold mb-8"
+          className="text-4xl md:text-5xl lg:text-7xl font-light mb-8 font-heading"
           style={{ color: "var(--fg)" }}
         >
           {content.title}
@@ -45,31 +52,16 @@ export function CTASection({ content, className = "" }: CTASectionProps) {
             {content.description}
           </p>
         )}
-        <div data-reveal="fade-up" className="flex flex-col sm:flex-row gap-4 items-start">
+        <div data-reveal="fade-up" className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
           <MagneticButton>
-            <Button
-              variant={null as any}
-              size="lg"
-              className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full transition-all hover:scale-105"
-              style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
-              onClick={handlePrimaryClick}
-            >
+            <FillButton onClick={handlePrimaryClick}>
               {content.ctaText}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            </FillButton>
           </MagneticButton>
           {content.secondaryCtaText && content.secondaryCtaHref && (
-            <MagneticButton>
-              <Button
-                variant={null as any}
-                size="lg"
-                className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full border transition-all hover:scale-105"
-                style={{ borderColor: "var(--border)", color: "var(--fg-muted)", backgroundColor: "transparent" }}
-                onClick={handleSecondaryClick}
-              >
-                {content.secondaryCtaText}
-              </Button>
-            </MagneticButton>
+            <CTALink onClick={handleSecondaryClick} muted>
+              {content.secondaryCtaText}
+            </CTALink>
           )}
         </div>
       </div>

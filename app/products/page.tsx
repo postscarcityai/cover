@@ -47,8 +47,6 @@ const products = [
 export default function ProductsPage() {
   return (
     <div className="min-h-screen">
-      
-
       <SubpageHero
         title="Products"
         description="Four production-ready products, MIT licensed. Every tool PostScarcity AI uses to build for clients is open source. Clone them and build. Or let us deploy them for you."
@@ -56,6 +54,8 @@ export default function ProductsPage() {
           { label: "Home", href: "/" },
           { label: "Products" },
         ]}
+        background="white"
+        goldAccent="productsLattice"
       />
 
       <main id="main-content">

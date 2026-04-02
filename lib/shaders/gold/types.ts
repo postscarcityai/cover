@@ -93,7 +93,7 @@ export type GoldPaintShape =
       dualMotifScale?: number
     }
 
-export type GoldPaintPreset = "heroTriangle" | "subpagePolygon"
+export type GoldPaintPreset = "heroTriangle" | "subpagePolygon" | "productsLattice"
 
 export interface GoldPaintRuntimeOptions {
   /** pos = posScale * uv + posOffset (uv from centered frag coords / width). */
@@ -150,6 +150,31 @@ export const GOLD_PAINT_PRESETS: Record<
       glowScale: 2.75,
       band: [26.0, 0, 0],
       verticalFadeStrength: 0.38,
+    },
+  },
+  /**
+   * Same lattice language as services, tuned for catalog density: slightly tighter cells,
+   * counter-rotation, calmer drift, bias toward content column.
+   */
+  productsLattice: {
+    shape: {
+      kind: "repeatLattice",
+      period: [0.33, 0.37],
+      motif: [0.31, 0.31],
+      round: 0.04,
+      drift: 0.1,
+      stagger: 0.5,
+      rotation: -0.14,
+      dualLayer: true,
+      dualBlend: 0.13,
+      dualMotifScale: 0.84,
+    },
+    options: {
+      posScale: 4.25,
+      posOffset: [-0.03, 0.035],
+      glowScale: 2.72,
+      band: [26.0, 0, 0],
+      verticalFadeStrength: 0.44,
     },
   },
 }

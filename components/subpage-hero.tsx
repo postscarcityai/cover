@@ -4,7 +4,10 @@ import { GoldPaintCanvas } from "@/components/gold-paint/gold-paint-canvas"
 import type { GoldPaintPreset } from "@/lib/shaders/gold/types"
 
 /** Subpage hero gold accents (see `GOLD_PAINT_PRESETS` in lib/shaders/gold/types). */
-export type SubpageHeroGoldAccent = Extract<GoldPaintPreset, "subpagePolygon">
+export type SubpageHeroGoldAccent = Extract<
+  GoldPaintPreset,
+  "subpagePolygon" | "productsLattice"
+>
 
 interface Breadcrumb {
   label: string

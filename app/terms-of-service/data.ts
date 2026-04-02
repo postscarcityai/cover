@@ -13,7 +13,7 @@ export interface TermsSection {
 export interface TermsOfServiceData {
   effectiveDate: string
   lastUpdated: string
-  hero: { eyebrow: string; title: string; breadcrumbs: Array<{ label: string; href?: string }> }
+  hero: { title: string; breadcrumbs: Array<{ label: string; href?: string }> }
   importantNotice: { title: string; content: string }
   sections: TermsSection[]
   contactSection: { title: string; intro: string }
@@ -24,7 +24,6 @@ export function getTermsOfServiceData(): TermsOfServiceData {
     effectiveDate: "January 1, 2025",
     lastUpdated: "January 1, 2025",
     hero: {
-      eyebrow: "Legal",
       title: "Terms of Service",
       breadcrumbs: [{ label: "Home", href: "/" }, { label: "Terms of Service" }],
     },

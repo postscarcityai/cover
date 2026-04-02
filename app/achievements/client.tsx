@@ -31,7 +31,6 @@ export default function ResultsClient({ data }: Props) {
       
 
       <SubpageHero
-        eyebrow="Results"
         title={hero.title}
         description={hero.subtitle}
         breadcrumbs={[

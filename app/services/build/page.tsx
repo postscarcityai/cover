@@ -36,7 +36,6 @@ export default function BuildPage() {
       
 
       <SubpageHero
-        eyebrow="Custom Work"
         title="Build & Deploy"
         description="You need something that doesn't exist yet. An app, a pipeline, an intelligence portal. We scope it, build it, deliver it — then stay involved for 30 days."
         breadcrumbs={[

@@ -24,7 +24,6 @@ export default function SitePage() {
       
 
       <SubpageHero
-        eyebrow="Quick Win"
         title="Marketing Site"
         description="A considered marketing site, not a template someone cloned and forgot about. Built on Cover — our production-ready platform — configured for your business and live in one week."
         breadcrumbs={[

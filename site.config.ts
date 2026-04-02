@@ -215,7 +215,7 @@ export const siteConfig = {
   // Hero Section Configuration
   hero: {
     title: "The companies that move first will own the next decade.",
-    subtitle: "We build the AI infrastructure that separates leaders from everyone else. Autonomous agents. Self-hosted intelligence. Production systems that compound while your competitors are still evaluating vendors.",
+    subtitle: "We help you build the AI infrastructure ahead of the curve. Autonomous agents. Crafted Design. Always a human in the loop.",
     ctaPrimary: "Book a Call",
     ctaSecondary: "See the Work"
   },

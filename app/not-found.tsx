@@ -21,7 +21,6 @@ export default function NotFound() {
 
       <main className="flex-1" id="main-content">
         <SubpageHero
-          eyebrow={hero.eyebrow}
           title={hero.title}
           description={hero.description}
           align={hero.align}

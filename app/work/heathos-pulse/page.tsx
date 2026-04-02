@@ -12,7 +12,6 @@ export default function HeathosPulsePage() {
       
 
       <SubpageHero
-        eyebrow="Case Study"
         title="Heathos Pulse"
         description="Monthly healthcare newsletter for Heathos. Word doc in, published same day."
         breadcrumbs={[

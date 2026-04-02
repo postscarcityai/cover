@@ -12,7 +12,6 @@ export default function VibeJamPage() {
       
 
       <SubpageHero
-        eyebrow="Case Study"
         title="Vibe Jam"
         description="Weekly AI creative workshops. Images, music, video, vibe coding. Where PostScarcity AI crystallized as a company."
         breadcrumbs={[

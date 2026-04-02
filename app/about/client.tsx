@@ -28,7 +28,6 @@ export default function OurFirmClient({ data }: Props) {
       
 
       <SubpageHero
-        eyebrow={hero.subtitle}
         title={hero.title}
         description={hero.location}
         breadcrumbs={[

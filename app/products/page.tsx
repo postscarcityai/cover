@@ -50,7 +50,6 @@ export default function ProductsPage() {
       
 
       <SubpageHero
-        eyebrow="Open Source"
         title="Products"
         description="Four production-ready products, MIT licensed. Every tool PostScarcity AI uses to build for clients is open source. Clone them and build. Or let us deploy them for you."
         breadcrumbs={[

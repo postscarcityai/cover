@@ -12,7 +12,6 @@ export default function HeathosMoonPage() {
       
 
       <SubpageHero
-        eyebrow="Case Study"
         title="Heathos Moon"
         description="National lead intelligence engine for independent insurance agencies. Local AI, zero cloud cost, nationwide coverage."
         breadcrumbs={[

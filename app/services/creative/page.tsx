@@ -23,7 +23,6 @@ export default function CreativePage() {
       
 
       <SubpageHero
-        eyebrow="Creative"
         title="Creative Production"
         description="Brand, design, video, and marketing sites — produced with AI and delivered with care."
         breadcrumbs={[

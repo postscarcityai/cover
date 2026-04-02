@@ -34,7 +34,6 @@ export default function OpenClawPage() {
       
 
       <SubpageHero
-        eyebrow="Core Service"
         title="Agent Setup & Management"
         description="We install quiet, capable AI agents — OpenClaw, Claude Cowork, or custom setups — that handle the operational weight so you have room to think. We configure them, write the skills, and keep them tuned."
         breadcrumbs={[

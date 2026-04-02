@@ -113,7 +113,6 @@ export default function WorkPage() {
       
 
       <SubpageHero
-        eyebrow="Portfolio"
         title="Our Work"
         description="Selected work. Every engagement is a partnership — here is what we have built together."
         breadcrumbs={[

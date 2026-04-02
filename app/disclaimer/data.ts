@@ -3,7 +3,7 @@ import { siteConfig } from "@/site.config"
 export interface DisclaimerData {
   effectiveDate: string
   lastUpdated: string
-  hero: { eyebrow: string; title: string; breadcrumbs: Array<{ label: string; href?: string }> }
+  hero: { title: string; breadcrumbs: Array<{ label: string; href?: string }> }
   sections: Array<{
     id: string
     title: string
@@ -27,7 +27,6 @@ export function getDisclaimerData(): DisclaimerData {
     effectiveDate: disclaimer?.effectiveDate ?? "January 1, 2025",
     lastUpdated: disclaimer?.lastUpdated ?? "January 1, 2025",
     hero: {
-      eyebrow: "Legal",
       title: "Website Disclaimer",
       breadcrumbs: [{ label: "Home", href: "/" }, { label: "Disclaimer" }],
     },

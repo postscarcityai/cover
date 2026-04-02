@@ -1,7 +1,7 @@
 import { siteConfig } from "@/site.config"
 
 export interface AccessibilityStatementData {
-  hero: { eyebrow: string; title: string; breadcrumbs: Array<{ label: string; href?: string }> }
+  hero: { title: string; breadcrumbs: Array<{ label: string; href?: string }> }
   intro: string
   sections: Array<{
     title: string
@@ -14,7 +14,6 @@ export interface AccessibilityStatementData {
 export function getAccessibilityStatementData(): AccessibilityStatementData {
   return {
     hero: {
-      eyebrow: "Legal",
       title: "Accessibility Statement",
       breadcrumbs: [{ label: "Home", href: "/" }, { label: "Accessibility Statement" }],
     },

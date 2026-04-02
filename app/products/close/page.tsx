@@ -11,7 +11,6 @@ export default function ClosePage() {
       
 
       <SubpageHero
-        eyebrow="Product"
         title="Close"
         description="Contract CRM built for agencies and professional services. Track deals, generate documents, manage the pipeline. Lightweight by design."
         breadcrumbs={[

@@ -41,7 +41,6 @@ export default function TrainingPage() {
       
 
       <SubpageHero
-        eyebrow="Entry Point"
         title="AI Training"
         description="Hands-on sessions where your team leaves with something built — not a certificate, not a slide deck. Everyone walks away with real skills and a working project."
         breadcrumbs={[

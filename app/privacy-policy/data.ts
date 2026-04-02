@@ -13,7 +13,7 @@ export interface PrivacyPolicySection {
 export interface PrivacyPolicyData {
   effectiveDate: string
   lastUpdated: string
-  hero: { eyebrow: string; title: string; breadcrumbs: Array<{ label: string; href?: string }> }
+  hero: { title: string; breadcrumbs: Array<{ label: string; href?: string }> }
   sections: PrivacyPolicySection[]
   contactSection: {
     title: string
@@ -27,7 +27,6 @@ export function getPrivacyPolicyData(): PrivacyPolicyData {
     effectiveDate: "January 1, 2025",
     lastUpdated: "October 16, 2025",
     hero: {
-      eyebrow: "Legal",
       title: "Privacy Policy",
       breadcrumbs: [{ label: "Home", href: "/" }, { label: "Privacy Policy" }],
     },

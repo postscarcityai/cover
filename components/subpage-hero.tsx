@@ -1,12 +1,17 @@
 "use client"
 
+import { GoldPaintCanvas } from "@/components/gold-paint/gold-paint-canvas"
+import type { GoldPaintPreset } from "@/lib/shaders/gold/types"
+
+/** Subpage hero gold accents (see `GOLD_PAINT_PRESETS` in lib/shaders/gold/types). */
+export type SubpageHeroGoldAccent = Extract<GoldPaintPreset, "subpagePolygon">
+
 interface Breadcrumb {
   label: string
   href?: string
 }
 
 interface SubpageHeroProps {
-  eyebrow?: string
   title: string
   description?: string
   backgroundImage?: string
@@ -15,10 +20,13 @@ interface SubpageHeroProps {
   align?: "left" | "center"
   children?: React.ReactNode
   className?: string
+  /** `white` uses the theme paper color (`--background`), usually pure white in light mode. */
+  background?: "theme" | "white"
+  /** Full-viewport background gold (same bleed model as the home hero — `inset-0` canvas). */
+  goldAccent?: SubpageHeroGoldAccent
 }
 
 export function SubpageHero({
-  eyebrow,
   title,
   description,
   backgroundImage,
@@ -27,20 +35,31 @@ export function SubpageHero({
   align = "left",
   children,
   className = "",
+  goldAccent,
+  background = "theme",
 }: SubpageHeroProps) {
-  const minHeight = size === "compact" ? "min-h-[40vh]" : "min-h-[60vh]"
+  const minHeight =
+    goldAccent != null
+      ? "min-h-[100dvh]"
+      : size === "compact"
+        ? "min-h-[40vh]"
+        : "min-h-[60vh]"
   const textAlign = align === "center" ? "text-center items-center" : "items-start"
+  const isPaper = background === "white"
 
   return (
     <section
       className={`relative ${minHeight} flex items-end overflow-hidden ${className}`}
-      style={{ backgroundColor: "var(--bg)" }}
+      style={{
+        backgroundColor: isPaper ? "hsl(var(--background))" : "var(--bg)",
+      }}
     >
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 40%, color-mix(in srgb, var(--accent) 6%, transparent), transparent)",
+          background: isPaper
+            ? "radial-gradient(ellipse 55% 45% at 88% 32%, color-mix(in srgb, var(--accent) 5%, transparent), transparent)"
+            : "radial-gradient(ellipse 80% 60% at 50% 40%, color-mix(in srgb, var(--accent) 6%, transparent), transparent)",
         }}
       />
 
@@ -50,6 +69,15 @@ export function SubpageHero({
           className="absolute inset-0 bg-cover bg-center opacity-15"
           style={{ backgroundImage: `url(${backgroundImage})` }}
         />
+      )}
+
+      {goldAccent && (
+        <div
+          className="pointer-events-none absolute inset-0 z-[1] size-full overflow-hidden"
+          aria-hidden
+        >
+          <GoldPaintCanvas preset={goldAccent} dprCap={2} />
+        </div>
       )}
 
       <div
@@ -82,16 +110,6 @@ export function SubpageHero({
               ))}
             </ol>
           </nav>
-        )}
-
-        {eyebrow && (
-          <p
-            data-reveal="fade-up"
-            className="text-xs tracking-[0.3em] uppercase mb-6"
-            style={{ color: "var(--accent)" }}
-          >
-            {eyebrow}
-          </p>
         )}
 
         <h1

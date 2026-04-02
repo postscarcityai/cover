@@ -1,7 +1,7 @@
 import { siteConfig } from "@/site.config"
 
 export interface NonDiscriminationData {
-  hero: { eyebrow: string; title: string; breadcrumbs: Array<{ label: string; href?: string }> }
+  hero: { title: string; breadcrumbs: Array<{ label: string; href?: string }> }
   intro: string
   sections: Array<{
     title: string
@@ -14,7 +14,6 @@ export interface NonDiscriminationData {
 export function getNonDiscriminationData(): NonDiscriminationData {
   return {
     hero: {
-      eyebrow: "Legal",
       title: "Non-Discrimination Statement",
       breadcrumbs: [{ label: "Home", href: "/" }, { label: "Non-Discrimination Statement" }],
     },

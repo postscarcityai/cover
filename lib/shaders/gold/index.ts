@@ -1,0 +1,8 @@
+export * from "./shape-kinds"
+export * from "./types"
+export { buildGoldPaintFragmentSource } from "./build-fragment-source"
+export { GOLD_PAINT_VERTEX_SHADER } from "./vertex-shader"
+export { mergeRuntimeDefaults, shapeToUniformVectors } from "./shape-to-uniforms"
+export type { GoldUniformVectors } from "./shape-to-uniforms"
+export { useGoldWebGL } from "./use-gold-webgl"
+export type { UseGoldWebGLOptions } from "./use-gold-webgl"

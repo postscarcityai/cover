@@ -53,7 +53,6 @@ export default function ArticlesPage() {
       
       <main id="main-content">
         <SubpageHero
-          eyebrow="Articles"
           title="From the Field"
           description="Deep dives into the systems we build, the tools we use, and the lessons we've learned building AI infrastructure for real businesses."
           breadcrumbs={[

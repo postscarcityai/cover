@@ -11,7 +11,6 @@ export default function ReconPage() {
       
 
       <SubpageHero
-        eyebrow="Product"
         title="Recon"
         description="Lead intelligence engine. Scrapes public sources, enriches contact data, scores and ranks prospects. Local AI inference supported."
         breadcrumbs={[

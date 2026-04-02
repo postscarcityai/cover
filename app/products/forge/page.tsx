@@ -11,7 +11,6 @@ export default function ForgePage() {
       
 
       <SubpageHero
-        eyebrow="Product"
         title="Forge"
         description="AI image and video generation platform. An MCP server with 21 tools that plugs directly into AI coding agents."
         breadcrumbs={[

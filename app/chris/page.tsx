@@ -11,7 +11,6 @@ export default function ChrisPage() {
       
       <main id="main-content">
         <SubpageHero
-          eyebrow="Founder"
           title="Meet Chris"
           description="Chris has been building with AI since before it was cool. Now he builds AI agents and infrastructure for businesses that want the real thing — not a chatbot, not a SaaS subscription. Hands-on, in-person, and obsessed with making it actually work."
           breadcrumbs={[

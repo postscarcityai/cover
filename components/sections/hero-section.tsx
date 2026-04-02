@@ -1,16 +1,11 @@
 "use client"
 
-import dynamic from "next/dynamic"
+import { GoldPaintCanvas } from "@/components/gold-paint/gold-paint-canvas"
 import { MagneticButton } from "@/components/magnetic-button"
 import { FillButton } from "@/components/ui/fill-button"
 import { CTALink } from "@/components/ui/cta-link"
 import { trackScheduleConsultation } from "@/lib/analytics"
 import type { HeroContent } from "@/app/data"
-
-const HeroShader = dynamic(
-  () => import("@/components/hero-shader").then((m) => m.HeroShader),
-  { ssr: false }
-)
 
 interface HeroSectionProps {
   content: HeroContent
@@ -32,20 +27,11 @@ export function HeroSection({ content, className = "" }: HeroSectionProps) {
   return (
     <section
       data-hero-section
-      className={`relative h-[100dvh] flex items-center overflow-hidden ${className}`}
-      style={{ backgroundColor: "#ffffff" }}
+      className={`relative h-[100dvh] flex items-center overflow-hidden bg-background ${className}`}
     >
-      {/* WebGL shader — square canvas, pushed right so it bleeds off edge */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          top: "5%",
-          left: "35%",
-          width: "min(140vw, 140vh)",
-          height: "min(140vw, 140vh)",
-        }}
-      >
-        <HeroShader />
+      {/* WebGL shader — full viewport behind content */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none">
+        <GoldPaintCanvas preset="heroTriangle" />
       </div>
 
       {/* Content */}

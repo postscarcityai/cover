@@ -11,7 +11,6 @@ export default function CoverPage() {
       
 
       <SubpageHero
-        eyebrow="Product"
         title="Cover"
         description="The marketing site platform under every PostScarcity AI client site. One config file. Six themes. Ready in a day."
         breadcrumbs={[

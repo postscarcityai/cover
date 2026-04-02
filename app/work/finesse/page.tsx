@@ -12,7 +12,6 @@ export default function FinessePage() {
       
 
       <SubpageHero
-        eyebrow="Case Study"
         title="Finesse Plastic Surgery"
         description="Dr. Justin West, board-certified plastic surgeon in Orange County. Breast augmentation, breast lift, body contouring. Elegant without being cold."
         breadcrumbs={[

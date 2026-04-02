@@ -18,7 +18,6 @@ interface BlogClientProps {
   featuredPosts: BlogPost[]
   data: {
     hero: {
-      eyebrow: string
       title: string
       description: string
       breadcrumbs: readonly { label: string; href?: string }[]
@@ -73,7 +72,6 @@ export function BlogClient({ allPosts, featuredPosts, data }: BlogClientProps) {
       
 
       <SubpageHero
-        eyebrow={data.hero.eyebrow}
         title={data.hero.title}
         description={data.hero.description}
         breadcrumbs={[...data.hero.breadcrumbs]}

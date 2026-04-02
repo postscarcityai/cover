@@ -55,7 +55,6 @@ export default function TransformPage() {
       
 
       <SubpageHero
-        eyebrow="Flagship Service"
         title="Company Transformation"
         description="Most AI projects fail because they chase novelty. Real transformation is quieter — rebuilding how work gets done, piece by piece, until AI is simply infrastructure."
         breadcrumbs={[

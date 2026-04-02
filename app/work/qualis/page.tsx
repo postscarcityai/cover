@@ -12,7 +12,6 @@ export default function QualisPage() {
       
 
       <SubpageHero
-        eyebrow="Case Study"
         title="Qualis"
         description="Confidential. Defense technology. Three acquisitions. One unified intelligence portal."
         breadcrumbs={[

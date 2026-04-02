@@ -1,6 +1,5 @@
 export const notFoundData = {
   hero: {
-    eyebrow: "Page Not Found",
     title: "Looks like this page took a detour.",
     description:
       "The page you're looking for doesn't exist or may have moved. No worries — let's get you back on track.",

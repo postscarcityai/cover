@@ -73,8 +73,7 @@ export default function NonDiscriminationStatementPage() {
   return (
     <div className="min-h-screen">
       
-      <SubpageHero
-        eyebrow={data.hero.eyebrow}
+        <SubpageHero
         title={data.hero.title}
         size="compact"
         breadcrumbs={data.hero.breadcrumbs}

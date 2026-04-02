@@ -12,7 +12,6 @@ export default function AMCDefenseLawPage() {
       
 
       <SubpageHero
-        eyebrow="Case Study"
         title="AMC Defense Law"
         description="Board-certified criminal defense attorney in South Florida. Federal noir aesthetic. A site that sounds like the attorney, not a legal directory."
         breadcrumbs={[

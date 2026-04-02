@@ -1,6 +1,5 @@
 export const blogData = {
   hero: {
-    eyebrow: "Insights & Updates",
     title: "Our Blog",
     description:
       "Stay informed with the latest news, insights, and expert perspectives on the topics that matter most.",

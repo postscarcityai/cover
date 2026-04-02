@@ -1,8 +1,9 @@
-import { resolveTokens } from "@/theme.config"
+import { defaultTokens, resolveTokens } from "@/theme.config"
 import { siteConfig } from "@/site.config"
 
 export function ThemeInjector() {
   const t = resolveTokens(siteConfig.colors)
+  const cta = defaultTokens
 
   const css = `
     :root {
@@ -17,6 +18,10 @@ export function ThemeInjector() {
       --font-heading: ${t.fontHeading};
       --font-body: ${t.fontBody};
       --radius: 0.5rem;
+      /* Dark CTA band (matches default token palette; independent of light page theme) */
+      --cta-band-bg: ${cta.background};
+      --cta-band-fg: ${cta.foreground};
+      --cta-band-fg-muted: ${cta.mutedForeground};
     }
 
     body {

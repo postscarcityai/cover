@@ -1,16 +1,12 @@
 "use client"
 
-import dynamic from "next/dynamic"
+import type { CSSProperties } from "react"
+import { GoldPaintCanvas } from "@/components/gold-paint/gold-paint-canvas"
 import { MagneticButton } from "@/components/magnetic-button"
 import { FillButton } from "@/components/ui/fill-button"
 import { CTALink } from "@/components/ui/cta-link"
 import { trackScheduleConsultation } from "@/lib/analytics"
 import type { CTAContent } from "@/app/data"
-
-const CloudShader = dynamic(
-  () => import("@/components/cloud-shader").then((m) => m.CloudShader),
-  { ssr: false }
-)
 
 interface CTASectionProps {
   content: CTAContent
@@ -27,15 +23,39 @@ export function CTASection({ content, className = "" }: CTASectionProps) {
     if (content.secondaryCtaHref) window.location.href = content.secondaryCtaHref
   }
 
+  const scopedTheme = {
+    "--fg": "var(--cta-band-fg)",
+    "--fg-muted": "var(--cta-band-fg-muted)",
+    "--bg": "var(--cta-band-bg)",
+  } as CSSProperties
+
   return (
     <section
-      className={`relative py-24 md:py-40 overflow-hidden ${className}`}
-      style={{ backgroundColor: "#FAFAFA" }}
+      className={`relative py-24 md:py-40 overflow-hidden border-t border-b ${className}`}
+      style={{ backgroundColor: "var(--cta-band-bg)", borderColor: "color-mix(in srgb, var(--cta-band-fg) 12%, transparent)" }}
     >
-      {/* Volumetric cloud shader background */}
-      <CloudShader />
-
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
+      <div className="pointer-events-none absolute inset-0 z-[1] size-full overflow-hidden">
+        <GoldPaintCanvas
+          shape={{
+            kind: "stripe",
+            direction: [1, 0],
+            period: 0.36,
+            halfWidth: 0.028,
+            phase: 0.05,
+          }}
+          options={{
+            posScale: 5.5,
+            glowScale: 3.9,
+            verticalFadeStrength: 0,
+            band: [28.0, 0, 0],
+          }}
+          dprCap={1.75}
+        />
+      </div>
+      <div
+        className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24"
+        style={scopedTheme}
+      >
         <h2
           data-reveal="words"
           className="text-4xl md:text-5xl lg:text-7xl font-light mb-8 font-heading"

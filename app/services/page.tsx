@@ -52,13 +52,14 @@ export default function ServicesPage() {
       
 
       <SubpageHero
-        eyebrow="Services"
         title="What We Build"
         description="AI systems that ship in weeks, not quarters. We scope, build, and deploy — then stay as long as the advantage demands it."
         breadcrumbs={[
           { label: "Home", href: "/" },
           { label: "Services" },
         ]}
+        background="white"
+        goldAccent="subpagePolygon"
       />
 
       <main id="main-content">

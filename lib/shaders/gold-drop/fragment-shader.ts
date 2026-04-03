@@ -24,6 +24,7 @@ uniform float u_bandCenter;
 uniform float u_bandHalfH;
 uniform float u_geometryScale;
 uniform float u_waveXScale;
+uniform float u_softRim;
 
 /* ── noise ── */
 
@@ -135,10 +136,11 @@ void main() {
 
   vec3 bg = mix(bgDeep, bgLight, mist);
 
-  // subtle warm-gold tint near the ribbon band
-  float bandProximity = smoothstep(u_bandHalfH * 1.6, 0.0, abs(pos.y - bandCenterY));
-  bg = mix(bg, vec3(0.96, 0.94, 0.88), bandProximity * 0.25 * fog1);
-  bg += vec3(0.03, 0.02, 0.0) * (totalAlpha * 0.08);
+  if (u_softRim > 0.5) {
+    float bandProximity = smoothstep(u_bandHalfH * 1.6, 0.0, abs(pos.y - bandCenterY));
+    bg = mix(bg, vec3(0.96, 0.94, 0.88), bandProximity * 0.25 * fog1);
+    bg += vec3(0.03, 0.02, 0.0) * (totalAlpha * 0.08);
+  }
 
   if (u_opaqueBg > 0.5) {
     gl_FragColor = vec4(mix(bg, totalColor, totalAlpha), 1.0);

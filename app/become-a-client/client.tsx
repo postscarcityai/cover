@@ -26,7 +26,7 @@ export default function BecomeAClientClient() {
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-16 lg:items-start">
           <header className="max-w-lg text-white lg:pt-2">
             <h1
-              className="font-heading text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-5xl"
+              className="font-heading text-3xl font-light leading-tight tracking-tight sm:text-4xl md:text-5xl"
             >
               Become a client
             </h1>

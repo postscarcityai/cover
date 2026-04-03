@@ -102,7 +102,7 @@ export function SubpageHero({
 
         <h1
           data-reveal="words"
-          className="text-5xl sm:text-6xl md:text-7xl font-light leading-[0.95] tracking-tight mb-8"
+          className="text-6xl sm:text-7xl md:text-8xl font-light leading-[0.95] tracking-tight mb-8"
           style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
         >
           {title}

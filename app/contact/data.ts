@@ -37,13 +37,9 @@ export interface ContactData {
     description: string
     buttonText: string
   }
-  disclaimer: {
-    title: string
-    content: string[]
-  }
 }
 
-import { siteConfig, getContactDisclaimer } from "@/site.config"
+import { siteConfig } from "@/site.config"
 
 export const contactData: ContactData = {
   breadcrumbSchema: {
@@ -109,9 +105,5 @@ export const contactData: ContactData = {
     title: "Ready to Get Started?",
     description: "Contact us today to discuss how we can help with your needs.",
     buttonText: `Call ${siteConfig.contact.phoneDisplay} Now`
-  },
-  disclaimer: {
-    title: "Important Notice",
-    content: getContactDisclaimer()
   }
 }

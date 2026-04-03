@@ -91,7 +91,7 @@ export function ConsultationForm({
         style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
       >
         <CheckCircle className="h-10 w-10 mx-auto mb-4" style={{ color: "var(--accent)" }} />
-        <h3 className="text-lg font-bold mb-2" style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}>
+        <h3 className="text-lg font-light mb-2" style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}>
           We&apos;ll be in touch!
         </h3>
         <p className="text-sm" style={{ color: "var(--fg-muted)" }}>

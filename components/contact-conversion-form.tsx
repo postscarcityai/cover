@@ -92,7 +92,7 @@ export function ContactConversionForm() {
           <CheckCircle className="h-8 w-8" style={{ color: "var(--accent)" }} aria-hidden="true" />
         </div>
         <h3
-          className="text-2xl font-bold mb-2"
+          className="text-2xl font-light mb-2"
           style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
         >
           You&apos;re all set!

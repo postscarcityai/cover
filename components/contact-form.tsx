@@ -82,7 +82,7 @@ export function ContactForm() {
         style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
       >
         <CheckCircle className="h-12 w-12 mx-auto mb-4" style={{ color: "var(--accent)" }} aria-hidden="true" />
-        <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}>
+        <h3 className="text-xl font-light mb-2" style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}>
           Message Sent!
         </h3>
         <p style={{ color: "var(--fg-muted)" }}>

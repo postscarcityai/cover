@@ -26,6 +26,11 @@ export interface GoldDropConfig {
   geometryScale: number
   /** Scales horizontal phase so wave frequency matches across different aspect ratios. */
   waveHorizontalScale: number
+  /**
+   * When true (opaque path only), warm rim + gold bleed into the pale bg near ribbons.
+   * Hero uses false for a hard matte edge at the canvas bottom.
+   */
+  opaqueBgSoftRim: boolean
 }
 
 export const DEFAULT_CONFIG: GoldDropConfig = {
@@ -41,4 +46,5 @@ export const DEFAULT_CONFIG: GoldDropConfig = {
   ribbonBandHalfHeight: 0.05,
   geometryScale: 1.0,
   waveHorizontalScale: 1.0,
+  opaqueBgSoftRim: false,
 }

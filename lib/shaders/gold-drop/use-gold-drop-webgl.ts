@@ -95,6 +95,7 @@ export function useGoldDropWebGL(
     const uBandHalfH = gl.getUniformLocation(program, "u_bandHalfH")
     const uGeometryScale = gl.getUniformLocation(program, "u_geometryScale")
     const uWaveXScale = gl.getUniformLocation(program, "u_waveXScale")
+    const uSoftRim = gl.getUniformLocation(program, "u_softRim")
 
     gl.uniform1f(uNoiseScale, config.noiseScale)
     gl.uniform1f(uSpeed, config.speed)
@@ -107,6 +108,7 @@ export function useGoldDropWebGL(
     gl.uniform1f(uBandHalfH, config.ribbonBandHalfHeight)
     gl.uniform1f(uGeometryScale, config.geometryScale)
     gl.uniform1f(uWaveXScale, config.waveHorizontalScale)
+    gl.uniform1f(uSoftRim, config.opaqueBgSoftRim ? 1.0 : 0.0)
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio, opts.dprCap ?? 2)

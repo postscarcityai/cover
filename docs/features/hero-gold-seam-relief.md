@@ -21,32 +21,27 @@ We use **two separate WebGL programs** (two canvases), both driven by the same f
 
 This establishes the **base** gold against the hero gradient. It stops visually at the hero’s bottom edge because the canvas is sized to the hero.
 
-### Layer B — “Front” / seam (on the next section)
+### Layer B — “Front” / seam (portaled)
 
 - **Transparent** output (`opaqueBackground: false`): fragment shader emits **`vec4(rgb, alpha)`** with **alpha only where gold exists**; everywhere else is clear. WebGL uses `alpha: true`, `premultipliedAlpha: false`, blending `SRC_ALPHA, ONE_MINUS_SRC_ALPHA`, and clears to **transparent** each frame.
-- Mounted in a **narrow strip** that **straddles the boundary**:
-  - Wrapper: `absolute left-0 right-0 top-0 -translate-y-1/2` with a fixed height (e.g. `h-[11rem] max-h-[32vh]`).
-  - **`top: 0`** anchors to the **top** of the *following* section; **`-translate-y-1/2`** shifts half the strip **up** into the hero and half **down** into the next section — that is the **relief**: the same div literally crosses the line.
+- **`createPortal(..., document.body)`** + **`position: fixed`** + **`z-[52]`** (below fixed nav `z-60`, above page content). This avoids **`#smooth-wrapper { overflow: hidden }`** on desktop, which was **clipping** in-flow overlays that extended past section boxes.
+- **Position sync**: the following section passes **`anchorRef`** (its `<section>` ref). The overlay’s `top` is `getBoundingClientRect().top - height/2` so the strip stays **centered on the seam** while ScrollSmoother runs (rAF + scroll/resize observers).
 
-Implemented as `components/hero-gold-seam-overlay.tsx`, rendered from:
+Rendered from `components/hero-gold-seam-overlay.tsx` when `seamGoldFromHero` is true on:
 
-- `components/sections/content-section.tsx` when `seamGoldFromHero` is true  
-- `components/sections/features-section.tsx` under the same flag  
+- `components/sections/content-section.tsx`  
+- `components/sections/features-section.tsx`  
 
-`components/section-renderer.tsx` sets `seamGoldFromHero` when **`sections[index - 1]?.type === "hero"`** so the **actual** next section receives the overlay, whether it is `content` or `features`.
+`components/section-renderer.tsx` sets the flag when **`sections[index - 1]?.type === "hero"`**.
 
-### Z-index / “above and below the line”
+### Z-index / stacking
 
-On the receiving section:
+- **Front gold**: fixed **`z-[52]`** — draws **over** hero paint (including back gold and dot field) and **over** the next section’s background and copy wrapper (**`z-10`**), so the relief reads clearly across the boundary.
+- **Nav** stays above at **`z-[60]`**.
 
-1. Section `backgroundColor: var(--bg)` (e.g. white).
-2. Seam overlay at **`z-[15]`** — gold draws **on top of** that flat background in the overlap band.
-3. Section content wrapper at **`z-[20]`** — copy and UI stay **above** the gold so text stays readable.
+### Back layer — hard matte (no rim softening)
 
-The **hero** content stays above its own canvas with `z-10`. Visually:
-
-- **Below the line** (inside the next section): you see **white + transparent gold** composited on top → gold reads as **relief over** the thesis/features area.
-- **Above the line** (still overlapping the hero): the **later** sibling section’s overlay paints **on top of** the hero’s bottom pixels (same stacking rule), so the **front** gold can reinforce the **back** gold for a denser, intentional **double pass** at the seam.
+Hero `GoldDropConfig` uses **`opaqueBgSoftRim: false`** (default). In the fragment shader, that **skips** the warm **bandProximity** tint and the **gold bleed** into the pale field so the opaque hero does not get a soft halo into the background — the back layer reads as a **clean cut** at the canvas edge. Set **`opaqueBgSoftRim: true`** if you want the old soft rim back.
 
 ## Shader alignment (short wide seam canvas)
 
@@ -59,6 +54,7 @@ The seam strip is **much shorter and wider** than the hero canvas. The same math
 | `ribbonBandCenter` / `ribbonBandHalfHeight` | Vertical pack position. Hero: bottom (`~ -0.45`). Seam: **`0`** = centered in the strip (on the seam after `translate-y-1/2`). |
 | `geometryScale` | Scales ribbon **width**, **glow**, and **wave amplitude** together so stroke weight matches the hero in **pixels**. |
 | `waveHorizontalScale` | Scales horizontal phase in `sin(x * freq)` so **wavelength** across the viewport matches despite different **aspect ratios**. |
+| `opaqueBgSoftRim` | Opaque path only: warm rim + gold bleed near ribbons. Hero default **`false`** for a hard matte edge. |
 
 Seam values are set in `components/hero-gold-seam-overlay.tsx` next to `SEAM_OVERLAY_CONFIG`.
 
@@ -77,4 +73,4 @@ Seam values are set in `components/hero-gold-seam-overlay.tsx` next to `SEAM_OVE
 
 ## Summary
 
-**Relief across the line** = one **opaque** layer for the hero world + one **transparent** layer on the **first section after hero**, positioned so its box is **half above and half below** the boundary, with **stacking** that keeps section ink above the gold. Matching **look** between layers is **uniform-driven geometry and horizontal phase**, not duplicate art files.
+**Relief across the line** = one **opaque** layer for the hero (hard matte optional) + one **transparent** layer **portaled to `body`**, **fixed** and tracked to the **top edge of the first section after hero**, with **stacking** so the front gold sits **above** hero and section content (except the nav). Matching **look** between layers is **uniform-driven geometry and horizontal phase**, not duplicate art files.

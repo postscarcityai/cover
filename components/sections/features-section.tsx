@@ -1,5 +1,6 @@
 "use client"
 
+import { useRef } from "react"
 import {
   Shield, Target, Zap, Users, BarChart, Globe,
   Star, Heart, Award, Briefcase, type LucideIcon,
@@ -26,13 +27,16 @@ export function FeaturesSection({
   className = "",
   seamGoldFromHero = false,
 }: FeaturesSectionProps) {
+  const sectionRef = useRef<HTMLElement | null>(null)
+
   return (
     <section
+      ref={sectionRef}
       className={`relative isolate py-24 md:py-40 ${className}`}
       style={{ backgroundColor: "var(--bg)" }}
     >
-      {seamGoldFromHero && <HeroGoldSeamOverlay />}
-      <div className="relative z-20 w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
+      {seamGoldFromHero && <HeroGoldSeamOverlay anchorRef={sectionRef} />}
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
         {/* Header */}
         <div className="mb-16 md:mb-24 max-w-3xl" data-reveal="fade-up">
           {content.eyebrow && (

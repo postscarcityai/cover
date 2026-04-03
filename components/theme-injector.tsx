@@ -4,6 +4,7 @@ import { siteConfig } from "@/site.config"
 export function ThemeInjector() {
   const t = resolveTokens(siteConfig.colors)
   const cta = defaultTokens
+  const hs = siteConfig.heroShell
 
   const css = `
     :root {
@@ -22,6 +23,15 @@ export function ThemeInjector() {
       --cta-band-bg: ${cta.background};
       --cta-band-fg: ${cta.foreground};
       --cta-band-fg-muted: ${cta.mutedForeground};
+      /* Home hero shell (pale field + ink hierarchy + dot texture) */
+      --hero-shell-a: ${hs.gradientA};
+      --hero-shell-b: ${hs.gradientB};
+      --hero-shell-c: ${hs.gradientC};
+      --hero-ink-deep: ${hs.inkDeep};
+      --hero-ink-mid: ${hs.inkMid};
+      --hero-ink-muted: ${hs.inkMuted};
+      /* Fallback-friendly: ink + alpha (color-mix + transparent is inconsistent in some engines) */
+      --hero-dot-fg: color-mix(in srgb, var(--hero-ink-mid) ${hs.dotInkMixPercent}%, #ffffff);
     }
 
     body {

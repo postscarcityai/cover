@@ -78,7 +78,7 @@ export default function ContactPage() {
         }}
       />
       
-      <ContactClient data={contactData} />
+      <ContactClient />
     </>
   )
 }

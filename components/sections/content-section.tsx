@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import Image from "next/image"
 import { CTALink } from "@/components/ui/cta-link"
 import { HeroGoldSeamOverlay } from "@/components/hero-gold-seam-overlay"
@@ -40,13 +40,16 @@ export function ContentSection({
   className = "",
   seamGoldFromHero = false,
 }: ContentSectionProps) {
+  const sectionRef = useRef<HTMLElement | null>(null)
+
   return (
     <section
+      ref={sectionRef}
       className={`relative isolate py-24 md:py-40 ${className}`}
       style={{ backgroundColor: "var(--bg)" }}
     >
-      {seamGoldFromHero && <HeroGoldSeamOverlay />}
-      <div className="relative z-20 space-y-32 md:space-y-48">
+      {seamGoldFromHero && <HeroGoldSeamOverlay anchorRef={sectionRef} />}
+      <div className="relative z-10 space-y-32 md:space-y-48">
         {content.blocks.map((block, blockIndex) => {
           const isFirst = blockIndex === 0
 

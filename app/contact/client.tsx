@@ -8,11 +8,6 @@ import { GoldEffectCanvas } from "@/components/gold-effect-canvas"
 import { trackPhoneCallClick, trackScheduleConsultation } from "@/lib/analytics"
 import { usePageTracking, useScrollTracking } from "@/lib/analytics-hooks"
 import { siteConfig } from "@/site.config"
-import type { ContactData } from "./data"
-
-interface Props {
-  data: ContactData
-}
 
 const DEFAULT_TRUST_BULLETS = [
   "24-hour response",
@@ -20,9 +15,7 @@ const DEFAULT_TRUST_BULLETS = [
   "No obligation",
 ]
 
-export default function ContactClient({ data }: Props) {
-  const { disclaimer } = data
-
+export default function ContactClient() {
   usePageTracking("Contact", "contact", "contact_page")
   useScrollTracking()
 
@@ -77,8 +70,12 @@ export default function ContactClient({ data }: Props) {
                 </nav>
 
                 <h1
-                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6"
-                  style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+                  className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-light leading-[1.05] tracking-tight mb-6"
+                  style={{
+                    fontFamily: "var(--font-heading)",
+                    color: "var(--fg)",
+                    fontWeight: 300,
+                  }}
                 >
                   {headline}
                 </h1>
@@ -158,7 +155,7 @@ export default function ContactClient({ data }: Props) {
               </blockquote>
               {testimonialAuthor && (
                 <footer>
-                  <cite className="font-semibold not-italic" style={{ color: "var(--fg)" }}>
+                  <cite className="font-normal not-italic" style={{ color: "var(--fg)" }}>
                     {testimonialAuthor}
                   </cite>
                   {testimonialRole && (
@@ -171,32 +168,6 @@ export default function ContactClient({ data }: Props) {
             </div>
           </section>
         )}
-
-        <section
-          className="py-12 md:py-16"
-          style={{ backgroundColor: "var(--bg)" }}
-        >
-          <details className="group max-w-3xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
-            <summary
-              className="text-xs font-semibold uppercase tracking-[0.2em] cursor-pointer flex items-center gap-2 [&::-webkit-details-marker]:hidden"
-              style={{ color: "var(--fg-muted)" }}
-            >
-              <span className="transition-transform group-open:rotate-90">›</span>
-              {disclaimer.title}
-            </summary>
-            <div className="mt-4 space-y-2">
-              {disclaimer.content.map((paragraph, index) => (
-                <p
-                  key={index}
-                  className="text-xs leading-relaxed"
-                  style={{ color: "var(--fg-muted)", opacity: 0.8 }}
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </details>
-        </section>
       </main>
 
       <Footer />

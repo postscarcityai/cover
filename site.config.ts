@@ -189,7 +189,9 @@ export const siteConfig = {
     exitIntentPopup: false,
     floatingCTA: false,
     smoothScroll: true,
-    navigationScrollHide: true
+    navigationScrollHide: true,
+    /** Gold ribbon WebGL accent above the nav wordmark (see NavLogoGoldWaves). */
+    navLogoGoldWaves: true,
   },
 
   // Analytics & Tracking (IDs set in .env.local)
@@ -220,6 +222,18 @@ export const siteConfig = {
       "The companies that move first will own the next decade. We help you build the AI infrastructure ahead of the curve. Autonomous agents. Crafted Design. Always a human in the loop.",
     ctaPrimary: "Book a Call",
     ctaSecondary: "See the Work"
+  },
+
+  /** Home hero shell: gradient, typography ink, and dot-field tint (injected as CSS vars) */
+  heroShell: {
+    gradientA: "#F2F5FB",
+    gradientB: "#EDF1F9",
+    gradientC: "#E8EDF7",
+    inkDeep: "#0E1C2F",
+    inkMid: "#3D4F6B",
+    inkMuted: "#7B8BA5",
+    /** `color-mix` percent: hero ink mid vs white (see theme-injector `--hero-dot-fg`) */
+    dotInkMixPercent: 28,
   },
 
   // Services Section Configuration
@@ -283,12 +297,7 @@ export const siteConfig = {
     // Shorter inline notice (consultation / quick forms without a checkbox)
     tcpaShort: 'By submitting, you consent to contact via phone, text, and email. Not required for service. Rates may apply.',
     // Newsletter-specific consent
-    newsletter: 'I consent to receive email updates from {companyName}. Unsubscribe anytime.',
-    // Contact page disclaimer paragraphs
-    contactDisclaimer: [
-      'Contacting {companyName} does not create a business relationship.',
-      'You consent to calls, texts, and emails. Not required for service. Rates may apply. Reply STOP to opt out or contact {phone}. Information submitted may not be confidential until a formal agreement exists.'
-    ]
+    newsletter: 'I consent to receive email updates from {companyName}. Unsubscribe anytime.'
   },
 
   // Legal Pages
@@ -483,8 +492,4 @@ function interpolateConsent(template: string): string {
 
 export function getConsentText(variant: 'tcpaFull' | 'tcpaShort' | 'newsletter'): string {
   return interpolateConsent(siteConfig.consent[variant])
-}
-
-export function getContactDisclaimer(): string[] {
-  return siteConfig.consent.contactDisclaimer.map(interpolateConsent)
 }

@@ -13,7 +13,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     // Allows customizing built-in components, e.g. to add styling.
     h1: ({ children }) => (
-      <h1 className="text-5xl md:text-6xl font-light mb-8 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
+      <h1 className="text-6xl md:text-7xl lg:text-8xl font-light mb-8 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
         {children}
       </h1>
     ),
@@ -23,12 +23,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-2xl md:text-3xl font-bold mb-4 mt-8 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
+      <h3 className="text-2xl md:text-3xl font-light mb-4 mt-8 leading-tight" style={{ fontFamily: 'var(--font-heading)', color: 'var(--fg)' }}>
         {children}
       </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="text-xl md:text-2xl font-semibold mb-4 mt-6" style={{ color: 'var(--fg)' }}>
+      <h4 className="text-xl md:text-2xl font-light mb-4 mt-6" style={{ color: 'var(--fg)' }}>
         {children}
       </h4>
     ),

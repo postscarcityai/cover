@@ -5,6 +5,7 @@ import { useScrambleText } from "@/hooks/use-scramble-text"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Logo } from "@/components/logo"
+import { NavLogoGoldWaves } from "@/components/nav-logo-gold-waves"
 import { TransitionLink } from "@/components/transition-link"
 import { trackNavClick } from "@/lib/analytics"
 import { siteConfig } from "@/site.config"
@@ -156,29 +157,32 @@ export function Navigation({ className = "" }: NavigationProps) {
         ref={navRef}
         id="navigation"
         data-nav-theme="dark"
-        className={`fixed w-full z-[60] ${className}`}
+        className={`fixed w-full z-[60] overflow-visible ${className}`}
         style={{
           top: "var(--banner-height, 0px)",
           backgroundColor: "#000000",
           borderBottom: "1px solid rgba(255,255,255,0.08)",
         }}
       >
-        <div className="w-full px-3">
-          <div className="flex justify-between items-center h-16">
+        <div className="w-full overflow-visible px-3">
+          <div className="flex justify-between items-center h-16 overflow-visible">
 
             {/* Logo */}
             <TransitionLink
               href="/"
-              className="flex items-center group relative z-[60]"
+              className="flex items-center group relative z-[60] overflow-visible"
               onMouseEnter={() => setIsLogoHovered(true)}
               onMouseLeave={() => setIsLogoHovered(false)}
             >
-              <Logo
-                className="h-7 w-auto group-hover:opacity-70"
-                variant="white"
-                isHovered={isLogoHovered}
-                color="#ffffff"
-              />
+              <span className="relative inline-block h-7 overflow-visible">
+                <NavLogoGoldWaves />
+                <Logo
+                  className="relative z-10 h-7 w-auto group-hover:opacity-70"
+                  variant="white"
+                  isHovered={isLogoHovered}
+                  color="#ffffff"
+                />
+              </span>
             </TransitionLink>
 
             {/* Desktop nav links */}

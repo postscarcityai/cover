@@ -1,14 +1,5 @@
 "use client"
 
-import { GoldPaintCanvas } from "@/components/gold-paint/gold-paint-canvas"
-import type { GoldPaintPreset } from "@/lib/shaders/gold/types"
-
-/** Subpage hero gold accents (see `GOLD_PAINT_PRESETS` in lib/shaders/gold/types). */
-export type SubpageHeroGoldAccent = Extract<
-  GoldPaintPreset,
-  "subpagePolygon" | "productsLattice"
->
-
 interface Breadcrumb {
   label: string
   href?: string
@@ -25,8 +16,8 @@ interface SubpageHeroProps {
   className?: string
   /** `white` uses the theme paper color (`--background`), usually pure white in light mode. */
   background?: "theme" | "white"
-  /** Full-viewport background gold (same bleed model as the home hero — `inset-0` canvas). */
-  goldAccent?: SubpageHeroGoldAccent
+  /** Render a shader canvas or other element behind the text layer. */
+  backgroundSlot?: React.ReactNode
 }
 
 export function SubpageHero({
@@ -38,15 +29,13 @@ export function SubpageHero({
   align = "left",
   children,
   className = "",
-  goldAccent,
   background = "theme",
+  backgroundSlot,
 }: SubpageHeroProps) {
   const minHeight =
-    goldAccent != null
-      ? "min-h-[100dvh]"
-      : size === "compact"
-        ? "min-h-[40vh]"
-        : "min-h-[60vh]"
+    size === "compact"
+      ? "min-h-[40vh]"
+      : "min-h-[60vh]"
   const textAlign = align === "center" ? "text-center items-center" : "items-start"
   const isPaper = background === "white"
 
@@ -74,14 +63,7 @@ export function SubpageHero({
         />
       )}
 
-      {goldAccent && (
-        <div
-          className="pointer-events-none absolute inset-0 z-[1] size-full overflow-hidden"
-          aria-hidden
-        >
-          <GoldPaintCanvas preset={goldAccent} dprCap={2} />
-        </div>
-      )}
+      {backgroundSlot}
 
       <div
         className={`relative z-10 w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 pb-16 md:pb-24 pt-32 md:pt-40 max-w-7xl flex flex-col ${textAlign}`}
@@ -92,7 +74,10 @@ export function SubpageHero({
             className="mb-8"
             data-reveal="fade-up"
           >
-            <ol className="flex items-center gap-2 text-xs tracking-[0.2em] uppercase">
+            <ol
+              className="flex items-center gap-2 text-xs tracking-[0.2em] uppercase px-4 py-2 rounded-full w-fit"
+              style={{ backgroundColor: "color-mix(in srgb, var(--bg-inverse) 20%, transparent)" }}
+            >
               {breadcrumbs.map((crumb, i) => (
                 <li key={crumb.label} className="flex items-center gap-2">
                   {i > 0 && (

@@ -1,7 +1,6 @@
 "use client"
 
 import type { CSSProperties } from "react"
-import { GoldPaintCanvas } from "@/components/gold-paint/gold-paint-canvas"
 import { MagneticButton } from "@/components/magnetic-button"
 import { FillButton } from "@/components/ui/fill-button"
 import { CTALink } from "@/components/ui/cta-link"
@@ -34,24 +33,6 @@ export function CTASection({ content, className = "" }: CTASectionProps) {
       className={`relative py-24 md:py-40 overflow-hidden border-t border-b ${className}`}
       style={{ backgroundColor: "var(--cta-band-bg)", borderColor: "color-mix(in srgb, var(--cta-band-fg) 12%, transparent)" }}
     >
-      <div className="pointer-events-none absolute inset-0 z-[1] size-full overflow-hidden">
-        <GoldPaintCanvas
-          shape={{
-            kind: "stripe",
-            direction: [1, 0],
-            period: 0.36,
-            halfWidth: 0.028,
-            phase: 0.05,
-          }}
-          options={{
-            posScale: 5.5,
-            glowScale: 3.9,
-            verticalFadeStrength: 0,
-            band: [28.0, 0, 0],
-          }}
-          dprCap={1.75}
-        />
-      </div>
       <div
         className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24"
         style={scopedTheme}

@@ -1,4 +1,4 @@
-export const GOLD_PAINT_VERTEX_SHADER = `
+export const GOLD_DROP_VERTEX_SHADER = `
 attribute vec2 a_position;
 void main() {
   gl_Position = vec4(a_position, 0.0, 1.0);

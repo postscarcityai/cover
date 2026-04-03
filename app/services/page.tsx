@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
 import { FillButton } from "@/components/ui/fill-button"
+import { GoldEffectCanvas } from "@/components/gold-effect-canvas"
 
 const services = [
   {
@@ -59,7 +60,7 @@ export default function ServicesPage() {
           { label: "Services" },
         ]}
         background="white"
-        goldAccent="subpagePolygon"
+        backgroundSlot={<GoldEffectCanvas effect="ringRipples" className="pointer-events-none" />}
       />
 
       <main id="main-content">

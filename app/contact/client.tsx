@@ -4,6 +4,7 @@ import { Phone } from "lucide-react"
 import { MagneticButton } from "@/components/magnetic-button"
 import { Footer } from "@/components/footer"
 import { ContactConversionForm } from "@/components/contact-conversion-form"
+import { GoldEffectCanvas } from "@/components/gold-effect-canvas"
 import { trackPhoneCallClick, trackScheduleConsultation } from "@/lib/analytics"
 import { usePageTracking, useScrollTracking } from "@/lib/analytics-hooks"
 import { siteConfig } from "@/site.config"
@@ -48,16 +49,10 @@ export default function ContactClient({ data }: Props) {
 
       <main id="main-content">
         <section
-          className="relative min-h-[100dvh] flex flex-col justify-center py-24 md:py-32"
-          style={{ backgroundColor: "var(--bg)" }}
+          className="relative min-h-[100dvh] flex flex-col justify-center py-24 md:py-32 overflow-hidden"
+          style={{ backgroundColor: "#FFFFFF" }}
         >
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse 70% 50% at 50% 20%, color-mix(in srgb, var(--accent) 6%, transparent), transparent)",
-            }}
-          />
+          <GoldEffectCanvas effect="voronoi" className="pointer-events-none" />
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 w-full">
             <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">

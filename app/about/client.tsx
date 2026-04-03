@@ -8,6 +8,7 @@ import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
 import { ConsultationForm } from "@/components/consultation-form"
 import { TaglineDivider } from "@/components/tagline-divider"
+import { GoldEffectCanvas } from "@/components/gold-effect-canvas"
 import { usePageTracking, useScrollTracking } from "@/lib/analytics-hooks"
 import type { OurFirmData } from "./data"
 
@@ -34,6 +35,8 @@ export default function OurFirmClient({ data }: Props) {
           { label: "Home", href: "/" },
           { label: "About Us" },
         ]}
+        background="white"
+        backgroundSlot={<GoldEffectCanvas effect="lightRays" className="pointer-events-none" />}
       >
         <div className="flex flex-wrap gap-8 mt-4">
           <div className="flex flex-col">

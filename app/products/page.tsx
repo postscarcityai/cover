@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
+import { GoldEffectCanvas } from "@/components/gold-effect-canvas"
 
 const products = [
   {
@@ -55,7 +56,7 @@ export default function ProductsPage() {
           { label: "Products" },
         ]}
         background="white"
-        goldAccent="productsLattice"
+        backgroundSlot={<GoldEffectCanvas effect="constellation" className="pointer-events-none" />}
       />
 
       <main id="main-content">

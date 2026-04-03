@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
+import { GoldEffectCanvas } from "@/components/gold-effect-canvas"
 
 const featuredProjects = [
   {
@@ -119,6 +120,8 @@ export default function WorkPage() {
           { label: "Home", href: "/" },
           { label: "Work" },
         ]}
+        background="white"
+        backgroundSlot={<GoldEffectCanvas effect="prismFacets" className="pointer-events-none" />}
       />
 
       <SubpageSection

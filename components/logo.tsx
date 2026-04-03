@@ -4,12 +4,15 @@ import { siteConfig } from "@/site.config"
 
 interface LogoProps {
   className?: string
+  style?: React.CSSProperties
   variant?: "primary" | "white"
   isHovered?: boolean
+  /** Directly override the fill color (bypasses variant). */
+  color?: string
 }
 
-export function Logo({ className = "", variant = "primary", isHovered = false }: LogoProps) {
-  const color = variant === "white" ? "var(--fg)" : "var(--accent)"
+export function Logo({ className = "", style, variant = "primary", isHovered = false, color: colorProp }: LogoProps) {
+  const color = colorProp ?? (variant === "white" ? "var(--fg)" : "var(--accent)")
 
   return (
     <svg
@@ -20,7 +23,7 @@ export function Logo({ className = "", variant = "primary", isHovered = false }:
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-label={`${siteConfig.name} logo`}
-      style={{ color, opacity: isHovered ? 0.7 : 1, transition: "opacity 0.3s ease-in-out" }}
+      style={{ color, opacity: isHovered ? 0.7 : 1, transition: "color 0.5s ease, opacity 0.3s ease", ...style }}
     >
       <path d="M315.961 16.8152C315.961 21.0504 316.319 29.07 317.079 30.6C317.079 30.6813 316.998 30.8439 316.998 30.9252C316.48 30.8439 315.567 30.6813 314.172 30.6813C312.777 30.6813 311.821 30.8439 311.346 30.9252C311.309 30.8439 311.266 30.6813 311.266 30.6C312.025 29.07 312.383 21.0504 312.383 16.8152C312.383 12.58 311.989 4.60478 311.266 3.03043C311.229 2.94913 311.302 2.83087 311.346 2.70522C311.828 2.78652 312.777 2.94913 314.172 2.94913C315.567 2.94913 316.48 2.78652 316.998 2.70522C316.998 2.82348 317.079 2.94913 317.079 3.03043C316.319 4.56043 315.961 12.58 315.961 16.8152Z" fill="currentColor"/>
       <path d="M301.107 25.7291L300.552 24.3617C298.2 23.8813 295.973 23.7187 293.818 23.7187C291.985 23.7187 290.59 23.8 289.203 24.0439L289.166 24.1622C288.21 26.4978 287.771 28.353 287.771 29.1587C287.771 29.8017 287.888 30.2896 288.129 30.6074L288.012 30.9326C286.975 30.77 286.376 30.6887 285.507 30.6887C284.551 30.6887 283.952 30.77 283.039 30.9326L282.922 30.6074C283.638 29.8387 284.675 27.3035 286.508 23.3565L295.425 2.72H295.819L305.496 25.7365C306.811 28.2791 307.329 29.4839 308.162 30.6148L308.045 30.94C307.008 30.7404 306.015 30.6961 305.058 30.6961C304.021 30.6961 303.028 30.733 302.034 30.94L301.91 30.6148C302.151 30.2896 302.268 29.8461 302.268 29.2474C302.268 28.3974 301.713 27.1483 301.114 25.7439L301.107 25.7291ZM294.819 10.1704L290.24 21.4939H299.398L294.819 10.1704Z" fill="currentColor"/>

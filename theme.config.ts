@@ -20,8 +20,9 @@ export const defaultTokens: DesignTokens = {
   mutedForeground: "#888888",
   accent: "#1a6b52",
   accentForeground: "#ffffff",
-  fontHeading: "var(--font-open-sans), system-ui, sans-serif",
-  fontBody: "var(--font-open-sans), system-ui, sans-serif",
+  fontHeading: "var(--font-instrument-serif), Georgia, serif",
+  fontBody:
+    "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
 }
 
 export function resolveTokens(

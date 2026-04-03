@@ -1,15 +1,23 @@
 /**
  * Font Configuration
  *
- * Open Sans for both headings and body.
- * Weight and size contrast creates hierarchy without a second typeface.
+ * Instrument Serif for headings — editorial, high-contrast serif.
+ * JetBrains Mono for body — monospace UI / technical copy.
  */
 
-import { Open_Sans } from 'next/font/google'
+import { JetBrains_Mono, Instrument_Serif } from "next/font/google"
 
-export const openSans = Open_Sans({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-open-sans',
-  display: 'swap',
+export const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+})
+
+export const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
+  display: "swap",
 })

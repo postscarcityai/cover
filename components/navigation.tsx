@@ -2,13 +2,10 @@
 
 import { useState, useEffect, useRef, useCallback } from "react"
 import { useScrambleText } from "@/hooks/use-scramble-text"
-import { ChevronDown } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { FillButton } from "@/components/ui/fill-button"
 import { Logo } from "@/components/logo"
 import { TransitionLink } from "@/components/transition-link"
-import { usePageTransition } from "@/components/transition-context"
 import { trackNavClick } from "@/lib/analytics"
 import { siteConfig } from "@/site.config"
 
@@ -16,7 +13,6 @@ interface NavigationProps {
   className?: string
 }
 
-// Overlay link animation variants
 const overlayVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -45,19 +41,13 @@ const linkVariants = {
 
 const contactVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { delay: 0.5, duration: 0.4 },
-  },
+  visible: { opacity: 1, transition: { delay: 0.5, duration: 0.4 } },
   exit: { opacity: 0, transition: { duration: 0.15 } },
 }
 
 export function Navigation({ className = "" }: NavigationProps) {
   const pathname = usePathname()
-  const { navigateTo } = usePageTransition()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-  const [isScrolled, setIsScrolled] = useState(false)
   const [isLogoHovered, setIsLogoHovered] = useState(false)
 
   const navRef = useRef<HTMLElement>(null)
@@ -65,10 +55,26 @@ export function Navigation({ className = "" }: NavigationProps) {
   const isNavVisible = useRef(true)
   const gsapRef = useRef<any>(null)
 
-  // Load GSAP for scroll-hide behavior
+  const { ref: menuTextRef, scrambleTo } = useScrambleText()
+
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen((open) => {
+      if (open) scrambleTo("Menu")
+      return false
+    })
+  }, [scrambleTo])
+
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen((prev) => {
+      const next = !prev
+      scrambleTo(next ? "Close" : "Menu")
+      return next
+    })
+  }, [scrambleTo])
+
+  // GSAP scroll-hide
   useEffect(() => {
     if (!siteConfig.features.navigationScrollHide) return
-
     Promise.all([
       import("gsap").catch(() => null),
       import("gsap/ScrollTrigger").catch(() => null),
@@ -82,27 +88,15 @@ export function Navigation({ className = "" }: NavigationProps) {
     }).catch(() => {})
   }, [])
 
-  // Scroll-hide nav behavior
   useEffect(() => {
     if (!siteConfig.features.navigationScrollHide) return
-
     const nav = navRef.current
     if (!nav || !gsapRef.current) return
-
     const gsap = gsapRef.current
     gsap.set(nav, { y: 0 })
 
     const handleScroll = (e: Event) => {
-      // Support both smooth scroll custom event and native scroll
-      let pos: number
-      if (e instanceof CustomEvent) {
-        pos = e.detail.scrollY
-      } else {
-        pos = window.scrollY
-      }
-
-      setIsScrolled(pos > 50)
-
+      const pos = e instanceof CustomEvent ? e.detail.scrollY : window.scrollY
       const delta = Math.abs(pos - lastScrollPos.current)
       if (delta > 1) {
         if (pos < 50) {
@@ -118,7 +112,6 @@ export function Navigation({ className = "" }: NavigationProps) {
           isNavVisible.current = true
         }
       }
-
       lastScrollPos.current = pos
     }
 
@@ -136,71 +129,43 @@ export function Navigation({ className = "" }: NavigationProps) {
     if (nav && gsapRef.current) gsapRef.current.set(nav, { y: 0 })
     isNavVisible.current = true
     lastScrollPos.current = 0
-    setIsScrolled(false)
-    setIsMenuOpen(false)
-    setActiveDropdown(null)
-  }, [pathname])
+    closeMenu()
+  }, [pathname, closeMenu])
 
-  // Lock body scroll when menu is open
+  // Body scroll lock when mobile menu open
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = ""
-    }
+    document.body.style.overflow = isMenuOpen ? "hidden" : ""
     return () => { document.body.style.overflow = "" }
   }, [isMenuOpen])
 
-  // Trap focus in overlay when open
+  // Escape closes mobile menu
   useEffect(() => {
     if (!isMenuOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsMenuOpen(false)
+      if (e.key === "Escape") closeMenu()
     }
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [isMenuOpen])
-
-  const handleNavClick = (label: string) => trackNavClick(label)
-
-  const handleDropdownToggle = (itemLabel: string) => {
-    const has = siteConfig.navigation.find((i) => i.label === itemLabel)?.submenu
-    if (!has) return
-    setActiveDropdown(activeDropdown === itemLabel ? null : itemLabel)
-  }
-
-  const { ref: menuTextRef, scrambleTo } = useScrambleText()
-
-  const toggleMenu = useCallback(() => {
-    setIsMenuOpen(prev => {
-      const next = !prev
-      scrambleTo(next ? "Close" : "Menu")
-      return next
-    })
-    setActiveDropdown(null)
-  }, [scrambleTo])
+  }, [isMenuOpen, closeMenu])
 
   const navItems = siteConfig.navigation
 
   return (
     <>
-      {/* Minimal topbar */}
       <nav
         ref={navRef}
         id="navigation"
-        className={`fixed w-full z-[60] transition-all duration-500 ${
-          isScrolled && !isMenuOpen
-            ? "backdrop-blur-xl border-b"
-            : "bg-transparent"
-        } ${className}`}
+        data-nav-theme="dark"
+        className={`fixed w-full z-[60] ${className}`}
         style={{
           top: "var(--banner-height, 0px)",
-          borderColor: isScrolled && !isMenuOpen ? "var(--border)" : "transparent",
-          backgroundColor: isScrolled && !isMenuOpen ? "color-mix(in srgb, var(--bg) 85%, transparent)" : "transparent",
+          backgroundColor: "#000000",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
         }}
       >
-        <div className="w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
+        <div className="w-full px-3">
           <div className="flex justify-between items-center h-16">
+
             {/* Logo */}
             <TransitionLink
               href="/"
@@ -209,17 +174,47 @@ export function Navigation({ className = "" }: NavigationProps) {
               onMouseLeave={() => setIsLogoHovered(false)}
             >
               <Logo
-                className="h-7 w-auto transition-all duration-300 group-hover:opacity-70"
+                className="h-7 w-auto group-hover:opacity-70"
                 variant="white"
                 isHovered={isLogoHovered}
+                color="#ffffff"
               />
             </TransitionLink>
 
-            {/* Menu trigger — ScrambleText toggle */}
+            {/* Desktop nav links */}
+            <div className="hidden md:flex items-center gap-8">
+              {navItems.map((item) => (
+                <TransitionLink
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => trackNavClick(item.label)}
+                  className="text-sm font-medium tracking-wider uppercase transition-colors duration-200"
+                  style={{ color: "rgba(255,255,255,0.65)" }}
+                  onMouseOver={(e) => (e.currentTarget.style.color = "#ffffff")}
+                  onMouseOut={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
+                >
+                  {item.label}
+                </TransitionLink>
+              ))}
+              <TransitionLink
+                href="/become-a-client"
+                onClick={() => trackNavClick("Become a Client")}
+                className="border px-5 py-2.5 text-xs font-medium uppercase tracking-wider transition-colors duration-200 hover:bg-white/10"
+                style={{
+                  borderColor: "rgba(255,255,255,0.85)",
+                  color: "#ffffff",
+                  backgroundColor: "transparent",
+                }}
+              >
+                Become a Client
+              </TransitionLink>
+            </div>
+
+            {/* Mobile menu toggle */}
             <button
               onClick={toggleMenu}
-              className="relative z-[60] text-sm font-medium tracking-wider uppercase transition-colors duration-300 py-2"
-              style={{ color: "var(--fg)" }}
+              className="md:hidden relative z-[60] text-sm font-medium tracking-wider uppercase py-2"
+              style={{ color: "#ffffff" }}
               aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={isMenuOpen}
             >
@@ -231,7 +226,7 @@ export function Navigation({ className = "" }: NavigationProps) {
         </div>
       </nav>
 
-      {/* Full-screen overlay menu */}
+      {/* Mobile full-screen overlay */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -239,30 +234,29 @@ export function Navigation({ className = "" }: NavigationProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-50 flex flex-col h-[100dvh] overflow-hidden"
-            style={{ backgroundColor: "var(--bg)" }}
+            data-nav-theme="dark"
+            className="fixed inset-0 z-50 flex flex-col h-[100dvh] overflow-hidden md:hidden"
+            style={{ backgroundColor: "#000000" }}
           >
-            {/* Spacer for nav height */}
             <div className="h-16 flex-shrink-0" />
 
-            {/* Nav links — fits viewport, no scroll */}
             <motion.div
               variants={overlayVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="flex-1 flex flex-col justify-center px-8 sm:px-12 md:px-16 lg:px-24 min-h-0"
+              className="flex-1 flex flex-col justify-center px-8 sm:px-12 min-h-0"
             >
               <div className="flex flex-col">
                 {navItems.map((item, i) => (
                   <motion.div key={item.href} variants={linkVariants}>
                     <TransitionLink
                       href={item.href}
-                      onClick={() => { handleNavClick(item.label); setIsMenuOpen(false) }}
-                      className="group flex items-baseline gap-3 py-[0.6vh] md:py-[0.8vh] transition-colors duration-300"
-                      style={{ color: "var(--fg)" }}
+                      onClick={() => { trackNavClick(item.label); closeMenu() }}
+                      className="group flex items-baseline gap-3 py-[0.6vh] transition-colors duration-300"
+                      style={{ color: "#ffffff" }}
                       onMouseOver={(e) => (e.currentTarget.style.color = "var(--accent)")}
-                      onMouseOut={(e) => (e.currentTarget.style.color = "var(--fg)")}
+                      onMouseOut={(e) => (e.currentTarget.style.color = "#ffffff")}
                     >
                       <span
                         className="hidden sm:inline-block text-xs font-medium tracking-wider tabular-nums w-6"
@@ -279,43 +273,43 @@ export function Navigation({ className = "" }: NavigationProps) {
               </div>
             </motion.div>
 
-            {/* Footer area */}
             <motion.div
               variants={contactVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="flex-shrink-0 px-8 sm:px-12 md:px-16 lg:px-24 pb-8 pt-4"
+              className="flex-shrink-0 px-8 sm:px-12 pb-8 pt-4"
             >
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t pt-6" style={{ borderColor: "var(--border)" }}>
+              <div
+                className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t pt-6"
+                style={{ borderColor: "rgba(255,255,255,0.12)" }}
+              >
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
                   <a
                     href={`mailto:${siteConfig.contact.email}`}
                     className="text-sm transition-colors duration-200"
-                    style={{ color: "var(--fg-muted)" }}
-                    onMouseOver={(e) => (e.currentTarget.style.color = "var(--fg)")}
-                    onMouseOut={(e) => (e.currentTarget.style.color = "var(--fg-muted)")}
+                    style={{ color: "rgba(255,255,255,0.45)" }}
+                    onMouseOver={(e) => (e.currentTarget.style.color = "#ffffff")}
+                    onMouseOut={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
                   >
                     {siteConfig.contact.email}
                   </a>
-                  {siteConfig.contact.phone && (
-                    <a
-                      href={`tel:${siteConfig.contact.phone}`}
-                      className="text-sm transition-colors duration-200"
-                      style={{ color: "var(--fg-muted)" }}
-                      onMouseOver={(e) => (e.currentTarget.style.color = "var(--fg)")}
-                      onMouseOut={(e) => (e.currentTarget.style.color = "var(--fg-muted)")}
-                    >
-                      {siteConfig.contact.phoneDisplay}
-                    </a>
-                  )}
                 </div>
-                <FillButton
-                  onClick={() => { navigateTo("/contact"); setIsMenuOpen(false) }}
-                  className="text-sm tracking-wider uppercase px-6 py-3"
+                <TransitionLink
+                  href="/become-a-client"
+                  onClick={() => {
+                    trackNavClick("Become a Client Mobile")
+                    closeMenu()
+                  }}
+                  className="border px-6 py-3 text-sm font-medium uppercase tracking-wider transition-colors duration-200 hover:bg-white/10"
+                  style={{
+                    borderColor: "rgba(255,255,255,0.85)",
+                    color: "#ffffff",
+                    backgroundColor: "transparent",
+                  }}
                 >
-                  Book a Call
-                </FillButton>
+                  Become a Client
+                </TransitionLink>
               </div>
             </motion.div>
           </motion.div>

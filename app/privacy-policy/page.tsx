@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
+import { GoldEffectCanvas } from "@/components/gold-effect-canvas"
 import { siteConfig } from "@/site.config"
 import { getPrivacyPolicyData } from "./data"
 
@@ -31,6 +32,8 @@ export default function PrivacyPolicyPage() {
         title={data.hero.title}
         size="compact"
         breadcrumbs={data.hero.breadcrumbs}
+        background="white"
+        backgroundSlot={<GoldEffectCanvas effect="aurora" className="pointer-events-none" />}
       />
       <main id="main-content">
         <SubpageSection maxWidth="narrow">

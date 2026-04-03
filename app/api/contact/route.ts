@@ -61,7 +61,22 @@ export async function POST(request: NextRequest) {
       utmSource,
       utmMedium,
       utmCampaign,
+      jobTitle,
+      country,
+      companyName,
     } = body
+
+    const metaLines = [
+      typeof jobTitle === "string" && jobTitle.trim() && `Job title: ${jobTitle.trim()}`,
+      typeof country === "string" && country.trim() && `Country: ${country.trim()}`,
+      typeof companyName === "string" && companyName.trim() && `Company: ${companyName.trim()}`,
+    ].filter(Boolean) as string[]
+
+    const messageBody = typeof message === "string" ? message.trim() : ""
+    const composedMessage =
+      metaLines.length > 0
+        ? `${metaLines.join("\n")}${messageBody ? `\n\n${messageBody}` : ""}`
+        : messageBody || null
 
     if (!firstName || !lastName || !email || !phone) {
       return NextResponse.json(
@@ -95,7 +110,7 @@ export async function POST(request: NextRequest) {
         email: email.trim().toLowerCase(),
         phone: phone.trim(),
         subject: subject?.trim() || null,
-        message: message?.trim() || null,
+        message: composedMessage,
         tcpa_consent: true,
         consent_timestamp: new Date().toISOString(),
         consent_ip_address: clientIP,
@@ -128,7 +143,7 @@ export async function POST(request: NextRequest) {
         email: email.trim().toLowerCase(),
         phone: phone.trim(),
         subject: subject?.trim(),
-        message: message?.trim(),
+        message: composedMessage || undefined,
       })
     }
 

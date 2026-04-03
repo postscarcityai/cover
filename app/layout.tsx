@@ -13,10 +13,9 @@ import { ScrollRevealInit } from "@/components/scroll-reveal"
 import { TransitionProvider } from "@/components/transition-context";
 import { PageTransition } from "@/components/page-transition";
 import { CustomCursor } from "@/components/custom-cursor";
-import { ScrollVelocitySkew } from "@/components/scroll-velocity";
 import { Navigation } from "@/components/navigation";
 import { siteConfig } from "@/site.config";
-import { openSans } from "@/lib/fonts";
+import { jetbrainsMono, instrumentSerif } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: siteConfig.seo.defaultTitle,
@@ -81,7 +80,8 @@ export default function RootLayout({
       lang="en"
       className={`
         overflow-x-hidden
-        ${openSans.variable}
+        ${jetbrainsMono.variable}
+        ${instrumentSerif.variable}
       `}
     >
       <head>
@@ -106,7 +106,6 @@ export default function RootLayout({
         </div>
         <ThemeInjector />
         <CustomCursor />
-        <ScrollVelocitySkew />
         <RouteAnnouncer />
         {siteConfig.announcement?.enabled && <AnnouncementBanner />}
         <ScrollRevealInit />

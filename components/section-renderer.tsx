@@ -85,15 +85,31 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
       {sections.map((section, index) => {
         const num = getSectionNumber(sections, index)
 
+        const seamGoldFromHero =
+          index > 0 && sections[index - 1]?.type === "hero"
+
         switch (section.type) {
           case "hero":
             return <HeroSection key={section.id} content={section.content as HeroContent} />
           case "features":
-            return <FeaturesSection key={section.id} content={section.content as FeaturesContent} sectionNumber={num} />
+            return (
+              <FeaturesSection
+                key={section.id}
+                content={section.content as FeaturesContent}
+                sectionNumber={num}
+                seamGoldFromHero={seamGoldFromHero}
+              />
+            )
           case "stats":
             return <StatsSection key={section.id} content={section.content as StatsContent} />
           case "content":
-            return <ContentSection key={section.id} content={section.content as ContentSectionContent} />
+            return (
+              <ContentSection
+                key={section.id}
+                content={section.content as ContentSectionContent}
+                seamGoldFromHero={seamGoldFromHero}
+              />
+            )
           case "testimonials":
             return <TestimonialsSection key={section.id} content={section.content as TestimonialsContent} sectionNumber={num} />
           case "cta":

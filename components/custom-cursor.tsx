@@ -2,9 +2,13 @@
 
 import { useEffect, useRef } from "react"
 
+const CURSOR_GOLD = "#C49A28"
+const CURSOR_DARK = "var(--fg)"
+
 /**
  * Custom cursor — small dot that follows the mouse with GSAP quickTo.
  * Scales up and adds a ring on hover over interactive elements.
+ * Adapts color to the section underneath: gold on dark sections, dark on light.
  * Desktop only (pointer: fine).
  */
 export function CustomCursor() {
@@ -12,7 +16,6 @@ export function CustomCursor() {
   const ringRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Only on devices with a fine pointer (no touch)
     if (!window.matchMedia("(pointer: fine)").matches) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
@@ -27,17 +30,36 @@ export function CustomCursor() {
         const gsapModule = await import("gsap")
         const gsap = (gsapModule as any).default || gsapModule
 
-        // quickTo for buttery smooth 60fps tracking
         const xDot = gsap.quickTo(dot, "x", { duration: 0.15, ease: "power2.out" })
         const yDot = gsap.quickTo(dot, "y", { duration: 0.15, ease: "power2.out" })
         const xRing = gsap.quickTo(ring, "x", { duration: 0.3, ease: "power2.out" })
         const yRing = gsap.quickTo(ring, "y", { duration: 0.3, ease: "power2.out" })
+
+        // Track current color state to avoid redundant GSAP calls
+        let currentColor: "dark" | "gold" = "dark"
+
+        const getThemeAtPoint = (x: number, y: number): "dark" | "gold" => {
+          // Walk up the element tree from cursor position to find a data-nav-theme
+          const el = document.elementFromPoint(x, y)
+          if (!el) return "dark"
+          const section = el.closest<HTMLElement>("[data-nav-theme]")
+          return section?.dataset.navTheme === "dark" ? "gold" : "dark"
+        }
+
+        const applyColor = (theme: "dark" | "gold") => {
+          if (theme === currentColor) return
+          currentColor = theme
+          const color = theme === "gold" ? CURSOR_GOLD : CURSOR_DARK
+          gsap.to(dot, { backgroundColor: color, duration: 0.4, ease: "power2.out" })
+          gsap.to(ring, { borderColor: color, duration: 0.4, ease: "power2.out" })
+        }
 
         const handleMouseMove = (e: MouseEvent) => {
           xDot(e.clientX)
           yDot(e.clientY)
           xRing(e.clientX)
           yRing(e.clientY)
+          applyColor(getThemeAtPoint(e.clientX, e.clientY))
         }
 
         const handleMouseEnterInteractive = () => {
@@ -59,7 +81,6 @@ export function CustomCursor() {
           gsap.to(ring, { opacity: 0, duration: 0.3 })
         }
 
-        // Observe interactive elements
         const attachListeners = () => {
           const interactives = document.querySelectorAll("a, button, [data-cursor], input, textarea, select")
           interactives.forEach((el) => {
@@ -71,14 +92,11 @@ export function CustomCursor() {
 
         let interactives = attachListeners()
 
-        // Re-attach on DOM changes (route transitions etc.)
         const observer = new MutationObserver(() => {
-          // Detach old
           interactives.forEach((el) => {
             el.removeEventListener("mouseenter", handleMouseEnterInteractive)
             el.removeEventListener("mouseleave", handleMouseLeaveInteractive)
           })
-          // Attach new
           interactives = attachListeners()
         })
         observer.observe(document.body, { childList: true, subtree: true })
@@ -87,7 +105,6 @@ export function CustomCursor() {
         document.addEventListener("mouseenter", handleMouseEnterDocument)
         document.addEventListener("mouseleave", handleMouseLeaveDocument)
 
-        // Hide native cursor globally
         const style = document.createElement("style")
         style.id = "custom-cursor-hide"
         style.textContent = "*, *::before, *::after { cursor: none !important; }"
@@ -124,7 +141,7 @@ export function CustomCursor() {
           marginLeft: -4,
           marginTop: -4,
           borderRadius: "50%",
-          backgroundColor: "var(--fg)",
+          backgroundColor: CURSOR_DARK,
           opacity: 0,
           willChange: "transform",
         }}
@@ -139,7 +156,7 @@ export function CustomCursor() {
           marginLeft: -20,
           marginTop: -20,
           borderRadius: "50%",
-          border: "1px solid var(--fg)",
+          border: `1px solid ${CURSOR_DARK}`,
           opacity: 0,
           willChange: "transform",
         }}

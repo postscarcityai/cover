@@ -118,14 +118,16 @@ export const homepageSections: HomepageSection[] = [
     id: "hero",
     type: "hero",
     content: {
-      title: siteConfig.hero?.title || "The companies that move first will own the next decade.",
-      subtitle: siteConfig.hero?.subtitle || "We build the AI infrastructure that separates leaders from everyone else.",
+      title: siteConfig.hero?.title || "Unlock Abundance with AI",
+      subtitle:
+        siteConfig.hero?.subtitle ||
+        "The companies that move first will own the next decade. We build the AI infrastructure that separates leaders from everyone else.",
       description: siteConfig.description,
       ctaPrimaryText: siteConfig.hero?.ctaPrimary || "Book a Call",
       ctaPrimaryHref: "/contact",
       ctaSecondaryText: siteConfig.hero?.ctaSecondary || "See the Work",
       ctaSecondaryHref: "/work",
-      trustText: "Autonomous agents. Self-hosted intelligence. Zero vendor lock-in.",
+      trustText: "",
     } satisfies HeroContent,
   },
   {

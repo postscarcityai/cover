@@ -3,12 +3,15 @@
 import { useState } from "react"
 import Image from "next/image"
 import { CTALink } from "@/components/ui/cta-link"
+import { HeroGoldSeamOverlay } from "@/components/hero-gold-seam-overlay"
 import { PlaceholderImage } from "@/components/placeholder-image"
 import type { ContentSectionContent } from "@/app/data"
 
 interface ContentSectionProps {
   content: ContentSectionContent
   className?: string
+  /** True when this block follows the hero — paints transparent gold across the seam. */
+  seamGoldFromHero?: boolean
 }
 
 function ContentImage({ src, alt }: { src?: string; alt: string }) {
@@ -32,10 +35,18 @@ function ContentImage({ src, alt }: { src?: string; alt: string }) {
   )
 }
 
-export function ContentSection({ content, className = "" }: ContentSectionProps) {
+export function ContentSection({
+  content,
+  className = "",
+  seamGoldFromHero = false,
+}: ContentSectionProps) {
   return (
-    <section className={`py-24 md:py-40 ${className}`} style={{ backgroundColor: "var(--bg)" }}>
-      <div className="space-y-32 md:space-y-48">
+    <section
+      className={`relative isolate py-24 md:py-40 ${className}`}
+      style={{ backgroundColor: "var(--bg)" }}
+    >
+      {seamGoldFromHero && <HeroGoldSeamOverlay />}
+      <div className="relative z-20 space-y-32 md:space-y-48">
         {content.blocks.map((block, blockIndex) => {
           const isFirst = blockIndex === 0
 

@@ -1,0 +1,6 @@
+export { buildGoldDropFragmentSource } from "./fragment-shader"
+export { GOLD_DROP_VERTEX_SHADER } from "./vertex-shader"
+export { useGoldDropWebGL } from "./use-gold-drop-webgl"
+export type { UseGoldDropOptions } from "./use-gold-drop-webgl"
+export { DEFAULT_CONFIG } from "./types"
+export type { GoldDropConfig } from "./types"

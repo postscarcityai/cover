@@ -93,8 +93,25 @@ html {
    ======================================== */
 
 @layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+  }
+
   :root {
     --radius: 0.5rem;
+    /* Become a Client panel (lead capture) */
+    --become-client-cta-bg: #f5e000;
+    --become-client-cta-fg: #111111;
+    --become-client-panel-a: #0f2d22;
+    --become-client-panel-b: #1a4d3a;
+    --become-client-panel-c: #2a6b4f;
+    --become-client-card: color-mix(in srgb, #ffffff 94%, transparent);
+    --become-client-card-border: color-mix(in srgb, #000000 10%, transparent);
   }
 
   * {
@@ -240,7 +257,7 @@ html {
   border-radius: 0 0 4px 4px;
   font-weight: 600;
   font-size: 14px;
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-body);
   transition: top 0.2s ease;
   white-space: nowrap;
 }

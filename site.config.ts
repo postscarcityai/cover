@@ -18,8 +18,9 @@ export const siteConfig = {
     mutedForeground: "#6B6B80",
     accent: "#B8941F",
     accentForeground: "#FFFFFF",
-    fontHeading: "var(--font-open-sans), system-ui, sans-serif",
-    fontBody: "var(--font-open-sans), system-ui, sans-serif",
+    fontHeading: "var(--font-instrument-serif), Georgia, serif",
+    fontBody:
+      "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
   } as Partial<DesignTokens>,
 
   // Basic Site Information
@@ -214,8 +215,9 @@ export const siteConfig = {
 
   // Hero Section Configuration
   hero: {
-    title: "The companies that move first will own the next decade.",
-    subtitle: "We help you build the AI infrastructure ahead of the curve. Autonomous agents. Crafted Design. Always a human in the loop.",
+    title: "Unlock Abundance",
+    subtitle:
+      "The companies that move first will own the next decade. We help you build the AI infrastructure ahead of the curve. Autonomous agents. Crafted Design. Always a human in the loop.",
     ctaPrimary: "Book a Call",
     ctaSecondary: "See the Work"
   },

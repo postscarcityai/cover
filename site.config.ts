@@ -232,8 +232,8 @@ export const siteConfig = {
     inkDeep: "#0E1C2F",
     inkMid: "#3D4F6B",
     inkMuted: "#7B8BA5",
-    /** `color-mix` percent: hero ink mid vs white (see theme-injector `--hero-dot-fg`) */
-    dotInkMixPercent: 28,
+    /** `color-mix` percent: hero ink mid vs white (lower = lighter dots) */
+    dotInkMixPercent: 20,
   },
 
   // Services Section Configuration

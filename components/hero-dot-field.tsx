@@ -14,7 +14,8 @@ interface HeroDotFieldProps {
 const CHAR_WIDTH = 6
 const CHAR_HEIGHT = 10
 
-const TARGET_FPS = 30
+/** Slightly faster cadence than RetroASCII 30 — smoother perceived motion */
+const TARGET_FPS = 48
 const FRAME_INTERVAL_MS = 1000 / TARGET_FPS
 
 const DPR_CAP = 2
@@ -73,7 +74,7 @@ export function HeroDotField({ className = "" }: HeroDotFieldProps) {
 
       const pulse = mq.matches
         ? 1
-        : Math.sin(frame * 0.01) * 0.08 + 0.92
+        : Math.sin(frame * 0.007) * 0.055 + 0.945
 
       ctx.font = `${CHAR_HEIGHT}px "Courier New", Courier, monospace`
       ctx.textAlign = "center"
@@ -85,7 +86,13 @@ export function HeroDotField({ className = "" }: HeroDotFieldProps) {
           if (ch === " ") continue
 
           const weight = dotFieldGlyphBrightness(ch) * pulse
-          const alpha = Math.min(0.55, 0.12 + weight * 0.55)
+          // Diagonal “pipe” shimmer — non-sync frequencies feel non-deterministic
+          const pipe =
+            Math.sin(col * 0.11 + row * 0.073 + frame * 0.13) * 0.085 + 1
+          const alpha = Math.min(
+            0.4,
+            (0.065 + weight * 0.38) * pipe
+          )
 
           ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`
           ctx.fillText(

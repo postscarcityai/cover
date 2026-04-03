@@ -17,19 +17,27 @@ export const generateDotField = (
   const grid = createGrid(cols, rows)
   const baseDensity = 0.05 // Increased density for more coverage
 
-  // Faster breathing effect - increased animation speed
-  const breath = Math.sin(frame * 4) * 0.15 + 0.85
+  // Softer breath — less twitchy threshold
+  const breath = Math.sin(frame * 3.35) * 0.12 + 0.88
   const density = baseDensity * breath
 
   // Use hash-based distribution with spiral/Voronoi-like clustering
   const cellSize = 3.5
-  const verticalPulse = Math.sin(frame * 0.05) * 0.2
+  const verticalPulse = Math.sin(frame * 0.042) * 0.18
+
+  // Incommensurate drifts: reads like uneven load / commands sliding through a grid
+  const flowX =
+    Math.sin(frame * 0.039) * 2.4 +
+    Math.sin(frame * 0.017) * 1.1 +
+    Math.cos(frame * 0.073) * 0.65
+  const flowY =
+    Math.sin(frame * 0.028) * 0.38 + Math.cos(frame * 0.051) * 0.22
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
-      // Grid-based cells with hash variation
-      const cellRow = Math.floor((row + verticalPulse) / cellSize)
-      const cellCol = Math.floor(col / cellSize)
+      // Grid-based cells with hash variation (flow offsets cluster phase)
+      const cellRow = Math.floor((row + verticalPulse + flowY) / cellSize)
+      const cellCol = Math.floor((col + flowX) / cellSize)
 
       // Create hash from cell position for consistent distribution
       const hash1 = ((cellCol * 137 + cellRow * 193) % 100) / 100

@@ -1,17 +1,15 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useState } from "react"
 import Image from "next/image"
 import { CTALink } from "@/components/ui/cta-link"
-import { HeroGoldSeamOverlay } from "@/components/hero-gold-seam-overlay"
 import { PlaceholderImage } from "@/components/placeholder-image"
+import { AgentOrgChart } from "@/components/agent-org-chart"
 import type { ContentSectionContent } from "@/app/data"
 
 interface ContentSectionProps {
   content: ContentSectionContent
   className?: string
-  /** True when this block follows the hero — paints transparent gold across the seam. */
-  seamGoldFromHero?: boolean
 }
 
 function ContentImage({ src, alt }: { src?: string; alt: string }) {
@@ -38,17 +36,12 @@ function ContentImage({ src, alt }: { src?: string; alt: string }) {
 export function ContentSection({
   content,
   className = "",
-  seamGoldFromHero = false,
 }: ContentSectionProps) {
-  const sectionRef = useRef<HTMLElement | null>(null)
-
   return (
     <section
-      ref={sectionRef}
       className={`relative isolate py-24 md:py-40 ${className}`}
       style={{ backgroundColor: "var(--bg)" }}
     >
-      {seamGoldFromHero && <HeroGoldSeamOverlay anchorRef={sectionRef} />}
       <div className="relative z-10 space-y-32 md:space-y-48">
         {content.blocks.map((block, blockIndex) => {
           const isFirst = blockIndex === 0
@@ -93,7 +86,11 @@ export function ContentSection({
                       )}
                     </div>
                     <div data-reveal="scale">
-                      <ContentImage src={block.imageSrc} alt={block.imageAlt || block.title} />
+                      {block.slot === "agent-org-chart" ? (
+                        <AgentOrgChart />
+                      ) : (
+                        <ContentImage src={block.imageSrc} alt={block.imageAlt || block.title} />
+                      )}
                     </div>
                   </div>
                 </div>

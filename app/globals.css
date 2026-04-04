@@ -320,6 +320,165 @@ html {
 }
 
 /* ========================================
+   Agent Org Chart
+   ======================================== */
+
+.aoc-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ---- Connection lines (SVG) ---- */
+
+.aoc-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.aoc-line {
+  stroke: rgba(0, 0, 0, 0.06);
+  stroke-width: 0.3;
+  stroke-dasharray: 1.5 1.5;
+}
+
+/* ---- Agent nodes ---- */
+
+.aoc-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  z-index: 2;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.aoc-node--source {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.aoc-node--target {
+  transform: translate(-50%, -50%) scale(1.12);
+}
+
+.aoc-node-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.aoc-node--source .aoc-node-icon {
+  border-color: rgba(196, 181, 253, 0.5);
+  box-shadow: 0 0 16px rgba(196, 181, 253, 0.25);
+}
+
+.aoc-node--target .aoc-node-icon {
+  border-color: rgba(153, 246, 228, 0.5);
+  box-shadow: 0 0 16px rgba(153, 246, 228, 0.3);
+}
+
+.aoc-node-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--fg);
+}
+
+.aoc-node-role {
+  font-family: var(--font-body);
+  font-size: 9.5px;
+  color: var(--fg-muted, rgba(0, 0, 0, 0.4));
+  letter-spacing: 0.01em;
+}
+
+/* ---- Animated task packets ---- */
+
+.aoc-packet {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  animation: aocMove 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  left: var(--from-x);
+  top: var(--from-y);
+  transform: translate(-50%, -50%);
+}
+
+.aoc-packet--fade {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.aoc-packet-label {
+  display: block;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+  background: rgba(184, 148, 31, 0.12);
+  color: rgba(140, 110, 15, 0.85);
+  border: 1px solid rgba(184, 148, 31, 0.15);
+  box-shadow: 0 2px 8px rgba(184, 148, 31, 0.1);
+}
+
+@keyframes aocMove {
+  0% {
+    left: var(--from-x);
+    top: var(--from-y);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  85% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    left: var(--to-x);
+    top: var(--to-y);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.85);
+  }
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 767px) {
+  .aoc-wrap {
+    max-width: 340px;
+  }
+  .aoc-node-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+  .aoc-node-label { font-size: 10px; }
+  .aoc-node-role { font-size: 8.5px; }
+  .aoc-packet-label { font-size: 9px; padding: 3px 8px; }
+}
+
+/* ========================================
    Scroll Progress Bar
    ======================================== */
 

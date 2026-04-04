@@ -56,6 +56,8 @@ export interface ContentBlock {
   reverse?: boolean
   ctaText?: string
   ctaHref?: string
+  /** Named slot component to render instead of the image */
+  slot?: string
 }
 
 export interface ContentSectionContent {
@@ -145,6 +147,7 @@ export const homepageSections: HomepageSection[] = [
             "This isn't about saving time on email. It's about building an operational layer that gets smarter every week, scales without headcount, and belongs entirely to you.",
           ],
           imageAlt: "PostScarcity AI infrastructure",
+          slot: "agent-org-chart",
           ctaText: "See What We Build",
           ctaHref: "/services",
         },

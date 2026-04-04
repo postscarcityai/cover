@@ -144,17 +144,30 @@ html {
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  /* nudge just above true center */
+  padding-bottom: 4%;
 }
 
 .hc-messages {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 12px;
   perspective: 800px;
-  flex: 1;
-  /* nudge just above true center */
-  padding-bottom: 6%;
+  /* Fixed height — no layout jumps */
+  max-height: 320px;
+  overflow: hidden;
+  position: relative;
+  /* Fade-out mask at the top */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+}
+
+@media (max-width: 1023px) {
+  .hc-messages {
+    max-height: 260px;
+  }
 }
 
 /* ---- Message row ---- */
@@ -199,9 +212,8 @@ html {
 }
 
 @keyframes hcFadeOut {
-  0%   { opacity: 1; transform: translateX(0) scale(1); max-height: 200px; }
-  50%  { opacity: 0; transform: translateY(-8px) scale(0.95); }
-  100% { opacity: 0; transform: translateY(-8px) scale(0.95); max-height: 0; margin-top: -12px; overflow: hidden; }
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.96); }
 }
 
 /* ---- Avatars ---- */

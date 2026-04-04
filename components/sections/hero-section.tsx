@@ -56,7 +56,7 @@ export function HeroSection({ content, className = "" }: HeroSectionProps) {
           <div className="flex-1 min-w-0 lg:order-1">
             <h1
               data-reveal="words"
-              className="font-heading font-light max-w-full text-balance break-words text-5xl leading-[0.95] tracking-[-0.02em] sm:max-w-[min(100%,48rem)] sm:text-6xl md:max-w-[min(100%,52rem)] md:text-7xl md:mb-7 lg:max-w-[min(100%,56rem)] lg:text-8xl xl:text-9xl mb-6 sm:mb-7"
+              className="font-heading font-light max-w-full text-balance break-words text-5xl leading-[0.95] tracking-[-0.02em] sm:max-w-[min(100%,48rem)] sm:text-6xl md:max-w-[min(100%,52rem)] md:text-7xl lg:max-w-[min(100%,56rem)] lg:text-8xl xl:text-9xl mb-3 sm:mb-4 md:mb-5"
               style={{ color: "var(--hero-ink-deep)" }}
             >
               {content.title}
@@ -65,7 +65,7 @@ export function HeroSection({ content, className = "" }: HeroSectionProps) {
             {content.subtitle && (
               <p
                 data-reveal="fade-up"
-                className="mb-10 w-full max-w-full text-pretty break-words text-base font-light leading-[1.55] tracking-[0.01em] sm:mb-12 sm:max-w-2xl sm:text-lg sm:leading-[1.5] md:max-w-3xl md:text-xl md:leading-relaxed"
+                className="mb-6 w-full max-w-full text-pretty break-words text-base font-light leading-[1.55] tracking-[0.01em] sm:mb-8 sm:max-w-2xl sm:text-lg sm:leading-[1.5] md:max-w-3xl md:text-xl md:leading-relaxed"
                 style={{ color: "var(--hero-ink-mid)" }}
               >
                 {content.subtitle}

@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import { siteConfig } from "@/site.config"
 import HomePageClient from "./client"
 
-/** Fresh HTML on each request so hashed `_next/static` chunks always match the document. */
-export const dynamic = "force-dynamic"
+/** ISR: serve from CDN, revalidate every 60 seconds */
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: siteConfig.seo.defaultTitle,

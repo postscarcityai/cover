@@ -125,16 +125,20 @@ export function useGoldDropWebGL(
     window.addEventListener("resize", resize)
 
     const t0 = performance.now()
+    const FRAME_MS = 1000 / 24 // cap at 24fps
     let raf = 0
-    const render = () => {
+    let lastPaint = 0
+    const render = (now: number) => {
+      raf = requestAnimationFrame(render)
+      if (now - lastPaint < FRAME_MS) return
+      lastPaint = now
       gl.uniform2f(uRes, canvas.width, canvas.height)
-      gl.uniform1f(uTime, (performance.now() - t0) / 1000)
+      gl.uniform1f(uTime, (now - t0) / 1000)
       if (!opaqueBg) {
         gl.clearColor(0, 0, 0, 0)
         gl.clear(gl.COLOR_BUFFER_BIT)
       }
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
-      raf = requestAnimationFrame(render)
     }
     raf = requestAnimationFrame(render)
 

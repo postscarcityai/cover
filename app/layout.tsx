@@ -3,7 +3,6 @@ import "./globals.css";
 import GoogleAnalytics from "@/components/google-analytics";
 import { UTMPreserver } from "@/components/utm-preserver";
 import { ThemeInjector } from "@/components/theme-injector";
-import { ScrollSmoother } from "@/components/scroll-smoother";
 import { CookieConsentWrapper } from "@/components/cookie-consent-wrapper";
 import { RouteAnnouncer } from "@/components/route-announcer";
 import { ExitIntentPopup } from "@/components/exit-intent-popup";
@@ -12,7 +11,6 @@ import { AnnouncementBanner } from "@/components/announcement-banner";
 import { ScrollRevealInit } from "@/components/scroll-reveal"
 import { TransitionProvider } from "@/components/transition-context";
 import { PageTransition } from "@/components/page-transition";
-import { CustomCursor } from "@/components/custom-cursor";
 import { Navigation } from "@/components/navigation";
 import { siteConfig } from "@/site.config";
 import { jetbrainsMono, instrumentSerif } from "@/lib/fonts";
@@ -105,30 +103,13 @@ export default function RootLayout({
           </a>
         </div>
         <ThemeInjector />
-        <CustomCursor />
         <RouteAnnouncer />
         {siteConfig.announcement?.enabled && <AnnouncementBanner />}
         <ScrollRevealInit />
-        {siteConfig.features.smoothScroll && (
-          <ScrollSmoother
-            smooth={1.2}
-            speed={1}
-            normalizeScroll={false}
-            effects={true}
-          />
-        )}
         <UTMPreserver />
         <TransitionProvider>
           <Navigation />
-          {siteConfig.features.smoothScroll ? (
-            <div id="smooth-wrapper" className="overflow-x-hidden">
-              <div id="smooth-content" className="overflow-x-hidden">
-                <PageTransition>{children}</PageTransition>
-              </div>
-            </div>
-          ) : (
-            <PageTransition>{children}</PageTransition>
-          )}
+          <PageTransition>{children}</PageTransition>
         </TransitionProvider>
         {siteConfig.features.cookieConsent && <CookieConsentWrapper />}
         {siteConfig.features.exitIntentPopup && <ExitIntentPopup />}

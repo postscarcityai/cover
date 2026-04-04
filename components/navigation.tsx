@@ -3,9 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { useScrambleText } from "@/hooks/use-scramble-text"
 import { usePathname } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
 import { Logo } from "@/components/logo"
-import { NavLogoGoldWaves } from "@/components/nav-logo-gold-waves"
 import { TransitionLink } from "@/components/transition-link"
 import { trackNavClick } from "@/lib/analytics"
 import { siteConfig } from "@/site.config"
@@ -14,41 +12,10 @@ interface NavigationProps {
   className?: string
 }
 
-const overlayVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06, delayChildren: 0.15 },
-  },
-  exit: {
-    opacity: 0,
-    transition: { staggerChildren: 0.03, staggerDirection: -1 },
-  },
-}
-
-const linkVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-  },
-  exit: {
-    opacity: 0,
-    y: -20,
-    transition: { duration: 0.25 },
-  },
-}
-
-const contactVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { delay: 0.5, duration: 0.4 } },
-  exit: { opacity: 0, transition: { duration: 0.15 } },
-}
-
 export function Navigation({ className = "" }: NavigationProps) {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [menuMounted, setMenuMounted] = useState(false)
   const [isLogoHovered, setIsLogoHovered] = useState(false)
 
   const navRef = useRef<HTMLElement>(null)
@@ -73,6 +40,15 @@ export function Navigation({ className = "" }: NavigationProps) {
     })
   }, [scrambleTo])
 
+  // Animate menu mount/unmount
+  useEffect(() => {
+    if (isMenuOpen) {
+      requestAnimationFrame(() => setMenuMounted(true))
+    } else {
+      setMenuMounted(false)
+    }
+  }, [isMenuOpen])
+
   // GSAP scroll-hide
   useEffect(() => {
     if (!siteConfig.features.navigationScrollHide) return
@@ -96,8 +72,8 @@ export function Navigation({ className = "" }: NavigationProps) {
     const gsap = gsapRef.current
     gsap.set(nav, { y: 0 })
 
-    const handleScroll = (e: Event) => {
-      const pos = e instanceof CustomEvent ? e.detail.scrollY : window.scrollY
+    const handleScroll = () => {
+      const pos = window.scrollY
       const delta = Math.abs(pos - lastScrollPos.current)
       if (delta > 1) {
         if (pos < 50) {
@@ -116,10 +92,8 @@ export function Navigation({ className = "" }: NavigationProps) {
       lastScrollPos.current = pos
     }
 
-    window.addEventListener("smoothscroll", handleScroll)
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => {
-      window.removeEventListener("smoothscroll", handleScroll)
       window.removeEventListener("scroll", handleScroll)
     }
   }, [isMenuOpen])
@@ -175,7 +149,6 @@ export function Navigation({ className = "" }: NavigationProps) {
               onMouseLeave={() => setIsLogoHovered(false)}
             >
               <span className="relative inline-block h-7 overflow-visible">
-                <NavLogoGoldWaves />
                 <Logo
                   className="relative z-10 h-7 w-auto group-hover:opacity-70"
                   variant="white"
@@ -231,94 +204,93 @@ export function Navigation({ className = "" }: NavigationProps) {
       </nav>
 
       {/* Mobile full-screen overlay */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            data-nav-theme="dark"
-            className="fixed inset-0 z-50 flex flex-col h-[100dvh] overflow-hidden md:hidden"
-            style={{ backgroundColor: "#000000" }}
-          >
-            <div className="h-16 flex-shrink-0" />
+      {isMenuOpen && (
+        <div
+          data-nav-theme="dark"
+          className="fixed inset-0 z-50 flex flex-col h-[100dvh] overflow-hidden md:hidden transition-opacity duration-400"
+          style={{
+            backgroundColor: "#000000",
+            opacity: menuMounted ? 1 : 0,
+            transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+          }}
+        >
+          <div className="h-16 flex-shrink-0" />
 
-            <motion.div
-              variants={overlayVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="flex-1 flex flex-col justify-center px-8 sm:px-12 min-h-0"
-            >
-              <div className="flex flex-col">
-                {navItems.map((item, i) => (
-                  <motion.div key={item.href} variants={linkVariants}>
-                    <TransitionLink
-                      href={item.href}
-                      onClick={() => { trackNavClick(item.label); closeMenu() }}
-                      className="group flex items-baseline gap-3 py-[0.6vh] transition-colors duration-300"
-                      style={{ color: "#ffffff" }}
-                      onMouseOver={(e) => (e.currentTarget.style.color = "var(--accent)")}
-                      onMouseOut={(e) => (e.currentTarget.style.color = "#ffffff")}
-                    >
-                      <span
-                        className="hidden sm:inline-block text-xs font-medium tracking-wider tabular-nums w-6"
-                        style={{ opacity: 0.3 }}
-                      >
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="text-[clamp(1.5rem,4.5vh,3.5rem)] font-light font-heading leading-none">
-                        {item.label}
-                      </span>
-                    </TransitionLink>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              variants={contactVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="flex-shrink-0 px-8 sm:px-12 pb-8 pt-4"
-            >
-              <div
-                className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t pt-6"
-                style={{ borderColor: "rgba(255,255,255,0.12)" }}
-              >
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
-                  <a
-                    href={`mailto:${siteConfig.contact.email}`}
-                    className="text-sm transition-colors duration-200"
-                    style={{ color: "rgba(255,255,255,0.45)" }}
-                    onMouseOver={(e) => (e.currentTarget.style.color = "#ffffff")}
-                    onMouseOut={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
-                  >
-                    {siteConfig.contact.email}
-                  </a>
-                </div>
-                <TransitionLink
-                  href="/become-a-client"
-                  onClick={() => {
-                    trackNavClick("Become a Client Mobile")
-                    closeMenu()
-                  }}
-                  className="border px-6 py-3 text-sm font-medium uppercase tracking-wider transition-colors duration-200 hover:bg-white/10"
+          <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 min-h-0">
+            <div className="flex flex-col">
+              {navItems.map((item, i) => (
+                <div
+                  key={item.href}
                   style={{
-                    borderColor: "rgba(255,255,255,0.85)",
-                    color: "#ffffff",
-                    backgroundColor: "transparent",
+                    opacity: menuMounted ? 1 : 0,
+                    transform: menuMounted ? 'translateY(0)' : 'translateY(40px)',
+                    transition: `opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1) ${0.15 + i * 0.06}s, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) ${0.15 + i * 0.06}s`,
                   }}
                 >
-                  Become a Client
-                </TransitionLink>
+                  <TransitionLink
+                    href={item.href}
+                    onClick={() => { trackNavClick(item.label); closeMenu() }}
+                    className="group flex items-baseline gap-3 py-[0.6vh] transition-colors duration-300"
+                    style={{ color: "#ffffff" }}
+                    onMouseOver={(e) => (e.currentTarget.style.color = "var(--accent)")}
+                    onMouseOut={(e) => (e.currentTarget.style.color = "#ffffff")}
+                  >
+                    <span
+                      className="hidden sm:inline-block text-xs font-medium tracking-wider tabular-nums w-6"
+                      style={{ opacity: 0.3 }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-[clamp(1.5rem,4.5vh,3.5rem)] font-light font-heading leading-none">
+                      {item.label}
+                    </span>
+                  </TransitionLink>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div
+            className="flex-shrink-0 px-8 sm:px-12 pb-8 pt-4"
+            style={{
+              opacity: menuMounted ? 1 : 0,
+              transition: `opacity 0.4s ease ${0.5}s`,
+            }}
+          >
+            <div
+              className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t pt-6"
+              style={{ borderColor: "rgba(255,255,255,0.12)" }}
+            >
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+                <a
+                  href={`mailto:${siteConfig.contact.email}`}
+                  className="text-sm transition-colors duration-200"
+                  style={{ color: "rgba(255,255,255,0.45)" }}
+                  onMouseOver={(e) => (e.currentTarget.style.color = "#ffffff")}
+                  onMouseOut={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
+                >
+                  {siteConfig.contact.email}
+                </a>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <TransitionLink
+                href="/become-a-client"
+                onClick={() => {
+                  trackNavClick("Become a Client Mobile")
+                  closeMenu()
+                }}
+                className="border px-6 py-3 text-sm font-medium uppercase tracking-wider transition-colors duration-200 hover:bg-white/10"
+                style={{
+                  borderColor: "rgba(255,255,255,0.85)",
+                  color: "#ffffff",
+                  backgroundColor: "transparent",
+                }}
+              >
+                Become a Client
+              </TransitionLink>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }

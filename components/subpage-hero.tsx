@@ -1,5 +1,7 @@
 "use client"
 
+import { HeroDotField } from "@/components/hero-dot-field"
+
 interface Breadcrumb {
   label: string
   href?: string
@@ -37,33 +39,35 @@ export function SubpageHero({
       ? "min-h-[40vh]"
       : "min-h-[60vh]"
   const textAlign = align === "center" ? "text-center items-center" : "items-start"
-  const isPaper = background === "white"
 
   return (
     <section
-      className={`relative ${minHeight} flex items-end overflow-hidden ${className}`}
+      className={`relative ${minHeight} flex items-end overflow-visible ${className}`}
       style={{
-        backgroundColor: isPaper ? "hsl(var(--background))" : "var(--bg)",
+        background:
+          "linear-gradient(145deg, var(--hero-shell-a) 0%, var(--hero-shell-b) 42%, var(--hero-shell-c) 100%)",
       }}
     >
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: isPaper
-            ? "radial-gradient(ellipse 55% 45% at 88% 32%, color-mix(in srgb, var(--accent) 5%, transparent), transparent)"
-            : "radial-gradient(ellipse 80% 60% at 50% 40%, color-mix(in srgb, var(--accent) 6%, transparent), transparent)",
-        }}
-      />
+      {/* Dot field — always present, sits under any shader/image overlays */}
+      <HeroDotField className="pointer-events-none z-[1]" />
 
       {backgroundImage && (
         <div
           data-reveal="parallax"
-          className="absolute inset-0 bg-cover bg-center opacity-15"
+          className="absolute inset-0 bg-cover bg-center opacity-15 z-[2]"
           style={{ backgroundImage: `url(${backgroundImage})` }}
         />
       )}
 
-      {backgroundSlot}
+      {/* Shader container — oversized so shapes bleed into the next section */}
+      {backgroundSlot && (
+        <div
+          className="absolute inset-x-0 top-0 z-[2] pointer-events-none"
+          style={{ height: "160%" }}
+        >
+          {backgroundSlot}
+        </div>
+      )}
 
       <div
         className={`relative z-10 w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 pb-16 md:pb-24 pt-32 md:pt-40 max-w-7xl flex flex-col ${textAlign}`}

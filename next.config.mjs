@@ -1,4 +1,9 @@
 import createMDX from '@next/mdx'
+import bundleAnalyzer from '@next/bundle-analyzer'
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -42,7 +47,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'private, no-cache, no-store, must-revalidate',
+            value: 'public, s-maxage=60, stale-while-revalidate=300',
           },
         ],
       },
@@ -82,4 +87,4 @@ const withMDX = createMDX({
 })
 
 // Merge MDX config with Next.js config
-export default withMDX(nextConfig)
+export default withBundleAnalyzer(withMDX(nextConfig))

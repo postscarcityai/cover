@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useScroll, useTransform } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
 
 interface LawyerTeamProps {
   className?: string
@@ -30,44 +30,55 @@ function PersonPlaceholder({ height, label }: { height: string; label: string })
 }
 
 export function LawyerTeam({ className = "" }: LawyerTeamProps) {
-  const { scrollY } = useScroll()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [scrollY, setScrollY] = useState(0)
+  const rafRef = useRef<number>(0)
 
-  const lawyer1Y = useTransform(scrollY, [0, 600], [0, 60])
-  const lawyer2Y = useTransform(scrollY, [0, 600], [0, 70])
-  const lawyer3Y = useTransform(scrollY, [0, 600], [0, 50])
-  const lawyer4Y = useTransform(scrollY, [0, 600], [0, 55])
-  const lawyerCenterY = useTransform(scrollY, [0, 600], [0, 45])
-  const lawyer6Y = useTransform(scrollY, [0, 600], [0, 65])
-  const lawyer7Y = useTransform(scrollY, [0, 600], [0, 58])
+  useEffect(() => {
+    const handleScroll = () => {
+      if (rafRef.current) return
+      rafRef.current = requestAnimationFrame(() => {
+        setScrollY(window.scrollY)
+        rafRef.current = 0
+      })
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    }
+  }, [])
 
-  const teamOpacity = useTransform(scrollY, [0, 600], [1, 0])
+  const clampedScroll = Math.min(scrollY, 600)
+  const progress = clampedScroll / 600
 
   const lawyers = [
-    { height: "h-36", y: lawyer1Y, zIndex: "z-10", label: "Team member" },
-    { height: "h-40", y: lawyer2Y, zIndex: "z-20", label: "Team member" },
-    { height: "h-44", y: lawyer3Y, zIndex: "z-30", label: "Team member" },
-    { height: "h-48", y: lawyerCenterY, zIndex: "z-50", label: "Principal team member" },
-    { height: "h-44", y: lawyer4Y, zIndex: "z-30", label: "Team member" },
-    { height: "h-40", y: lawyer6Y, zIndex: "z-20", label: "Team member" },
-    { height: "h-36", y: lawyer7Y, zIndex: "z-10", label: "Team member" },
+    { height: "h-36", yOffset: 60, zIndex: "z-10", label: "Team member" },
+    { height: "h-40", yOffset: 70, zIndex: "z-20", label: "Team member" },
+    { height: "h-44", yOffset: 50, zIndex: "z-30", label: "Team member" },
+    { height: "h-48", yOffset: 45, zIndex: "z-50", label: "Principal team member" },
+    { height: "h-44", yOffset: 55, zIndex: "z-30", label: "Team member" },
+    { height: "h-40", yOffset: 65, zIndex: "z-20", label: "Team member" },
+    { height: "h-36", yOffset: 58, zIndex: "z-10", label: "Team member" },
   ]
 
   return (
-    <motion.div
+    <div
+      ref={containerRef}
       className={`absolute bottom-0 right-8 flex items-end justify-center ${className}`}
-      style={{ opacity: teamOpacity }}
+      style={{ opacity: 1 - progress }}
       role="img"
       aria-label="Team of professionals arranged in formation"
     >
       {lawyers.map((lawyer, index) => (
-        <motion.div
+        <div
           key={index}
           className={`${lawyer.zIndex} -mr-6`}
-          style={{ y: lawyer.y }}
+          style={{ transform: `translateY(${progress * lawyer.yOffset}px)` }}
         >
           <PersonPlaceholder height={lawyer.height} label={lawyer.label} />
-        </motion.div>
+        </div>
       ))}
-    </motion.div>
+    </div>
   )
 }

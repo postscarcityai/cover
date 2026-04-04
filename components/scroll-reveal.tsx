@@ -30,12 +30,12 @@ export function ScrollRevealInit() {
       splitInstances.forEach((s) => s.revert?.())
       splitInstances.length = 0
 
+      initHero(gsap, SplitText)
       initFadeUp(gsap, ScrollTrigger)
       initFadeIn(gsap, ScrollTrigger)
       initScale(gsap, ScrollTrigger)
       initStagger(gsap, ScrollTrigger)
       initWords(gsap, ScrollTrigger, SplitText)
-      initChars(gsap, ScrollTrigger, SplitText)
       initLines(gsap, ScrollTrigger, SplitText)
       initParallax(gsap, ScrollTrigger)
       initScrollProgress(gsap, ScrollTrigger)
@@ -100,26 +100,35 @@ function isInViewport(el: Element): boolean {
   return rect.top < threshold
 }
 
+/** Hero elements stay visible by CSS — skip them in JS reveal to avoid CLS */
+function isInsideHero(el: Element): boolean {
+  return el.closest("[data-hero-section]") !== null
+}
+
+function filterNonHero(selector: string): Element[] {
+  return Array.from(document.querySelectorAll(selector)).filter(el => !isInsideHero(el))
+}
+
 function animateElementsInViewport(gsap: any) {
-  document.querySelectorAll('[data-reveal="fade-up"]').forEach((el) => {
+  filterNonHero('[data-reveal="fade-up"]').forEach((el) => {
     if (isInViewport(el)) {
       gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", overwrite: true })
     }
   })
 
-  document.querySelectorAll('[data-reveal="fade-in"]').forEach((el) => {
+  filterNonHero('[data-reveal="fade-in"]').forEach((el) => {
     if (isInViewport(el)) {
       gsap.to(el, { opacity: 1, duration: 0.8, ease: "power2.out", overwrite: true })
     }
   })
 
-  document.querySelectorAll('[data-reveal="scale"]').forEach((el) => {
+  filterNonHero('[data-reveal="scale"]').forEach((el) => {
     if (isInViewport(el)) {
       gsap.to(el, { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out", overwrite: true })
     }
   })
 
-  document.querySelectorAll('[data-reveal="stagger"]').forEach((parent) => {
+  filterNonHero('[data-reveal="stagger"]').forEach((parent) => {
     if (!isInViewport(parent)) return
     const children = Array.from(parent.children) as HTMLElement[]
     gsap.to(children, {
@@ -132,7 +141,7 @@ function animateElementsInViewport(gsap: any) {
     })
   })
 
-  document.querySelectorAll('[data-reveal="words"]').forEach((el) => {
+  filterNonHero('[data-reveal="words"]').forEach((el) => {
     if (!isInViewport(el)) return
     const inners = el.querySelectorAll(".word-inner, div")
     gsap.to(inners, {
@@ -143,20 +152,7 @@ function animateElementsInViewport(gsap: any) {
     })
   })
 
-  document.querySelectorAll('[data-reveal="chars"]').forEach((el) => {
-    if (!isInViewport(el)) return
-    const chars = el.querySelectorAll(".char")
-    gsap.to(chars, {
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      duration: 0.6,
-      ease: "power3.out",
-      stagger: 0.02,
-    })
-  })
-
-  document.querySelectorAll('[data-reveal="lines"]').forEach((el) => {
+  filterNonHero('[data-reveal="lines"]').forEach((el) => {
     if (!isInViewport(el)) return
     const lines = el.querySelectorAll(".line")
     gsap.to(lines, {
@@ -183,7 +179,9 @@ function showAll() {
 }
 
 function initFadeUp(gsap: any, ScrollTrigger: any) {
-  ScrollTrigger.batch('[data-reveal="fade-up"]', {
+  const els = filterNonHero('[data-reveal="fade-up"]')
+  if (!els.length) return
+  ScrollTrigger.batch(els, {
     onEnter: (batch: HTMLElement[]) => {
       gsap.to(batch, {
         opacity: 1,
@@ -200,7 +198,9 @@ function initFadeUp(gsap: any, ScrollTrigger: any) {
 }
 
 function initFadeIn(gsap: any, ScrollTrigger: any) {
-  ScrollTrigger.batch('[data-reveal="fade-in"]', {
+  const els = filterNonHero('[data-reveal="fade-in"]')
+  if (!els.length) return
+  ScrollTrigger.batch(els, {
     onEnter: (batch: HTMLElement[]) => {
       gsap.to(batch, {
         opacity: 1,
@@ -216,7 +216,9 @@ function initFadeIn(gsap: any, ScrollTrigger: any) {
 }
 
 function initScale(gsap: any, ScrollTrigger: any) {
-  ScrollTrigger.batch('[data-reveal="scale"]', {
+  const els = filterNonHero('[data-reveal="scale"]')
+  if (!els.length) return
+  ScrollTrigger.batch(els, {
     onEnter: (batch: HTMLElement[]) => {
       gsap.to(batch, {
         opacity: 1,
@@ -233,7 +235,7 @@ function initScale(gsap: any, ScrollTrigger: any) {
 }
 
 function initStagger(gsap: any, ScrollTrigger: any) {
-  document.querySelectorAll('[data-reveal="stagger"]').forEach((parent) => {
+  filterNonHero('[data-reveal="stagger"]').forEach((parent) => {
     const children = parent.children
     ScrollTrigger.create({
       trigger: parent,
@@ -257,7 +259,7 @@ function initStagger(gsap: any, ScrollTrigger: any) {
  * Word-by-word reveal using SplitText (with manual fallback)
  */
 function initWords(gsap: any, ScrollTrigger: any, SplitText: any) {
-  document.querySelectorAll('[data-reveal="words"]').forEach((el) => {
+  filterNonHero('[data-reveal="words"]').forEach((el) => {
     const htmlEl = el as HTMLElement
 
     if (SplitText) {
@@ -329,62 +331,80 @@ function initWords(gsap: any, ScrollTrigger: any, SplitText: any) {
 }
 
 /**
- * Character-by-character reveal with 3D rotateX flip using SplitText
+ * Hero reveals — fires on page load (not scroll) since the hero is already in view.
+ * Uses the same word-level odometer as initWords for consistency.
  */
-function initChars(gsap: any, ScrollTrigger: any, SplitText: any) {
-  if (!SplitText) {
-    // Fallback: treat as fade-up
-    document.querySelectorAll('[data-reveal="chars"]').forEach((el) => {
-      const htmlEl = el as HTMLElement
-      htmlEl.style.opacity = "0"
-      htmlEl.style.transform = "translateY(60px)"
-      ScrollTrigger.create({
-        trigger: el,
-        start: "top 85%",
-        once: true,
-        onEnter: () => {
-          gsap.to(el, { opacity: 1, y: 0, duration: 1, ease: "power3.out" })
-        },
-      })
-    })
-    return
-  }
-
-  document.querySelectorAll('[data-reveal="chars"]').forEach((el) => {
+function initHero(gsap: any, SplitText: any) {
+  // Hero word reveals (h1)
+  const heroWords = Array.from(
+    document.querySelectorAll('[data-hero-section] [data-reveal="words"]')
+  )
+  heroWords.forEach((el) => {
     const htmlEl = el as HTMLElement
 
-    const split = new SplitText(el, {
-      type: "chars,words",
-      charsClass: "char",
-      wordsClass: "word",
-    })
-    splitInstances.push(split)
+    if (SplitText) {
+      const split = new SplitText(el, {
+        type: "words",
+        wordsClass: "word",
+      })
+      splitInstances.push(split)
 
-    // Set initial state on each char
-    gsap.set(split.chars, {
-      opacity: 0,
-      y: 40,
-      rotateX: -90,
-      transformOrigin: "50% 50% -20px",
-    })
+      split.words.forEach((word: HTMLElement) => {
+        word.style.overflow = "hidden"
+        word.style.display = "inline-block"
+        word.style.paddingBottom = "0.15em"
+        word.style.marginBottom = "-0.15em"
+        const inner = document.createElement("span")
+        inner.className = "word-inner"
+        inner.style.display = "inline-block"
+        inner.style.transform = "translateY(110%)"
+        while (word.firstChild) inner.appendChild(word.firstChild)
+        word.appendChild(inner)
+      })
 
-    htmlEl.style.opacity = "1"
+      htmlEl.style.opacity = "1"
 
-    ScrollTrigger.create({
-      trigger: el,
-      start: "top 85%",
-      once: true,
-      onEnter: () => {
-        gsap.to(split.chars, {
-          opacity: 1,
-          y: 0,
-          rotateX: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          stagger: 0.025,
-        })
-      },
-    })
+      gsap.to(el.querySelectorAll(".word-inner"), {
+        y: "0%",
+        duration: 1,
+        ease: "power3.out",
+        stagger: 0.05,
+      })
+    } else {
+      const text = el.textContent || ""
+      const words = text.split(/\s+/).filter(Boolean)
+      el.innerHTML = words
+        .map((w) => `<span class="word"><span class="word-inner">${w}</span></span>`)
+        .join(" ")
+      htmlEl.style.opacity = "1"
+
+      gsap.to(el.querySelectorAll(".word-inner"), {
+        y: "0%",
+        duration: 1,
+        ease: "power3.out",
+        stagger: 0.05,
+      })
+    }
+  })
+
+  // Hero fade-up elements (subtitle, CTA)
+  const heroFadeUps = Array.from(
+    document.querySelectorAll('[data-hero-section] [data-reveal="fade-up"]')
+  )
+  heroFadeUps.forEach((el) => {
+    const htmlEl = el as HTMLElement
+    gsap.set(htmlEl, { opacity: 0, y: 60 })
+    gsap.to(htmlEl, { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.4 })
+  })
+
+  // Hero fade-in elements (trust text)
+  const heroFadeIns = Array.from(
+    document.querySelectorAll('[data-hero-section] [data-reveal="fade-in"]')
+  )
+  heroFadeIns.forEach((el) => {
+    const htmlEl = el as HTMLElement
+    gsap.set(htmlEl, { opacity: 0 })
+    gsap.to(htmlEl, { opacity: 1, duration: 1, ease: "power2.out", delay: 0.6 })
   })
 }
 
@@ -394,7 +414,7 @@ function initChars(gsap: any, ScrollTrigger: any, SplitText: any) {
 function initLines(gsap: any, ScrollTrigger: any, SplitText: any) {
   if (!SplitText) {
     // Fallback: treat as fade-up
-    document.querySelectorAll('[data-reveal="lines"]').forEach((el) => {
+    filterNonHero('[data-reveal="lines"]').forEach((el) => {
       const htmlEl = el as HTMLElement
       htmlEl.style.opacity = "0"
       htmlEl.style.transform = "translateY(60px)"
@@ -410,7 +430,7 @@ function initLines(gsap: any, ScrollTrigger: any, SplitText: any) {
     return
   }
 
-  document.querySelectorAll('[data-reveal="lines"]').forEach((el) => {
+  filterNonHero('[data-reveal="lines"]').forEach((el) => {
     const htmlEl = el as HTMLElement
 
     const split = new SplitText(el, {

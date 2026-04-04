@@ -188,7 +188,7 @@ export const siteConfig = {
     cookieConsent: false,
     exitIntentPopup: false,
     floatingCTA: false,
-    smoothScroll: true,
+    smoothScroll: false,
     navigationScrollHide: true,
     /** Gold ribbon WebGL accent above the nav wordmark (see NavLogoGoldWaves). */
     navLogoGoldWaves: true,

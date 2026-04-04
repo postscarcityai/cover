@@ -17,21 +17,16 @@ export const generateDotField = (
   const grid = createGrid(cols, rows)
   const baseDensity = 0.05 // Increased density for more coverage
 
-  // Softer breath — less twitchy threshold
-  const breath = Math.sin(frame * 3.35) * 0.12 + 0.88
-  const density = baseDensity * breath
+  // Near-constant density — no breathing so dots don't pop in/out
+  const density = baseDensity
 
   // Use hash-based distribution with spiral/Voronoi-like clustering
   const cellSize = 3.5
-  const verticalPulse = Math.sin(frame * 0.042) * 0.18
+  const verticalPulse = Math.sin(frame * 0.012) * 0.18
 
-  // Incommensurate drifts: reads like uneven load / commands sliding through a grid
-  const flowX =
-    Math.sin(frame * 0.039) * 2.4 +
-    Math.sin(frame * 0.017) * 1.1 +
-    Math.cos(frame * 0.073) * 0.65
-  const flowY =
-    Math.sin(frame * 0.028) * 0.38 + Math.cos(frame * 0.051) * 0.22
+  // Steady linear drift with small sine wobble for organic feel
+  const flowX = frame * 0.04 + Math.sin(frame * 0.01) * 0.6
+  const flowY = frame * 0.012 + Math.sin(frame * 0.008) * 0.3
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {

@@ -1,11 +1,9 @@
 "use client"
 
-import { useRef } from "react"
 import {
   Shield, Target, Zap, Users, BarChart, Globe,
   Star, Heart, Award, Briefcase, type LucideIcon,
 } from "lucide-react"
-import { HeroGoldSeamOverlay } from "@/components/hero-gold-seam-overlay"
 import { ScrambleEyebrow } from "@/components/scramble-eyebrow"
 import type { FeaturesContent } from "@/app/data"
 
@@ -17,25 +15,18 @@ interface FeaturesSectionProps {
   content: FeaturesContent
   sectionNumber?: string
   className?: string
-  /** When true (hero is the section above), paint a transparent gold layer across the seam. */
-  seamGoldFromHero?: boolean
 }
 
 export function FeaturesSection({
   content,
   sectionNumber,
   className = "",
-  seamGoldFromHero = false,
 }: FeaturesSectionProps) {
-  const sectionRef = useRef<HTMLElement | null>(null)
-
   return (
     <section
-      ref={sectionRef}
       className={`relative isolate py-24 md:py-40 ${className}`}
       style={{ backgroundColor: "var(--bg)" }}
     >
-      {seamGoldFromHero && <HeroGoldSeamOverlay anchorRef={sectionRef} />}
       <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
         {/* Header */}
         <div className="mb-16 md:mb-24 max-w-3xl" data-reveal="fade-up">

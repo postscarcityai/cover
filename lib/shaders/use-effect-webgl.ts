@@ -39,7 +39,7 @@ export function useEffectWebGL(
     const canvas = canvasRef.current
     if (!canvas || reducedMotion) return
 
-    const gl = canvas.getContext("webgl", { alpha: false, antialias: false, powerPreference: "low-power" })
+    const gl = canvas.getContext("webgl", { alpha: true, premultipliedAlpha: false, antialias: false, powerPreference: "low-power" })
     if (!gl) return
 
     const vert = compile(gl, gl.VERTEX_SHADER, VERTEX)
@@ -85,12 +85,16 @@ export function useEffectWebGL(
     window.addEventListener("resize", resize)
 
     const t0 = performance.now()
+    const FRAME_MS = 1000 / 24 // cap at 24fps
     let raf = 0
-    const render = () => {
-      gl.uniform2f(uRes, canvas.width, canvas.height)
-      gl.uniform1f(uTime, (performance.now() - t0) / 1000)
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+    let lastPaint = 0
+    const render = (now: number) => {
       raf = requestAnimationFrame(render)
+      if (now - lastPaint < FRAME_MS) return
+      lastPaint = now
+      gl.uniform2f(uRes, canvas.width, canvas.height)
+      gl.uniform1f(uTime, (now - t0) / 1000)
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     }
     raf = requestAnimationFrame(render)
 

@@ -23,7 +23,6 @@
     "test:accessibility": "node scripts/test-accessibility.js"
   },
   "dependencies": {
-    "@emotion/is-prop-valid": "latest",
     "@fal-ai/client": "^1.2.0",
     "@hookform/resolvers": "^3.9.1",
     "@mdx-js/loader": "^3.1.0",
@@ -65,7 +64,6 @@
     "cmdk": "1.0.4",
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.5.1",
-    "framer-motion": "latest",
     "geist": "^1.3.1",
     "gray-matter": "^4.0.3",
     "gsap": "^3.12.2",
@@ -91,6 +89,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.2.2",
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",

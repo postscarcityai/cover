@@ -10,15 +10,16 @@ interface HeroDotFieldProps {
   className?: string
 }
 
-/** RetroASCII `RetroASCII.tsx`: CHAR_WIDTH / CHAR_HEIGHT */
 const CHAR_WIDTH = 6
 const CHAR_HEIGHT = 10
 
-/** Slightly faster cadence than RetroASCII 30 — smoother perceived motion */
-const TARGET_FPS = 48
+const TARGET_FPS = 24
 const FRAME_INTERVAL_MS = 1000 / TARGET_FPS
 
 const DPR_CAP = 2
+
+/** All glyphs used by the dot field — pre-render once into an atlas. */
+const GLYPHS = ["·", "•", "◦", "-", "○", "░"] as const
 
 function parseRgbFromComputed(el: Element | null): [number, number, number] {
   if (!el) return [61, 79, 107]
@@ -27,6 +28,58 @@ function parseRgbFromComputed(el: Element | null): [number, number, number] {
   if (!m) return [61, 79, 107]
   return [Number(m[1]), Number(m[2]), Number(m[3])]
 }
+
+/**
+ * Build a tiny offscreen canvas with every glyph pre-rendered at several
+ * alpha levels so the hot loop can use drawImage() instead of fillText().
+ *
+ * Atlas layout: columns = glyphs, rows = alpha buckets (0–7).
+ */
+const ALPHA_BUCKETS = 8
+
+function buildGlyphAtlas(
+  r: number,
+  g: number,
+  b: number,
+  dpr: number,
+): { canvas: OffscreenCanvas | HTMLCanvasElement; cellW: number; cellH: number } {
+  const cellW = Math.ceil(CHAR_WIDTH * dpr)
+  const cellH = Math.ceil(CHAR_HEIGHT * dpr)
+  const atlasW = GLYPHS.length * cellW
+  const atlasH = ALPHA_BUCKETS * cellH
+
+  const useOffscreen = typeof OffscreenCanvas !== "undefined"
+  const atlas = useOffscreen
+    ? new OffscreenCanvas(atlasW, atlasH)
+    : document.createElement("canvas")
+
+  if (!useOffscreen) {
+    ;(atlas as HTMLCanvasElement).width = atlasW
+    ;(atlas as HTMLCanvasElement).height = atlasH
+  }
+
+  const ctx = atlas.getContext("2d") as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D
+  if (!ctx) return { canvas: atlas, cellW, cellH }
+
+  ctx.font = `${CHAR_HEIGHT * dpr}px "Courier New", Courier, monospace`
+  ctx.textAlign = "center"
+  ctx.textBaseline = "middle"
+
+  for (let gi = 0; gi < GLYPHS.length; gi++) {
+    const ch = GLYPHS[gi]
+    for (let ai = 0; ai < ALPHA_BUCKETS; ai++) {
+      const alpha = (ai + 1) / ALPHA_BUCKETS * 0.4 // max alpha 0.4
+      ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`
+      ctx.fillText(ch, gi * cellW + cellW / 2, ai * cellH + cellH / 2)
+    }
+  }
+
+  return { canvas: atlas, cellW, cellH }
+}
+
+/** Map glyph char to atlas column index */
+const GLYPH_INDEX: Record<string, number> = {}
+GLYPHS.forEach((ch, i) => { GLYPH_INDEX[ch] = i })
 
 export function HeroDotField({ className = "" }: HeroDotFieldProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -46,59 +99,85 @@ export function HeroDotField({ className = "" }: HeroDotFieldProps) {
     const ctx = canvas.getContext("2d", { alpha: true })
     if (!ctx) return
 
-    const paint = (frame: number) => {
+    // Track dimensions — only resize on actual change
+    let currentW = 0
+    let currentH = 0
+    let cols = 0
+    let rows = 0
+    let dpr = Math.min(DPR_CAP, window.devicePixelRatio || 1)
+
+    // Build glyph atlas (rebuilt on color/resize change)
+    const [r, g, b] = parseRgbFromComputed(probe)
+    let atlas = buildGlyphAtlas(r, g, b, dpr)
+
+    const resize = () => {
       const rect = el.getBoundingClientRect()
       const w = rect.width
       const h = rect.height
       if (w < 1 || h < 1) return
 
-      const cols = Math.max(1, Math.floor(w / CHAR_WIDTH))
-      const rows = Math.max(1, Math.floor(h / CHAR_HEIGHT))
+      // Skip if nothing changed
+      if (Math.abs(w - currentW) < 1 && Math.abs(h - currentH) < 1) return
+
+      currentW = w
+      currentH = h
+      cols = Math.max(1, Math.floor(w / CHAR_WIDTH))
+      rows = Math.max(1, Math.floor(h / CHAR_HEIGHT))
       const bufW = cols * CHAR_WIDTH
       const bufH = rows * CHAR_HEIGHT
 
-      const dpr = Math.min(DPR_CAP, typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1)
-
+      dpr = Math.min(DPR_CAP, window.devicePixelRatio || 1)
       canvas.width = Math.max(1, Math.round(bufW * dpr))
       canvas.height = Math.max(1, Math.round(bufH * dpr))
       canvas.style.width = `${w}px`
       canvas.style.height = `${h}px`
 
-      ctx.setTransform(1, 0, 0, 1, 0, 0)
-      ctx.scale((dpr * w) / bufW, (dpr * h) / bufH)
+      // Rebuild atlas at new DPR
+      atlas = buildGlyphAtlas(r, g, b, dpr)
+    }
 
-      ctx.clearRect(0, 0, bufW, bufH)
+    resize()
+
+    const paint = (frame: number) => {
+      if (cols < 1 || rows < 1) return
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       const grid = generateDotField(cols, rows, frame)
-      const [r, g, b] = parseRgbFromComputed(probe)
-
       const pulse = mq.matches
         ? 1
-        : Math.sin(frame * 0.007) * 0.055 + 0.945
-
-      ctx.font = `${CHAR_HEIGHT}px "Courier New", Courier, monospace`
-      ctx.textAlign = "center"
-      ctx.textBaseline = "middle"
+        : Math.sin(frame * 0.008) * 0.025 + 0.975
 
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
           const ch = grid[row][col]
           if (ch === " ") continue
 
+          const gi = GLYPH_INDEX[ch]
+          if (gi === undefined) continue
+
           const weight = dotFieldGlyphBrightness(ch) * pulse
-          // Diagonal “pipe” shimmer — non-sync frequencies feel non-deterministic
           const pipe =
-            Math.sin(col * 0.11 + row * 0.073 + frame * 0.13) * 0.085 + 1
-          const alpha = Math.min(
-            0.4,
-            (0.065 + weight * 0.38) * pipe
+            Math.sin(col * 0.11 + row * 0.073 + frame * 0.015) * 0.04 + 1
+          const alpha = Math.min(0.4, (0.065 + weight * 0.38) * pipe)
+
+          // Map alpha to bucket index
+          const ai = Math.min(
+            ALPHA_BUCKETS - 1,
+            Math.max(0, Math.round((alpha / 0.4) * (ALPHA_BUCKETS - 1)))
           )
 
-          ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`
-          ctx.fillText(
-            ch,
-            col * CHAR_WIDTH + CHAR_WIDTH / 2,
-            row * CHAR_HEIGHT + CHAR_HEIGHT / 2
+          ctx.drawImage(
+            atlas.canvas,
+            gi * atlas.cellW,
+            ai * atlas.cellH,
+            atlas.cellW,
+            atlas.cellH,
+            col * CHAR_WIDTH * dpr,
+            row * CHAR_HEIGHT * dpr,
+            atlas.cellW,
+            atlas.cellH,
           )
         }
       }
@@ -146,6 +225,7 @@ export function HeroDotField({ className = "" }: HeroDotFieldProps) {
     mq.addEventListener("change", syncMotionPreference)
 
     const ro = new ResizeObserver(() => {
+      resize()
       if (mq.matches) paint(0)
       else paint(frameRef.current)
     })

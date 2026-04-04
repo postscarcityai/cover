@@ -28,17 +28,6 @@ export function ScrollVelocitySkew() {
         let targetSkew = 0
         let rafId: number
 
-        const handleScroll = (e: Event) => {
-          const customEvent = e as CustomEvent<{ scrollY: number }>
-          const currentY = customEvent.detail.scrollY
-          const velocity = currentY - lastY
-          lastY = currentY
-
-          // Dead zone for slow scrolls, gentle max for fast
-          const scaled = Math.abs(velocity) < 3 ? 0 : velocity * 0.02
-          targetSkew = Math.max(-1.5, Math.min(1.5, scaled))
-        }
-
         const tick = () => {
           // Lerp current toward target
           currentSkew += (targetSkew - currentSkew) * 0.1
@@ -57,30 +46,26 @@ export function ScrollVelocitySkew() {
           rafId = requestAnimationFrame(tick)
         }
 
-        // Also listen to native scroll for when ScrollSmoother isn't active
-        const handleNativeScroll = () => {
+        const handleScroll = () => {
           const currentY = window.scrollY
           const velocity = currentY - lastY
           lastY = currentY
-          const nativeScaled = Math.abs(velocity) < 3 ? 0 : velocity * 0.02
-          targetSkew = Math.max(-1.5, Math.min(1.5, nativeScaled))
+          const scaled = Math.abs(velocity) < 3 ? 0 : velocity * 0.02
+          targetSkew = Math.max(-1.5, Math.min(1.5, scaled))
         }
 
-        window.addEventListener("smoothscroll", handleScroll)
-        window.addEventListener("scroll", handleNativeScroll, { passive: true })
+        window.addEventListener("scroll", handleScroll, { passive: true })
         rafId = requestAnimationFrame(tick)
 
         cleanup = () => {
           cancelAnimationFrame(rafId)
-          window.removeEventListener("smoothscroll", handleScroll)
-          window.removeEventListener("scroll", handleNativeScroll)
+          window.removeEventListener("scroll", handleScroll)
           if (content) gsap.set(content, { skewY: 0 })
         }
       } catch {}
     }
 
-    // Slight delay to let ScrollSmoother initialize first
-    const timer = setTimeout(init, 500)
+    const timer = setTimeout(init, 100)
 
     return () => {
       clearTimeout(timer)

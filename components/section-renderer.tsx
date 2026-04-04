@@ -1,8 +1,10 @@
 "use client"
 
+import React from "react"
 import dynamic from "next/dynamic"
 import { type HomepageSection } from "@/app/data"
 import { HeroSection } from "@/components/sections/hero-section"
+import { HeroGoldSeamOverlay } from "@/components/hero-gold-seam-overlay"
 import { FeaturesSection } from "@/components/sections/features-section"
 import { StatsSection } from "@/components/sections/stats-section"
 import { ContentSection } from "@/components/sections/content-section"
@@ -93,22 +95,24 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
             return <HeroSection key={section.id} content={section.content as HeroContent} />
           case "features":
             return (
-              <FeaturesSection
-                key={section.id}
-                content={section.content as FeaturesContent}
-                sectionNumber={num}
-                seamGoldFromHero={seamGoldFromHero}
-              />
+              <React.Fragment key={section.id}>
+                {seamGoldFromHero && <HeroGoldSeamOverlay />}
+                <FeaturesSection
+                  content={section.content as FeaturesContent}
+                  sectionNumber={num}
+                />
+              </React.Fragment>
             )
           case "stats":
             return <StatsSection key={section.id} content={section.content as StatsContent} />
           case "content":
             return (
-              <ContentSection
-                key={section.id}
-                content={section.content as ContentSectionContent}
-                seamGoldFromHero={seamGoldFromHero}
-              />
+              <React.Fragment key={section.id}>
+                {seamGoldFromHero && <HeroGoldSeamOverlay />}
+                <ContentSection
+                  content={section.content as ContentSectionContent}
+                />
+              </React.Fragment>
             )
           case "testimonials":
             return <TestimonialsSection key={section.id} content={section.content as TestimonialsContent} sectionNumber={num} />

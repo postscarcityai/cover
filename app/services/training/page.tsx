@@ -9,17 +9,17 @@ import { SubpageSection } from "@/components/subpage-section"
 const formats = [
   {
     name: "1-on-1 Session",
-    price: "$500",
+    price: "Starting at $500",
     description: "Focused, hands-on training tailored to your specific workflow and goals. Walk away with something built.",
   },
   {
     name: "Team Workshop (up to 10)",
-    price: "$2,000",
+    price: "Starting at $2,000",
     description: "Half-day or full-day workshop for your team. Everyone participates, everyone builds. No spectators.",
   },
   {
     name: "Custom Curriculum",
-    price: "$5K+",
+    price: "Starting at $5K",
     description: "Multi-session training program designed around your team's stack, workflows, and goals. Ongoing support included.",
   },
 ]

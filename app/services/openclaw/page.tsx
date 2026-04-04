@@ -141,7 +141,7 @@ export default function OpenClawPage() {
           background="surface"
           eyebrow="Pricing"
           sectionNumber="06"
-          title="$1K Setup + $2K-$5K/mo"
+          title="Starting at $1K Setup + $2K-$5K/mo"
         >
           <div className="max-w-3xl" data-reveal="fade-up">
             <div className="grid sm:grid-cols-2 gap-6 mb-8">

@@ -153,7 +153,7 @@ export default function BuildPage() {
           background="surface"
           eyebrow="Pricing"
           sectionNumber="04"
-          title="Starts at $5K"
+          title="Starting at $5K"
         >
           <div className="max-w-3xl" data-reveal="fade-up">
             <p className="text-lg leading-relaxed mb-4" style={{ color: "var(--fg-muted)" }}>

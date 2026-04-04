@@ -103,11 +103,11 @@ export default function CreativePage() {
         <SubpageSection
           eyebrow="Pricing"
           sectionNumber="05"
-          title="Starts at $2K"
+          title="Starting at $2K"
         >
           <div className="max-w-3xl" data-reveal="fade-up">
             <p className="text-lg leading-relaxed mb-4" style={{ color: "var(--fg-muted)" }}>
-              Pricing varies by scope. A brand identity package starts at $2K. Full creative production with video and site build scales from there. We give you a fixed quote after understanding what you need.
+              Pricing varies by scope. A brand identity package starting at $2K. Full creative production with video and site build scales from there. We give you a fixed quote after understanding what you need.
             </p>
             <p className="text-lg leading-relaxed" style={{ color: "var(--fg-muted)" }}>
               No hourly billing. No retainer lock-in. Project-based pricing with clear deliverables.

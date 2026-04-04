@@ -104,7 +104,7 @@ export default function SitePage() {
         <SubpageSection
           eyebrow="Pricing"
           sectionNumber="05"
-          title="$2K. One Week. Settled."
+          title="Starting at $2K. One Week. Settled."
         >
           <div className="max-w-md" data-reveal="fade-up">
             <div
@@ -112,7 +112,7 @@ export default function SitePage() {
               style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
             >
               <span className="text-xs tracking-[0.3em] uppercase font-bold" style={{ color: "var(--accent)" }}>
-                Fixed Price
+                Starting at
               </span>
               <p className="text-4xl font-bold mt-2" style={{ color: "var(--fg)" }}>$2,000</p>
               <p className="text-sm mt-2 mb-4" style={{ color: "var(--fg-muted)" }}>

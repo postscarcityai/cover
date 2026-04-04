@@ -345,7 +345,7 @@ export const homepageSections: HomepageSection[] = [
         {
           question: "What does it cost?",
           answer:
-            "Sites from $2K. Training from $500/session. Agent management from $2K/month. Custom builds from $5K. Full transformation is custom-scoped. We always scope before we quote.",
+            "Sites starting at $2K. Training starting at $500/session. Agent management starting at $2K/month. Custom builds starting at $5K. Full transformation is custom-scoped. We always scope before we quote.",
         },
         {
           question: "Are the tools really open source?",

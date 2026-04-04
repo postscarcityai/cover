@@ -228,18 +228,18 @@ html {
   justify-content: center;
 }
 
+/* User: warm amber point */
 .hc-avatar--user {
-  background: radial-gradient(circle, rgba(196, 181, 253, 0.5) 0%, rgba(196, 181, 253, 0.15) 70%);
-  color: #8b5cf6;
-  filter: blur(0.5px);
-  box-shadow: 0 0 14px rgba(167, 139, 250, 0.35);
+  background: radial-gradient(circle, rgba(217, 176, 96, 0.5) 0%, rgba(217, 176, 96, 0.12) 70%);
+  color: #92700a;
+  box-shadow: 0 0 16px rgba(184, 148, 31, 0.25);
 }
 
+/* AI: cool sapphire point */
 .hc-avatar--ai {
-  background: radial-gradient(circle, rgba(94, 234, 212, 0.5) 0%, rgba(94, 234, 212, 0.15) 70%);
-  color: #0d9488;
-  filter: blur(0.5px);
-  box-shadow: 0 0 14px rgba(94, 234, 212, 0.35);
+  background: radial-gradient(circle, rgba(100, 130, 200, 0.5) 0%, rgba(100, 130, 200, 0.12) 70%);
+  color: #3d5a8c;
+  box-shadow: 0 0 16px rgba(80, 120, 200, 0.25);
 }
 
 /* ---- Content column ---- */
@@ -267,36 +267,36 @@ html {
   position: relative;
 }
 
-/* User: violet/purple glow blob */
+/* User: warm rose-gold glow */
 .hc-bubble--user {
-  color: #3b1564;
+  color: #4a3010;
   background: radial-gradient(
-    ellipse 120% 100% at 80% 50%,
-    rgba(233, 213, 255, 0.45) 0%,
-    rgba(196, 181, 253, 0.2) 50%,
-    rgba(167, 139, 250, 0.08) 100%
+    ellipse 130% 110% at 75% 50%,
+    rgba(217, 176, 96, 0.22) 0%,
+    rgba(200, 160, 80, 0.1) 50%,
+    rgba(184, 148, 31, 0.03) 100%
   );
   border-radius: 22px 22px 6px 22px;
   box-shadow:
-    0 0 20px rgba(167, 139, 250, 0.15),
-    0 0 50px rgba(196, 181, 253, 0.08),
-    inset 0 0 20px rgba(255, 255, 255, 0.15);
+    0 0 24px rgba(184, 148, 31, 0.1),
+    0 0 60px rgba(217, 176, 96, 0.05),
+    inset 0 0 24px rgba(255, 255, 255, 0.12);
 }
 
-/* AI: teal/cyan glow blob */
+/* AI: cool sapphire / deep blue glow */
 .hc-bubble--ai {
-  color: #134e4a;
+  color: #1a2d4d;
   background: radial-gradient(
-    ellipse 120% 100% at 20% 50%,
-    rgba(153, 246, 228, 0.4) 0%,
-    rgba(94, 234, 212, 0.18) 50%,
-    rgba(45, 212, 191, 0.06) 100%
+    ellipse 130% 110% at 25% 50%,
+    rgba(100, 140, 220, 0.2) 0%,
+    rgba(80, 115, 190, 0.09) 50%,
+    rgba(60, 90, 160, 0.03) 100%
   );
   border-radius: 22px 22px 22px 6px;
   box-shadow:
-    0 0 20px rgba(94, 234, 212, 0.15),
-    0 0 50px rgba(153, 246, 228, 0.08),
-    inset 0 0 20px rgba(255, 255, 255, 0.15);
+    0 0 24px rgba(80, 120, 200, 0.1),
+    0 0 60px rgba(100, 140, 220, 0.05),
+    inset 0 0 24px rgba(255, 255, 255, 0.12);
 }
 
 /* ---- Tool call pill — faint glowing capsule ---- */

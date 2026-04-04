@@ -30,7 +30,7 @@ export function HeroSection({ content, className = "" }: HeroSectionProps) {
     <section
       data-hero-section
       data-nav-theme="light"
-      className={`relative flex min-h-svh max-w-full items-end ${className}`}
+      className={`relative flex min-h-svh lg:min-h-0 max-w-full items-end ${className}`}
       style={{
         background:
           "linear-gradient(145deg, var(--hero-shell-a) 0%, var(--hero-shell-b) 42%, var(--hero-shell-c) 100%)",

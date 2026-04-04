@@ -74,7 +74,7 @@ export function HeroSection({ content, className = "" }: HeroSectionProps) {
 
             <div
               data-reveal="fade-up"
-              className="flex flex-col sm:flex-row gap-6 items-start sm:items-center"
+              className="flex flex-row gap-6 items-center"
             >
               <MagneticButton>
                 <FillButton onClick={handlePrimaryClick}>

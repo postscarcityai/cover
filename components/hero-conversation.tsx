@@ -100,11 +100,13 @@ const MAX_VISIBLE = 4
 /* ------------------------------------------------------------------ */
 
 export function HeroConversation() {
-  const [convoIndex] = useState(() =>
+  const [convoIndex, setConvoIndex] = useState(() =>
     Math.floor(Math.random() * conversations.length)
   )
+  const [cycle, setCycle] = useState(0) // forces re-key on new convo
   const convo = conversations[convoIndex]
   const [appeared, setAppeared] = useState<number[]>([])
+  const [fadeAll, setFadeAll] = useState(false)
 
   const addMessage = useCallback((idx: number) => {
     setAppeared((prev) => {
@@ -113,20 +115,36 @@ export function HeroConversation() {
     })
   }, [])
 
+  /* Stagger messages in, then fade all & start next convo */
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = []
+    setAppeared([])
+    setFadeAll(false)
+
     convo.messages.forEach((msg, i) => {
       timers.push(setTimeout(() => addMessage(i), msg.delay + 800))
     })
+
+    // After last message + pause, fade everything out
+    const lastDelay = convo.messages[convo.messages.length - 1].delay
+    timers.push(setTimeout(() => setFadeAll(true), lastDelay + 3500))
+
+    // After fade completes, start next conversation
+    timers.push(setTimeout(() => {
+      setConvoIndex((prev) => (prev + 1) % conversations.length)
+      setCycle((c) => c + 1)
+    }, lastDelay + 4500))
+
     return () => timers.forEach(clearTimeout)
-  }, [convo, addMessage])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cycle])
 
   const activeIndices = appeared.slice(-MAX_VISIBLE)
   const fadingIndices = appeared.slice(0, Math.max(0, appeared.length - MAX_VISIBLE))
 
   return (
     <div className="hc-wrap">
-      <div className="hc-messages">
+      <div className={`hc-messages ${fadeAll ? "hc-messages--fade" : ""}`}>
         {convo.messages.map((msg, i) => {
           const hasAppeared = appeared.includes(i)
           const isFading = fadingIndices.includes(i)
@@ -141,7 +159,7 @@ export function HeroConversation() {
 
           return (
             <div
-              key={i}
+              key={`${cycle}-${i}`}
               className={`hc-row hc-row--${msg.role} ${stateClass}`}
             >
               {/* Avatar */}

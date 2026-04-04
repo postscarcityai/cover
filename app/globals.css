@@ -162,6 +162,12 @@ html {
   /* Fade-out mask at the top */
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+  /* Whole-container fade for conversation transitions */
+  transition: opacity 0.9s ease;
+}
+
+.hc-messages--fade {
+  opacity: 0;
 }
 
 @media (max-width: 1023px) {

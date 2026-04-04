@@ -6,14 +6,17 @@ import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
 import { GoldEffectCanvas } from "@/components/gold-effect-canvas"
+import { ProjectHeroCard } from "@/components/project-hero-card"
 
-const featuredProjects = [
+const projects = [
   {
     slug: "amc-defense-law",
     title: "AMC Defense Law",
     description:
       "Full marketing site, AI-powered legal blog with audio narration, and a morning intelligence report for a board-certified criminal defense attorney.",
     tag: "Legal / AI Content",
+    heroImage: "/img/work/amc-defense-law/home-full.png",
+    url: "https://amcdefenselaw.com",
   },
   {
     slug: "finesse",
@@ -21,23 +24,17 @@ const featuredProjects = [
     description:
       "Elegant practice website for a board-certified plastic surgeon. HIPAA-aware infrastructure, full accessibility pass, zero regressions shipped.",
     tag: "Healthcare / Web",
+    heroImage: "/img/work/finesse/home-full.png",
+    url: "https://finesseplasticsurgery.com",
   },
   {
-    slug: "heathos-moon",
-    title: "Heathos Moon",
+    slug: "vibe-jam",
+    title: "Vibe Jam",
     description:
-      "National lead intelligence engine powered by local AI. 1,800+ leads enriched with zero cloud API cost. Runs on a Mac Mini.",
-    tag: "AI Agents / Data",
-  },
-]
-
-const supportingProjects = [
-  {
-    slug: "qualis",
-    title: "Qualis",
-    description:
-      "Unified intelligence portal for a defense technology company. Three acquisitions, one dashboard. Details under NDA.",
-    tag: "Defense Tech",
+      "Weekly AI creative workshops, image generation, music, video, and vibe coding. 60+ sessions and the community where PostScarcity AI crystallized.",
+    tag: "Community / AI",
+    heroImage: "/img/work/vibe-jam/home-full.png",
+    url: "https://thevibejam.com",
   },
   {
     slug: "heathos-pulse",
@@ -45,77 +42,16 @@ const supportingProjects = [
     description:
       "Monthly healthcare newsletter. Word doc in, published site out, same day. Seven volumes and counting.",
     tag: "Newsletter",
-  },
-  {
-    slug: "vibe-jam",
-    title: "Vibe Jam",
-    description:
-      "Weekly AI creative workshops — image gen, music, video, vibe coding. 60+ sessions. The community where PostScarcity AI crystallized.",
-    tag: "Community / AI",
+    heroImage: "/img/work/heathos-pulse/home-full.png",
   },
 ]
-
-function ProjectCard({
-  slug,
-  title,
-  description,
-  tag,
-  featured = false,
-}: {
-  slug: string
-  title: string
-  description: string
-  tag: string
-  featured?: boolean
-}) {
-  return (
-    <Link href={`/work/${slug}`} className="group block">
-      <div
-        className={`relative rounded-2xl border transition-all duration-300 group-hover:border-[var(--accent)] ${
-          featured ? "p-8 md:p-10" : "p-6 md:p-8"
-        }`}
-        style={{
-          backgroundColor: "var(--surface)",
-          borderColor: "color-mix(in srgb, var(--fg) 10%, transparent)",
-        }}
-      >
-        <p
-          className="text-xs tracking-[0.2em] uppercase mb-4"
-          style={{ color: "var(--accent)" }}
-        >
-          {tag}
-        </p>
-        <h3
-          className={`font-bold mb-3 ${featured ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"}`}
-          style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
-        >
-          {title}
-        </h3>
-        <p
-          className="leading-relaxed mb-6"
-          style={{ color: "var(--fg-muted)" }}
-        >
-          {description}
-        </p>
-        <span
-          className="inline-flex items-center gap-2 text-sm font-medium transition-all duration-300 group-hover:gap-3"
-          style={{ color: "var(--accent)" }}
-        >
-          View Case Study <ArrowRight size={16} />
-        </span>
-      </div>
-    </Link>
-  )
-}
 
 export default function WorkPage() {
   return (
     <div className="min-h-screen">
-      
-
       <SubpageHero
         title="Our Work"
-        description="Selected work. Every engagement is a partnership — here is what we have built together."
+        description="Big visuals, tight execution, and projects built to look sharp on first contact and hold up under the hood."
         breadcrumbs={[
           { label: "Home", href: "/" },
           { label: "Work" },
@@ -124,33 +60,13 @@ export default function WorkPage() {
         backgroundSlot={<GoldEffectCanvas effect="prismFacets" className="pointer-events-none" />}
       />
 
-      <SubpageSection
-        background="default"
-        eyebrow="Featured"
-        sectionNumber="01"
-        title="Featured Projects"
-        description="Deep engagements where we built the full stack — sites, agents, content pipelines, and infrastructure."
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProjects.map((project) => (
-            <ProjectCard key={project.slug} {...project} featured />
+      <section className="px-4 pb-20 pt-8 md:px-8 md:pb-28 md:pt-12">
+        <div className="mx-auto flex max-w-7xl flex-col gap-16 md:gap-24">
+          {projects.map((project) => (
+            <ProjectHeroCard key={project.slug} {...project} />
           ))}
         </div>
-      </SubpageSection>
-
-      <SubpageSection
-        background="surface"
-        eyebrow="More Work"
-        sectionNumber="02"
-        title="Supporting Projects"
-        description="Focused builds, ongoing partnerships, and the community that started it all."
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {supportingProjects.map((project) => (
-            <ProjectCard key={project.slug} {...project} />
-          ))}
-        </div>
-      </SubpageSection>
+      </section>
 
       <SubpageSection
         background="accent"
@@ -160,7 +76,7 @@ export default function WorkPage() {
         <div className="mt-8">
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:gap-3"
+            className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold transition-all duration-300 hover:gap-3"
             style={{
               backgroundColor: "var(--accent-fg)",
               color: "var(--accent)",

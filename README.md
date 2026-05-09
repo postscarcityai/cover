@@ -2,6 +2,8 @@
 
 **Site template that personalizes on first run.** A professional Next.js template with 5 theme presets, MDX blog, newsletter, contact form, GDPR/CCPA compliance, and comprehensive SEO. Run the setup wizard once and ship.
 
+> **Just add your keys.** Cover renders out of the box on first install — no code edits required. The newsletter, contact form, and audio narration come online the moment you drop in your Supabase, SendGrid, and fal.ai keys. No subscriptions, no platform markup, no per-seat pricing — pay only the underlying providers (most have generous free tiers).
+
 Part of the [PostScarcity AI](https://github.com/postscarcityai) suite of open source repositories.
 
 ---
@@ -62,6 +64,23 @@ pnpm run dev
 
 ---
 
+## Environment Variables
+
+Cover renders without any keys, but features unlock as you add them. All of these go in `.env.local` (see `.env.example` for the annotated template):
+
+| Variable | Required for | Where to get it |
+|----------|--------------|-----------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Newsletter, contact form, audio storage | [supabase.com](https://supabase.com) — free tier |
+| `SUPABASE_SERVICE_ROLE_KEY` | Same as above | Supabase project settings |
+| `SENDGRID_API_KEY` | Contact form email delivery | [sendgrid.com](https://sendgrid.com) — free tier |
+| `SENDGRID_FROM_EMAIL` | Sender address (must be verified in SendGrid) | Your verified sender |
+| `SENDGRID_TO_EMAIL` | Where contact submissions land | Your inbox |
+| `FAL_KEY` | TTS / audio narration on blog posts | [fal.ai](https://fal.ai) — pay-per-use |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics (optional) | GA4 property settings |
+| `NEWSLETTER_ADMIN_KEY` | Newsletter admin endpoints (optional) | `openssl rand -base64 32` |
+
+---
+
 ## Architecture
 
 ```
@@ -72,15 +91,20 @@ app/
   blog/                    Blog listing and [slug] posts
   contact/                 Contact page
   services/                Services page
+  achievements/            Achievements / case studies page
   landing/[slug]/          Dynamic landing pages
   team-member/             Team member pages
   api/                     API routes
     contact/               Contact form handler
     tts/                   Text-to-speech (fal.ai)
+    upload-audio/          Audio upload to Supabase Storage
+    newsletter/            Subscribe / confirm / unsubscribe / admin
     admin/image-edit/      Image editing (fal.ai)
-  privacy-policy/         Legal pages
+  privacy-policy/          Legal pages
   terms-of-service/
   accessibility-statement/
+  disclaimer/
+  non-discrimination-statement/
 components/
   navigation.tsx           Main nav
   footer.tsx               Footer

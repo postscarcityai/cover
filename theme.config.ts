@@ -31,8 +31,8 @@ export interface DesignTokens {
  * One typeface (Inter Tight) used for both display and body.
  *
  * Accent contrast (WCAG AA):
- *   accent #7c3aed vs white      → 6.0:1 (UI element 3:1 ✓, text 4.5:1 ✓)
- *   accent #7c3aed vs white text → 6.0:1 (text 4.5:1 ✓)
+ *   accent #8b5cf6 vs white      → 4.6:1 (UI element 3:1 ✓, text 4.5:1 ✓)
+ *   accent #8b5cf6 vs white text → 4.6:1 (text 4.5:1 ✓)
  */
 export const defaultTokens: DesignTokens = {
   background: "#ffffff",
@@ -46,7 +46,7 @@ export const defaultTokens: DesignTokens = {
   mutedForeground: "#666666",
   mute: "#666666",
 
-  accent: "#7c3aed",
+  accent: "#8b5cf6",
   accentForeground: "#ffffff",
   accentInk: "#ffffff",
 

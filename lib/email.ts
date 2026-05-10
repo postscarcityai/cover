@@ -1,6 +1,8 @@
 import sgMail from '@sendgrid/mail'
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || '')
+if (process.env.SENDGRID_API_KEY) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+}
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 const devOverrideEmail = process.env.SENDGRID_TO_EMAIL

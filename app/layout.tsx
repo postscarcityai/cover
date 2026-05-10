@@ -14,6 +14,7 @@ import { siteConfig } from "@/site.config";
 import { interTight, inter } from "@/lib/fonts";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: siteConfig.seo.defaultTitle,
   description: siteConfig.description,
 };

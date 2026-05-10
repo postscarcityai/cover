@@ -19,7 +19,7 @@ export const siteConfig = {
   // Basic Site Information
   name: "Your Company Name",
   description: "Your company tagline or brief description",
-  url: "https://yoursite.com",
+  url: "https://psai-cover.vercel.app",
 
   // Contact Information
   contact: {

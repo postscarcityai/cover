@@ -11,10 +11,7 @@ import { FloatingCTA } from "@/components/floating-cta";
 import { AnnouncementBanner } from "@/components/announcement-banner";
 import { ScrollRevealInit } from "@/components/scroll-reveal";
 import { siteConfig } from "@/site.config";
-import {
-  sora,
-  montserrat,
-} from "@/lib/fonts";
+import { interTight, inter } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: siteConfig.seo.defaultTitle,
@@ -79,8 +76,8 @@ export default function RootLayout({
       lang="en"
       className={`
         overflow-x-hidden
-        ${sora.variable}
-        ${montserrat.variable}
+        ${interTight.variable}
+        ${inter.variable}
       `}
     >
       <head>

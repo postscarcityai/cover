@@ -9,23 +9,44 @@ const config: Config = {
     "*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "1.5rem",
+        md: "2.5rem",
+        lg: "4rem",
+      },
+      screens: {
+        sm: "100%",
+        md: "100%",
+        lg: "1200px",
+        xl: "1440px",
+        "2xl": "1728px",
+      },
+    },
     extend: {
       colors: {
         bg: "var(--bg)",
         surface: "var(--surface)",
+        "surface-warm": "var(--surface-warm)",
         muted: "var(--muted)",
         border: "var(--border)",
         fg: "var(--fg)",
+        ink: "var(--ink)",
         "fg-muted": "var(--fg-muted)",
+        mute: "var(--mute)",
         accent: {
           DEFAULT: "var(--accent)",
           fg: "var(--accent-fg)",
+          ink: "var(--accent-ink)",
         },
+        trust: "var(--trust)",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        pill: "var(--radius-pill)",
       },
       keyframes: {
         "accordion-down": {
@@ -42,9 +63,13 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        sora: ["var(--font-sora)", "system-ui", "sans-serif"],
-        montserrat: ["var(--font-montserrat)", "sans-serif"],
-        sans: ["var(--font-montserrat)", "system-ui", "sans-serif"],
+        display: ["var(--font-display-source)", "system-ui", "sans-serif"],
+        sans: ["var(--font-body-source)", "system-ui", "sans-serif"],
+      },
+      letterSpacing: {
+        "display-tight": "-0.06em",
+        "display-tighter": "-0.0625em",
+        "display-snug": "-0.03em",
       },
     },
   },

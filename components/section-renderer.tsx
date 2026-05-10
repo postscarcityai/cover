@@ -2,12 +2,14 @@
 
 import dynamic from "next/dynamic"
 import { type HomepageSection } from "@/app/data"
-import { HeroSection } from "@/components/sections/hero-section"
+import { Hero2ColSection } from "@/components/sections/hero-2col-section"
+import { CardGridSection } from "@/components/sections/card-grid-section"
 import { FeaturesSection } from "@/components/sections/features-section"
 import { StatsSection } from "@/components/sections/stats-section"
 import { ContentSection } from "@/components/sections/content-section"
 import type {
   HeroContent,
+  CardGridContent,
   FeaturesContent,
   StatsContent,
   ContentSectionContent,
@@ -87,7 +89,9 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
 
         switch (section.type) {
           case "hero":
-            return <HeroSection key={section.id} content={section.content as HeroContent} />
+            return <Hero2ColSection key={section.id} content={section.content as HeroContent} />
+          case "card-grid":
+            return <CardGridSection key={section.id} content={section.content as CardGridContent} />
           case "features":
             return <FeaturesSection key={section.id} content={section.content as FeaturesContent} sectionNumber={num} />
           case "stats":

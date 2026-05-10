@@ -10,35 +10,32 @@ interface TestimonialsSectionProps {
 
 export function TestimonialsSection({ content, sectionNumber, className = "" }: TestimonialsSectionProps) {
   return (
-    <section className={`py-24 md:py-40 ${className}`} style={{ backgroundColor: "var(--surface)" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
-        <div className="mb-20 max-w-2xl" data-reveal="fade-up">
+    <section className={`py-24 md:py-32 ${className}`} style={{ backgroundColor: "var(--surface)" }}>
+      <div className="container">
+        <div className="mb-16 max-w-3xl" data-reveal="fade-up">
           {content.eyebrow && (
-            <p className="text-xs tracking-[0.3em] uppercase mb-6" style={{ color: "var(--accent)" }}>
-              {sectionNumber && <span className="mr-3 font-bold">{sectionNumber}</span>}
+            <p className="text-xs tracking-[0.18em] uppercase mb-5 font-semibold" style={{ color: "var(--mute)" }}>
+              {sectionNumber && <span className="mr-3">{sectionNumber}</span>}
               {content.eyebrow}
             </p>
           )}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold" style={{ color: "var(--fg)" }}>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal tracking-display-tight leading-[1.05]" style={{ color: "var(--ink)" }}>
             {content.title}
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8" data-reveal="stagger">
+        <div className="grid md:grid-cols-3 gap-4" data-reveal="stagger">
           {content.testimonials.map((t) => (
             <div
               key={t.author}
-              className="p-8 rounded-lg border transition-all duration-500 hover:border-[var(--accent)] flex flex-col"
-              style={{ backgroundColor: "var(--muted)", borderColor: "var(--border)" }}
+              className="p-8 rounded-3xl flex flex-col"
+              style={{ backgroundColor: "var(--bg)" }}
             >
-              <div className="text-5xl leading-none mb-6" style={{ color: "var(--accent)" }}>
-                &ldquo;
-              </div>
               <blockquote
-                className="text-lg italic leading-relaxed mb-8 flex-grow"
-                style={{ color: "var(--fg)" }}
+                className="text-xl leading-snug mb-8 flex-grow tracking-display-snug"
+                style={{ color: "var(--ink)" }}
               >
-                {t.quote}
+                &ldquo;{t.quote}&rdquo;
               </blockquote>
               <div className="flex items-center gap-3 mt-auto">
                 {t.imageSrc ? (
@@ -51,23 +48,23 @@ export function TestimonialsSection({ content, sectionNumber, className = "" }: 
                     xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true"
                   >
-                    <rect width="40" height="40" rx="20" fill="var(--accent)" />
+                    <rect width="40" height="40" rx="20" fill="var(--surface-warm)" />
                     <text
                       x="20"
                       y="25"
                       textAnchor="middle"
-                      fill="var(--accent-fg)"
+                      fill="var(--ink)"
                       fontSize="16"
-                      fontWeight="bold"
+                      fontWeight="500"
                     >
                       {t.author.charAt(0)}
                     </text>
                   </svg>
                 )}
                 <div>
-                  <p className="font-semibold text-sm" style={{ color: "var(--fg)" }}>{t.author}</p>
+                  <p className="font-medium text-sm" style={{ color: "var(--ink)" }}>{t.author}</p>
                   {(t.role || t.company) && (
-                    <p className="text-xs" style={{ color: "var(--fg-muted)" }}>
+                    <p className="text-xs" style={{ color: "var(--mute)" }}>
                       {t.role}{t.role && t.company && ", "}{t.company}
                     </p>
                   )}

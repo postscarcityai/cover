@@ -2,12 +2,18 @@ import { siteConfig } from "@/site.config"
 
 export type SectionType =
   | "hero"
+  | "card-grid"
   | "features"
   | "stats"
   | "content"
   | "testimonials"
   | "cta"
   | "faq"
+
+export interface TrustSignal {
+  lead: string
+  detail: string
+}
 
 export interface HeroContent {
   title: string
@@ -18,6 +24,7 @@ export interface HeroContent {
   ctaSecondaryText?: string
   ctaSecondaryHref?: string
   trustText?: string
+  trustSignals?: TrustSignal[]
   backgroundImages?: string[]
 }
 
@@ -97,8 +104,33 @@ export interface FAQContent {
   faqs: FAQItem[]
 }
 
+export interface BigCard {
+  title: string
+  ctaText?: string
+  ctaHref?: string
+  imageSrc?: string         // optional bg image
+  bg?: string               // CSS color or token name (default: surface-warm)
+  textColor?: "light" | "dark"  // text on top (default: dark)
+}
+
+export interface SmallCard {
+  title: string
+  iconSrc?: string          // optional small left-side image
+  iconBg?: string           // bg color for the icon block (default: bg)
+  href?: string
+  bg?: string               // card bg (default: surface-warm)
+}
+
+export interface CardGridContent {
+  eyebrow?: string
+  title?: string
+  featured: BigCard[]       // 2-up large cards
+  grid?: SmallCard[]        // 3-up small cards (optional)
+}
+
 export type SectionContent =
   | HeroContent
+  | CardGridContent
   | FeaturesContent
   | StatsContent
   | ContentSectionContent
@@ -126,7 +158,51 @@ export const homepageSections: HomepageSection[] = [
       ctaSecondaryText: siteConfig.hero?.ctaSecondary || "Learn More",
       ctaSecondaryHref: "/about",
       trustText: "Trusted by businesses nationwide",
+      trustSignals: [
+        { lead: "Trusted by", detail: "businesses nationwide" },
+        { lead: "Real results,", detail: "real timelines" },
+        { lead: "Get started", detail: "100% online" },
+      ],
     } satisfies HeroContent,
+  },
+  {
+    id: "card-grid",
+    type: "card-grid",
+    content: {
+      featured: [
+        {
+          title: "What we offer\non day one",
+          ctaText: "Start now",
+          ctaHref: "/services",
+          bg: "var(--surface-warm)",
+          textColor: "dark",
+        },
+        {
+          title: "See results in\nweeks, not quarters",
+          ctaText: "Start now",
+          ctaHref: "/about",
+          bg: "var(--ink)",
+          textColor: "light",
+        },
+      ],
+      grid: [
+        {
+          title: "Start your free consult",
+          href: "/contact",
+          bg: "var(--surface-warm)",
+        },
+        {
+          title: "Explore client stories",
+          href: "/achievements",
+          bg: "#dbf6e8",
+        },
+        {
+          title: "Pricing built for outcomes",
+          href: "/services",
+          bg: "var(--accent)",
+        },
+      ],
+    } satisfies CardGridContent,
   },
   {
     id: "stats",

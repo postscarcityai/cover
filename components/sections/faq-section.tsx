@@ -11,20 +11,20 @@ interface FAQSectionProps {
 
 export function FAQSection({ content, sectionNumber, className = "" }: FAQSectionProps) {
   return (
-    <section className={`py-24 md:py-40 ${className}`} style={{ backgroundColor: "var(--bg)" }}>
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
-        <div className="mb-16" data-reveal="fade-up">
+    <section className={`py-24 md:py-32 ${className}`} style={{ backgroundColor: "var(--bg)" }}>
+      <div className="container max-w-3xl">
+        <div className="mb-12" data-reveal="fade-up">
           {content.eyebrow && (
-            <p className="text-xs tracking-[0.3em] uppercase mb-6" style={{ color: "var(--accent)" }}>
-              {sectionNumber && <span className="mr-3 font-bold">{sectionNumber}</span>}
+            <p className="text-xs tracking-[0.18em] uppercase mb-5 font-semibold" style={{ color: "var(--mute)" }}>
+              {sectionNumber && <span className="mr-3">{sectionNumber}</span>}
               {content.eyebrow}
             </p>
           )}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4" style={{ color: "var(--fg)" }}>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal tracking-display-tight leading-[1.05] mb-5" style={{ color: "var(--ink)" }}>
             {content.title}
           </h2>
           {content.description && (
-            <p className="text-lg max-w-xl" style={{ color: "var(--fg-muted)" }}>
+            <p className="text-lg max-w-xl" style={{ color: "var(--mute)" }}>
               {content.description}
             </p>
           )}

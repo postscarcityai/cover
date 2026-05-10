@@ -9,10 +9,12 @@ import type { DesignTokens } from "@/theme.config"
 
 export const siteConfig = {
   // Color overrides (see theme.config.ts for defaults)
-  // Only set the tokens you want to change per client
-  colors: {
-    accent: "#1a6b52",
-  } as Partial<DesignTokens>,
+  // The default preset is "Clinical" (white + charcoal + electric yellow accent).
+  // Per-client overrides go here. Examples:
+  //   colors: { accent: "#ffc671", accentForeground: "#453421" } // → warm/hims palette
+  //   colors: warmPreset                                          // import from theme.config
+  //   colors: { accent: "#1a6b52", accentForeground: "#ffffff" } // → muted brand
+  colors: {} as Partial<DesignTokens>,
 
   // Basic Site Information
   name: "Your Company Name",

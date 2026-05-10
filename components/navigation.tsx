@@ -137,9 +137,9 @@ export function Navigation({ className = "" }: NavigationProps) {
       <nav
         ref={navRef}
         id="navigation"
-        className={`fixed w-full z-50 transition-all duration-500 ${
+        className={`fixed w-full z-50 transition-all duration-300 ${
           isScrolled
-            ? "backdrop-blur-xl bg-black/60 border-b"
+            ? "backdrop-blur-xl bg-white/85 border-b"
             : "bg-transparent"
         } ${className}`}
         style={{
@@ -157,8 +157,8 @@ export function Navigation({ className = "" }: NavigationProps) {
                 onMouseLeave={() => setIsLogoHovered(false)}
               >
                 <Logo
-                  className="h-8 w-auto transition-all duration-300 group-hover:scale-105 mt-0.5"
-                  variant="white"
+                  className="transition-opacity duration-200"
+                  variant="primary"
                   isHovered={isLogoHovered}
                 />
               </Link>
@@ -178,7 +178,7 @@ export function Navigation({ className = "" }: NavigationProps) {
                       <a
                         href={item.href}
                         onClick={() => handleNavClick(item.label)}
-                        className="flex items-center space-x-1 transition-colors duration-300 font-medium text-sm tracking-wider uppercase"
+                        className="flex items-center space-x-1 transition-colors duration-300 font-medium text-base"
                         style={{ color: "var(--fg-muted)" }}
                         onMouseOver={(e) => (e.currentTarget.style.color = "var(--fg)")}
                         onMouseOut={(e) => (e.currentTarget.style.color = "var(--fg-muted)")}
@@ -194,7 +194,7 @@ export function Navigation({ className = "" }: NavigationProps) {
                       <a
                         href={item.href}
                         onClick={() => handleNavClick(item.label)}
-                        className="transition-colors duration-300 font-medium text-sm tracking-wider uppercase"
+                        className="transition-colors duration-300 font-medium text-base"
                         style={{ color: "var(--fg-muted)" }}
                         onMouseOver={(e) => (e.currentTarget.style.color = "var(--fg)")}
                         onMouseOut={(e) => (e.currentTarget.style.color = "var(--fg-muted)")}
@@ -210,10 +210,10 @@ export function Navigation({ className = "" }: NavigationProps) {
               <Button
                 variant={null as any}
                 size={null as any}
-                className="hidden md:block font-semibold text-sm tracking-wider uppercase px-6 py-3 rounded-full transition-all hover:scale-105"
+                className="hidden md:inline-flex items-center font-medium text-base px-6 h-11 rounded-full transition-opacity hover:opacity-90"
                 style={{
-                  backgroundColor: "var(--accent)",
-                  color: "var(--accent-fg)",
+                  backgroundColor: "var(--ink)",
+                  color: "#ffffff",
                 }}
                 onClick={() => (window.location.href = "/contact")}
               >
@@ -358,7 +358,7 @@ export function Navigation({ className = "" }: NavigationProps) {
                         <a
                           href={item.href}
                           onClick={() => { handleNavClick(item.label); setIsMenuOpen(false) }}
-                          className="text-3xl font-bold"
+                          className="text-3xl font-normal tracking-display-snug"
                           style={{ color: "var(--fg)" }}
                         >
                           {item.label}
@@ -412,7 +412,7 @@ export function Navigation({ className = "" }: NavigationProps) {
               <Button
                 variant={null as any}
                 size={null as any}
-                className="w-full font-semibold text-sm tracking-wider uppercase px-4 py-4 rounded-full transition-all"
+                className="w-full font-medium text-base px-4 h-12 rounded-full transition-opacity hover:opacity-90"
                 style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
                 onClick={handlePhoneClick}
               >

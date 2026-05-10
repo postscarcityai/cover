@@ -146,7 +146,7 @@ export function Footer({ className = "" }: FooterProps) {
           {/* Brand + Social Icons */}
           <div className="sm:col-span-2 lg:col-span-4">
             <div className="flex items-center mb-6">
-              <Logo variant="white" className="h-8 w-auto" />
+              <Logo variant="primary" />
             </div>
             <p className="text-sm leading-relaxed mb-8 max-w-sm" style={{ color: "var(--fg-muted)" }}>
               {siteConfig.description}

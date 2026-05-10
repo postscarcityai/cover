@@ -27,12 +27,12 @@ export interface DesignTokens {
 
 /**
  * Default preset: "Clinical" — modeled on ro.co.
- * Clean light palette, charcoal ink, deep-violet accent, deep-green trust.
+ * Clean light palette, charcoal ink, burnt-orange accent, deep-green trust.
  * One typeface (Inter Tight) used for both display and body.
  *
  * Accent contrast (WCAG AA):
- *   accent #8b5cf6 vs white      → 4.6:1 (UI element 3:1 ✓, text 4.5:1 ✓)
- *   accent #8b5cf6 vs white text → 4.6:1 (text 4.5:1 ✓)
+ *   accent #b35836 vs white      → 5.1:1 (UI element 3:1 ✓, text 4.5:1 ✓)
+ *   accent #b35836 vs white text → 5.1:1 (text 4.5:1 ✓)
  */
 export const defaultTokens: DesignTokens = {
   background: "#ffffff",
@@ -46,7 +46,7 @@ export const defaultTokens: DesignTokens = {
   mutedForeground: "#666666",
   mute: "#666666",
 
-  accent: "#8b5cf6",
+  accent: "#b35836",
   accentForeground: "#ffffff",
   accentInk: "#ffffff",
 

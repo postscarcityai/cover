@@ -1,0 +1,20 @@
+{
+  "onboarding": {
+    "term": "onboarding",
+    "short": "The guided first-run experience that gets a new customer set up.",
+    "definition": "Onboarding covers everything between signing up and getting real value: account setup, configuration, first successful use. Good onboarding shortens time-to-value and is the strongest predictor of retention.",
+    "aliases": []
+  },
+  "sla": {
+    "term": "service-level agreement",
+    "short": "A contractual promise about uptime or response times.",
+    "definition": "A service-level agreement (SLA) defines the measurable service quality a provider commits to — e.g. 99.9% uptime or a 4-hour support response — and what happens (credits, penalties) when the commitment is missed.",
+    "aliases": ["SLA"]
+  },
+  "churn": {
+    "term": "churn",
+    "short": "The rate at which customers stop doing business with you.",
+    "definition": "Churn is the percentage of customers (or revenue) lost over a period. It's the counterweight to growth: acquisition fills the bucket, churn is the hole in the bottom.",
+    "aliases": []
+  }
+}

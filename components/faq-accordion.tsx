@@ -19,26 +19,11 @@ export function FAQAccordion({ faqs, className = '' }: FAQAccordionProps) {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    'mainEntity': faqs.map(faq => ({
-      '@type': 'Question',
-      'name': faq.question,
-      'acceptedAnswer': {
-        '@type': 'Answer',
-        'text': faq.answer
-      }
-    }))
-  };
-
+  // FAQPage JSON-LD is deliberately NOT emitted here: a page can render more
+  // than one accordion, and Google wants a single FAQPage node per URL. Emit
+  // it at the page level instead: <JsonLd data={faqPageSchema(faqs)} />.
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-
       <div className={`space-y-3 ${className}`}>
         {faqs.map((faq, index) => (
           <div

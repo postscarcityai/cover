@@ -20,12 +20,12 @@
     "setup": "node scripts/setup.js",
     "theme": "node scripts/switch-theme.js",
     "verify": "node scripts/verify-config.js",
-    "test:accessibility": "node scripts/test-accessibility.js"
+    "test:accessibility": "node scripts/test-accessibility.js",
+    "images": "node scripts/generate-images.mjs"
   },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",
-    "@fal-ai/client": "^1.2.0",
-    "@sendgrid/mail": "^8.1.6",
+    "@fal-ai/client": "^1.10.1",
     "@hookform/resolvers": "^3.9.1",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
@@ -57,6 +57,7 @@
     "@radix-ui/react-toggle": "1.1.1",
     "@radix-ui/react-toggle-group": "1.1.1",
     "@radix-ui/react-tooltip": "1.1.6",
+    "@sendgrid/mail": "^8.1.6",
     "@supabase/supabase-js": "^2.56.0",
     "@types/mdx": "^2.0.13",
     "autoprefixer": "^10.4.20",
@@ -94,6 +95,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "postcss": "^8.5",
+    "sharp": "^0.35.3",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }

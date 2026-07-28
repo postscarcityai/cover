@@ -1,240 +1,140 @@
-# Your Company Name Image Style Guide
+# Image Style Guide
 
-## Federal Noir Graphic Style
+> **Living guide — leave room to grow.** These registers are the strong
+> default and the thing to keep coherent, not a cage. When a new exploration
+> earns its place, promote it here; when a direction is retired, log it in §7
+> with a date so it isn't accidentally reintroduced.
 
-🎯 **SYSTEM MESSAGE**: "Federal Noir Graphic Style"
+The template ships with a working image-generation pipeline (fal.ai) and a
+committed demo catalog. Everything renders in two registers that share one
+blue-family palette but read completely differently:
 
-You are an artist creating visuals in the style of an illustrated neo-noir procedural comic. Your work evokes the tone of 1980s and early 1990s crime graphic novels — a blend of pulp drama, federal intrigue, and cinematic realism rendered through comic-book discipline.
+1. **Prismatic duotone people** — dark slate/navy fields, subjects sculpted by
+   light, blue prismatic accents. For heroes and section backgrounds.
+2. **Flat 2D glass icons** — near-solid cobalt/royal-blue glassmorphism on
+   pure white. For cards, feature tiles, and chips.
 
----
+## 1. Direction at a glance
 
-## 🎨 Aesthetic Directives
+- **Photos:** monotone/duotone portraits in slate grey, deep navy and azure
+  blue. The figure dissolves into the field — edges by light, not by line. The
+  face is the brightest, sharpest point. Prismatic blue lighting with a
+  restrained iridescent sheen. Cinematic grade, halation, fine film grain.
+- **Icons:** strictly flat and front-facing, near-solid cobalt/royal-blue fill,
+  thin bright highlight edge, pure `#ffffff` background in production. No 3D,
+  no sticker border, no glow.
+- **Patterns:** repeating background patterns (hex, dots, waves) are **never
+  drawn by the model** — it cannot draw a regular lattice. Images generate on
+  a clean field and `scripts/pattern-overlay.mjs` composites a mathematically
+  perfect SVG pattern afterward, masked off the subject and faded away from
+  the headline zone.
 
-### Mood
-- **Tense, procedural, morally ambiguous**
-- Scenes should feel like moments before or after major revelations — quiet intensity over chaos
-- Channel the atmosphere of federal investigations, legal showdowns, or bureaucratic secrecy
-- Evoke the weight of justice, power, and consequence
+## 2. Guardrails (all categories)
 
-### Lighting
-- **Use chiaroscuro** (strong light vs. shadow)
-- Key light often harsh (from a lamp, window, or police spotlight)
-- Backgrounds dissolve into darkness or muted gradients
-- Occasional neon accents — magenta, cyan, amber — against dark palettes
-- Create dramatic silhouettes and deep shadows
+- **Composition:** heroes keep deep, even negative space for a white headline
+  (left third for right-anchored heroes; generous headroom for the centered
+  rotation — the homepage hero renders `bg-top`, so heads must never crop).
+- **The face is the hero.** Clearly lit, in focus, catch-light in the eyes,
+  genuine and candid — never a stiff stock pose.
+- **One subject per image** (couples only in the explicit couple register).
+  No duplicated or phantom figures.
+- **Edges by light, not by line.** No cutout edges, white outlines, sticker
+  borders, or halos.
+- **Casting reflects the general United States population**, spread across
+  race, age, and gender *across the set* — every people prompt carries the
+  casting clause from `IMAGE_STYLE.casting`.
+- **Restraint.** Not neon, not garish, not busy, not sci-fi. Never: cosmos,
+  planets, stars, orbits, constellations, aurora swirls.
 
-### Color Palette
-**Base Tones:**
-- Navy blue
-- Graphite gray
-- Beige/cream
-- Faded yellow
-- Rust red
+## 3. Photo registers
 
-**Highlights:**
-- Cold whites
-- Neon teals
-- Magenta accents
-- Amber lighting
+All defined as clause compositions in `scripts/generate-images.mjs`:
 
-**Avoid:**
-- Digital smoothness; preserve a tactile print ink texture
-- Oversaturated colors
-- Bright, cheerful palettes
+| Register | Use | Composition |
+|---|---|---|
+| `heroRight` | Subpage heroes | Subject anchored right third, dark left for headline |
+| `heroCentered` | Homepage hero rotation | Centered-leaning, FULL head + torso, strict duotone |
+| `bgCentered` | Full-bleed section bg | Centered, deliberately dark/even for white text overlay |
+| `coupleCentered` | Closing CTA | Exactly two people, centered, dark/even |
+| `portraitSquare` | In-card accents | 1:1 head-and-shoulders |
+| `abstractField` | Faint section backdrops | No people, low contrast |
+| `darkWash` | Text-safe washes | Gradient only, no pattern, no subject |
 
-### Composition
-- **Frame like storyboard panels or graphic novel covers**
-- Use dynamic but controlled angles:
-  - Low-angle hero shots
-  - Tight over-the-shoulder views
-  - Courtroom table symmetry
-  - Bird's eye surveillance perspectives
-- Always maintain narrative tension in posture and framing
-- Focus on environmental storytelling
+## 4. Iconography
 
----
+Two variants of the flat 2D glass recipe:
 
-## 🖌️ Rendering Style
+- `glassIcon` — exploration: soft off-white background, faint inner glow.
+- `glassIconProd` — production: **no glow**, pure `#ffffff` background so the
+  icon sits flush on white cards. Use this for anything that ships.
 
-### Medium
-- **Digital ink and flat color fills**, inspired by mid-century print comics
-- Thick black contour lines for figures and architecture
-- Limited crosshatching; rely on contrast and silhouette
-- Minimal gradients; use solid fills for clarity and power
-- Maintain tactile brush imperfections — slight ink bleed or halftone noise
+Keep one bold symbol per icon, centered, generous empty space.
 
-### Technical Approach
-- Bold, confident line work
-- High contrast between light and shadow
-- Simplified but expressive character features
-- Architectural details that support the narrative mood
-- Texture that suggests traditional print media
+## 5. Pattern overlay
 
----
+`scripts/pattern-overlay.mjs` bakes a perfect repeating pattern over the clean
+base image:
 
-## 👁️ Influence References
+- **Patterns:** `hex` (honeycomb lattice), `dots` (staggered dot grid),
+  `waves` (stacked sine lines). Add a shape by adding one generator to
+  `PATTERNS` — the masking/compositing machinery is shared.
+- **Masking:** a birefnet subject cutout keeps the pattern strictly in the
+  background, dilated so it pulls clear of the person; a directional fade
+  keeps the headline zone clean (use `FADE_EVEN` for centered subjects).
+- **Cheap iteration:** the clean base (`.base.jpg`) and mask (`.mask.png`)
+  are cached next to the output. Re-running **without** `--force`
+  re-composites the pattern with zero generation calls — tune freely.
 
-### Primary Influences
-- **Darwyn Cooke** (Parker series) - Clean lines, period atmosphere
-- **Eduardo Risso** (100 Bullets) - Shadow work, urban grit
-- **Frank Miller** (Batman: Year One, Sin City) - Noir lighting, dramatic angles
-- **David Mazzucchelli** (Born Again) - Realistic character work, urban environments
-- **Sean Phillips** (Criminal, Fatale) - Modern noir sensibility
+## 6. Production & generation
 
-### Visual Characteristics
-- Strong silhouettes
-- Expressive but grounded character design
-- Environmental storytelling
-- Cinematic composition
-- Moral ambiguity reflected in lighting choices
+- **Model:** locked to `fal-ai/nano-banana-2` (text-to-image) — never flux.
+  Subject cutouts use `fal-ai/birefnet/v2`.
+- **Key:** `FAL_KEY` in `.env.local` (see `.env.example`).
+- **Commands:**
 
----
+  ```bash
+  npm run images                       # generate everything missing
+  npm run images -- --smoke            # one cheap test image
+  npm run images -- --only=icons       # one category
+  npm run images -- --slug=icon-shield # one image
+  npm run images -- --force            # regenerate even if files exist
+  ```
 
-## 🧠 Narrative Context
+- **Output:** `public/img/style-guide/<category>/<slug>.jpg` plus
+  `manifest.json` (inlines every prompt), reviewed at `/style-guide`
+  (noindex). Reviewers select picks and export a TSV that includes each
+  image's prompt, so selections round-trip straight back into iteration.
+- The catalog (`PROMPTS`) is importable without side effects for tooling.
 
-### Subject Matter
-You illustrate a world of law, power, and secrecy:
+## 7. Retired styles
 
-**Federal Environments:**
-- Federal agents under fluorescent light
-- DOJ buildings with imposing architecture
-- Evidence rooms and file archives
-- Surveillance operations
-- Government parking garages
+Log retired directions here with a date and "do not reintroduce". The
+template starts with none; the upstream fork history (plannix) retired:
+aurora/cosmic fields, 3D clay objects, flat-sticker icons, 3D-glass icons,
+model-drawn mesh patterns, and strong-gradient icon fills — all superseded by
+the registers above.
 
-**Legal Settings:**
-- Courtrooms thick with tension
-- Law offices at dusk
-- Conference rooms with sealed documents
-- Professional consultations in dim lighting
+## 8. Re-skinning for a fork
 
-**Urban Atmosphere:**
-- Silent drives at night
-- City streets with neon reflections
-- Bureau drawers and sealed envelopes
-- Powerful figures lost in thought
-- The moral gray of justice and guilt
+Everything brand-specific lives in `scripts/image-style.config.mjs`:
 
-### Character Types
-- Federal agents and investigators
-- Defense professionals and prosecutors
-- Defendants and witnesses
-- Government officials
-- Law enforcement personnel
+| Knob | What it controls |
+|---|---|
+| `IMAGE_STYLE.photo.paletteWords` | Duotone palette clause in every people prompt |
+| `IMAGE_STYLE.photo.prismWords` | The prismatic light color ("BLUE and AZURE") |
+| `IMAGE_STYLE.photo.sheenWords` | The iridescent-sheen parenthetical |
+| `IMAGE_STYLE.photo.fieldWords` | Negative-space field color words |
+| `IMAGE_STYLE.icon.fillWords` | Icon fill color words |
+| `IMAGE_STYLE.overlay` | Default pattern, stroke hex, opacity |
+| `IMAGE_STYLE.casting` | Casting guardrail clause |
+| `SUBJECTS` | The entire demo catalog (slugs, labels, subjects) |
 
----
+Color knobs are natural-language **words**, not hex — the model reads words.
+The composition clauses are deliberately *not* knobs: the whole system (hero
+scrim, headline zones, overlay fades) assumes them; edit the clause constants
+in `scripts/generate-images.mjs` only if you know what you're changing.
 
-## 💬 Sample Prompt Fragments
-
-### Investigation Scenes
-```
-"noir comic illustration of federal agents inspecting evidence in a dim archive room, strong chiaroscuro, 1980s graphic novel style"
-
-"FBI surveillance team in unmarked car at night, Eduardo Risso style, neon city lights reflecting on windshield"
-
-"DEA agents examining seized drugs under harsh fluorescent lighting, Frank Miller noir aesthetic"
-```
-
-### Legal Scenes
-```
-"courtroom drama rendered in Darwyn Cooke noir style, bold inks, muted color palette, cinematic tension"
-
-"defense professional reviewing case files by desk lamp, Sean Phillips criminal comic style, deep shadows"
-
-"federal prosecutor presenting evidence, low-angle shot, David Mazzucchelli realism"
-```
-
-### Character Studies
-```
-"FBI agent silhouetted by neon city lights, vintage pulp aesthetic, teal and magenta accents"
-
-"bald professional in contemplative office scene at dusk, Frank Miller comic lighting"
-
-"federal defendant in consultation room, harsh overhead lighting, morally ambiguous atmosphere"
-```
-
-### Environmental Shots
-```
-"DOJ building exterior at twilight, imposing federal architecture, noir comic style"
-
-"evidence locker with dramatic lighting, procedural comic aesthetic"
-
-"federal courthouse steps with long shadows, cinematic composition"
-```
-
----
-
-## ⚙️ Behavioral Notes for AI/Artist Agent
-
-### Core Principles
-- **Always default to noir composition and lighting** — every scene should feel investigative, suspicious, or morally weighty
-- Characters are expressive but grounded — no exaggerated anatomy or cartoonish features
-- Environments (DOJ buildings, parking lots, archives, cars) are as important as the people — they reveal the story through design and light
-
-### Technical Guidelines
-- **Do not modernize UI or technology** beyond subtle presence (phones, computers) — retain analog noir atmosphere
-- Prioritize visual storytelling: gesture, shadow, reflection, and silence over exposition
-- Maintain consistent ink weight and contrast throughout compositions
-- Use negative space effectively to create mood and focus
-
-### Storytelling Focus
-- Every image should suggest a larger narrative
-- Characters should appear caught in moments of decision or revelation
-- Environmental details should support the legal/federal theme
-- Lighting should reflect the moral complexity of the subject matter
-
----
-
-## 🎯 Your Company Name Specific Applications
-
-### Blog Image Categories
-
-**Hero Images:**
-- Dramatic establishing shots of legal/federal environments
-- Strong atmospheric lighting
-- Wide compositions that set the narrative tone
-
-**Detail Shots:**
-- Close-ups of legal documents, evidence, or investigative materials
-- Tight framing with dramatic lighting
-- Focus on texture and authenticity
-
-**Enforcement Images:**
-- Federal agents, police, or law enforcement in action
-- Dynamic angles and strong silhouettes
-- Emphasis on authority and power dynamics
-
-**Legal Documentation:**
-- Courtroom scenes, legal paperwork, or official proceedings
-- Formal compositions with institutional weight
-- Balanced lighting that suggests official gravity
-
-**Professional Representation:**
-- Professional but approachable legal counsel imagery
-- Confident postures and authoritative presence
-- Lighting that suggests competence and trustworthiness
-
-### Brand Consistency
-- All images should reinforce Your Company Name's expertise in federal professional services
-- Visual tone should be serious but not intimidating to potential clients
-- Maintain the noir aesthetic while ensuring accessibility and professionalism
-- Balance dramatic storytelling with practical legal communication needs
-
----
-
-## 📋 Quality Checklist
-
-Before finalizing any image, ensure:
-
-- [ ] Strong chiaroscuro lighting is present
-- [ ] Color palette adheres to noir specifications
-- [ ] Composition tells a story beyond the immediate subject
-- [ ] Line work is bold and confident
-- [ ] Environmental details support the legal/federal theme
-- [ ] Character expressions are grounded and realistic
-- [ ] Overall mood is appropriately tense and procedural
-- [ ] Image serves the specific blog content and AMC brand needs
-
----
-
-This style guide ensures all Your Company Name blog images maintain a consistent, professional, and dramatically compelling visual identity that reinforces the firm's expertise in federal professional services while creating engaging, story-driven content for readers.
+To re-skin: edit the words, delete `public/img/style-guide/`, run
+`npm run images`, review at `/style-guide`, iterate. Expect one or two tuning
+passes on the color words — strong hues over-saturate easily; the "NOT neon"
+negatives do real work.

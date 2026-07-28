@@ -115,7 +115,7 @@ html {
 
 @keyframes kenBurnsZoom {
   0% { transform: scale(1); }
-  100% { transform: scale(1.15); }
+  100% { transform: scale(1.25); }
 }
 
 .ken-burns-slide {
@@ -123,7 +123,7 @@ html {
 }
 
 .ken-burns-zoom {
-  animation: kenBurnsZoom 8s ease-in-out infinite alternate;
+  animation: kenBurnsZoom 45s ease-in-out infinite alternate;
   will-change: transform;
 }
 
@@ -153,11 +153,18 @@ html {
 [data-reveal="words"] .word {
   display: inline-block;
   overflow: hidden;
+  /* Pad the clip box out past the glyph extents — tight display tracking,
+     compressed leading, and descenders (y, g, p) all paint outside the bare
+     line box and would get shaved by the mask. The negative margins cancel
+     the padding exactly, so line layout is unchanged. */
+  padding: 0.2em 0.15em;
+  margin: -0.2em -0.15em;
 }
 
 [data-reveal="words"] .word-inner {
   display: inline-block;
-  transform: translateY(110%);
+  /* Must clear the padded clip box (100% + padding), not just 110%. */
+  transform: translateY(150%);
 }
 
 /* ========================================

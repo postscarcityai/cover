@@ -1,5 +1,8 @@
 "use client"
 
+import { JsonLd } from "@/components/json-ld"
+import { breadcrumbSchema } from "@/lib/schema"
+
 interface Breadcrumb {
   label: string
   href?: string
@@ -9,12 +12,15 @@ interface SubpageHeroProps {
   eyebrow?: string
   title: string
   description?: string
+  /** Full-bleed background image; switches the hero to dark-field/white-text. */
   backgroundImage?: string
   breadcrumbs?: Breadcrumb[]
   size?: "default" | "compact"
   align?: "left" | "center"
   children?: React.ReactNode
   className?: string
+  /** Extra classes for the <h1> — e.g. a max-width to tighten the wrap. */
+  titleClassName?: string
 }
 
 export function SubpageHero({
@@ -27,56 +33,70 @@ export function SubpageHero({
   align = "left",
   children,
   className = "",
+  titleClassName = "",
 }: SubpageHeroProps) {
   const minHeight = size === "compact" ? "min-h-[40vh]" : "min-h-[60vh]"
   const textAlign = align === "center" ? "text-center items-center" : "items-start"
+  const hasBgImage = !!backgroundImage
 
   return (
     <section
       className={`relative ${minHeight} flex items-end overflow-hidden ${className}`}
-      style={{ backgroundColor: "var(--bg)" }}
+      style={{ backgroundColor: hasBgImage ? "var(--hero-dark, #10141f)" : "var(--bg)" }}
     >
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 40%, color-mix(in srgb, var(--accent) 6%, transparent), transparent)",
-        }}
-      />
-
-      {backgroundImage && (
+      {hasBgImage ? (
         <div
-          data-reveal="parallax"
-          className="absolute inset-0 bg-cover bg-center opacity-15"
+          className="absolute inset-0 bg-cover bg-right lg:bg-center ken-burns-zoom"
           style={{ backgroundImage: `url(${backgroundImage})` }}
+          aria-hidden
+        />
+      ) : (
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 60% at 50% 40%, color-mix(in srgb, var(--accent) 6%, transparent), transparent)",
+          }}
+          aria-hidden
         />
       )}
 
       <div
-        className={`relative z-10 w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 pb-16 md:pb-24 pt-32 md:pt-40 max-w-7xl flex flex-col ${textAlign}`}
+        className={`relative z-10 w-full container pb-16 md:pb-24 pt-32 md:pt-40 flex flex-col ${textAlign}`}
       >
+        {/* Breadcrumb JSON-LD is emitted from the same data as the visible
+            trail, so markup and structured data can never drift apart. */}
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <nav
-            aria-label="Breadcrumb"
-            className="mb-8"
-            data-reveal="fade-up"
-          >
+          <JsonLd data={breadcrumbSchema(breadcrumbs)} />
+        )}
+        {breadcrumbs && breadcrumbs.length > 0 && (
+          <nav aria-label="Breadcrumb" className="mb-8" data-reveal="fade-up">
             <ol className="flex items-center gap-2 text-xs tracking-[0.2em] uppercase">
               {breadcrumbs.map((crumb, i) => (
                 <li key={crumb.label} className="flex items-center gap-2">
                   {i > 0 && (
-                    <span style={{ color: "var(--fg-muted)", opacity: 0.4 }}>/</span>
+                    <span
+                      className={hasBgImage ? "text-white/40" : ""}
+                      style={!hasBgImage ? { color: "var(--fg-muted)", opacity: 0.4 } : undefined}
+                    >
+                      /
+                    </span>
                   )}
                   {crumb.href ? (
                     <a
                       href={crumb.href}
-                      className="transition-colors hover:opacity-100"
-                      style={{ color: "var(--fg-muted)", opacity: 0.6 }}
+                      className={`transition-colors hover:opacity-100 ${hasBgImage ? "text-white/70" : ""}`}
+                      style={!hasBgImage ? { color: "var(--fg-muted)", opacity: 0.6 } : undefined}
                     >
                       {crumb.label}
                     </a>
                   ) : (
-                    <span style={{ color: "var(--accent)" }}>{crumb.label}</span>
+                    <span
+                      className={hasBgImage ? "text-white" : ""}
+                      style={!hasBgImage ? { color: "var(--accent)" } : undefined}
+                    >
+                      {crumb.label}
+                    </span>
                   )}
                 </li>
               ))}
@@ -87,8 +107,8 @@ export function SubpageHero({
         {eyebrow && (
           <p
             data-reveal="fade-up"
-            className="text-xs tracking-[0.3em] uppercase mb-6"
-            style={{ color: "var(--accent)" }}
+            className={`text-xs tracking-[0.3em] uppercase mb-6 ${hasBgImage ? "text-white/90 font-semibold" : ""}`}
+            style={!hasBgImage ? { color: "var(--accent)" } : undefined}
           >
             {eyebrow}
           </p>
@@ -96,8 +116,8 @@ export function SubpageHero({
 
         <h1
           data-reveal="words"
-          className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[0.95] tracking-tight mb-8"
-          style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+          className={`font-display text-5xl sm:text-6xl md:text-7xl font-normal leading-[0.95] tracking-display-tight mb-8 ${hasBgImage ? "text-white" : ""} ${titleClassName}`}
+          style={{ color: hasBgImage ? undefined : "var(--fg)" }}
         >
           {title}
         </h1>
@@ -105,8 +125,8 @@ export function SubpageHero({
         {description && (
           <p
             data-reveal="fade-up"
-            className={`text-lg md:text-xl leading-relaxed ${align === "center" ? "max-w-3xl" : "max-w-2xl"}`}
-            style={{ color: "var(--fg-muted)" }}
+            className={`text-lg md:text-xl leading-relaxed ${hasBgImage ? "text-white/85" : ""} ${align === "center" ? "max-w-3xl" : "max-w-2xl"}`}
+            style={{ color: hasBgImage ? undefined : "var(--fg-muted)" }}
           >
             {description}
           </p>

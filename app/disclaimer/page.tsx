@@ -1,25 +1,22 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
 import { siteConfig } from "@/site.config"
+import { pageMetadata } from "@/lib/seo"
 import { getDisclaimerData } from "./data"
 
-export const metadata: Metadata = {
-  title: `Disclaimer | ${siteConfig.name}`,
+export const metadata: Metadata = pageMetadata({
+  path: "/disclaimer",
+  title: "Disclaimer",
   description: `Website disclaimer for ${siteConfig.name}. Important information about the use of our website.`,
-  keywords: [...siteConfig.seo.keywords, "disclaimer", "legal notice"],
-  alternates: {
-    canonical: `${siteConfig.url}/disclaimer`,
-  },
-  robots: { index: true, follow: true },
-}
+  keywords: ["disclaimer", "legal notice"],
+})
 
 const sectionHeadingStyle = {
   fontFamily: "var(--font-heading)",
-  color: "var(--accent)",
+  color: "var(--fg)",
 }
 
 function ContactLinks() {
@@ -58,7 +55,6 @@ export default function DisclaimerPage() {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
       <SubpageHero
         eyebrow={data.hero.eyebrow}
         title={data.hero.title}

@@ -1,25 +1,22 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
 import { siteConfig } from "@/site.config"
+import { pageMetadata } from "@/lib/seo"
 import { getPrivacyPolicyData } from "./data"
 
-export const metadata: Metadata = {
-  title: `Privacy Policy | ${siteConfig.name}`,
+export const metadata: Metadata = pageMetadata({
+  path: "/privacy-policy",
+  title: "Privacy Policy",
   description: `Privacy Policy for ${siteConfig.name}. Learn how we collect, use, and protect your personal information.`,
-  keywords: [...siteConfig.seo.keywords, "privacy policy", "data protection", "confidentiality"],
-  alternates: {
-    canonical: `${siteConfig.url}/privacy-policy`,
-  },
-  robots: { index: true, follow: true },
-}
+  keywords: ["privacy policy", "data protection", "confidentiality"],
+})
 
 const sectionHeadingStyle = {
   fontFamily: "var(--font-heading)",
-  color: "var(--accent)",
+  color: "var(--fg)",
 }
 
 export default function PrivacyPolicyPage() {
@@ -27,7 +24,6 @@ export default function PrivacyPolicyPage() {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
       <SubpageHero
         eyebrow={data.hero.eyebrow}
         title={data.hero.title}

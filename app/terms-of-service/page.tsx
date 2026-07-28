@@ -1,25 +1,22 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
 import { siteConfig } from "@/site.config"
+import { pageMetadata } from "@/lib/seo"
 import { getTermsOfServiceData } from "./data"
 
-export const metadata: Metadata = {
-  title: `Terms of Service | ${siteConfig.name}`,
+export const metadata: Metadata = pageMetadata({
+  path: "/terms-of-service",
+  title: "Terms of Service",
   description: `Terms of Service for ${siteConfig.name}. Please read these terms carefully before using our website.`,
-  keywords: [...siteConfig.seo.keywords, "terms of service", "terms and conditions"],
-  alternates: {
-    canonical: `${siteConfig.url}/terms-of-service`,
-  },
-  robots: { index: true, follow: true },
-}
+  keywords: ["terms of service", "terms and conditions"],
+})
 
 const sectionHeadingStyle = {
   fontFamily: "var(--font-heading)",
-  color: "var(--accent)",
+  color: "var(--fg)",
 }
 
 export default function TermsOfServicePage() {
@@ -27,7 +24,6 @@ export default function TermsOfServicePage() {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
       <SubpageHero
         eyebrow={data.hero.eyebrow}
         title={data.hero.title}

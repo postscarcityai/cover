@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Phone, Mail, MapPin, Copy, Check } from "lucide-react"
+import { Phone, Mail, MapPin, Copy, Check, ArrowRight } from "lucide-react"
+import Link from "next/link"
 import { Logo } from "@/components/logo"
 import { trackPhoneCallClick, trackCopyToClipboard } from "@/lib/analytics"
 import { resetCookieConsent } from "@/components/cookie-consent"
@@ -123,7 +124,18 @@ export function Footer({ className = "" }: FooterProps) {
       <DefaultIcon className="h-4 w-4" style={{ color: "var(--fg-muted)" }} />
     )
 
-  const resourceLinks = siteConfig.navigation.filter((i) => i.href !== "/contact")
+  // Custom columns from siteConfig.footer win; otherwise fall back to a single
+  // navigation-derived "Resources" column (the template default).
+  const columns = siteConfig.footer?.columns ?? [
+    {
+      title: "Resources",
+      links: siteConfig.navigation
+        .filter((i) => i.href !== "/contact")
+        .map((i) => ({ label: i.label, href: i.href })),
+    },
+  ]
+  const footerCta = siteConfig.footer?.cta
+  const compliance = siteConfig.footer?.compliance
   const socialEntries = Object.entries(siteConfig.social).filter(([, url]) => url)
 
   const complianceLinks = [
@@ -140,6 +152,49 @@ export function Footer({ className = "" }: FooterProps) {
       className={`border-t ${className}`}
       style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
     >
+      {/* CTA banner (optional — siteConfig.footer.cta) */}
+      {footerCta && (
+        <div className="border-b" style={{ borderColor: "var(--border)" }}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 py-12 md:py-16">
+            <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8 items-center">
+              <div>
+                <h3
+                  className="text-2xl md:text-3xl font-bold mb-2"
+                  style={{ fontFamily: "var(--font-heading)", color: "var(--fg)", letterSpacing: "-0.02em" }}
+                >
+                  {footerCta.title}
+                </h3>
+                {footerCta.description && (
+                  <p style={{ color: "var(--fg-muted)" }}>{footerCta.description}</p>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-3 lg:justify-end">
+                {footerCta.primary && (
+                  <Link
+                    href={footerCta.primary.href}
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-medium transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
+                  >
+                    {footerCta.primary.text}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                )}
+                {footerCta.showPhone && (
+                  <a
+                    href={`tel:${siteConfig.contact.phone}`}
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-medium border-2 transition-colors hover:border-[var(--accent)]"
+                    style={{ borderColor: "var(--border)", color: "var(--fg)" }}
+                  >
+                    <Phone className="h-4 w-4" />
+                    {siteConfig.contact.phoneDisplay}
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 py-16 md:py-20">
         <div className="grid sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12">
@@ -184,28 +239,34 @@ export function Footer({ className = "" }: FooterProps) {
             )}
           </div>
 
-          {/* Resources */}
-          <div className="lg:col-span-3">
-            <h3 className="font-semibold text-xs tracking-[0.2em] uppercase mb-6" style={{ color: "var(--fg)" }}>
-              Resources
-            </h3>
-            <ul className="space-y-3">
-              {resourceLinks.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-sm transition-colors hover:text-[var(--accent)]"
-                    style={{ color: "var(--fg-muted)" }}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Link columns — custom from siteConfig.footer.columns, or the
+              nav-derived default. Grid span flexes with the column count. */}
+          {columns.map((col) => (
+            <div
+              key={col.title}
+              className={columns.length > 1 ? "lg:col-span-2" : "lg:col-span-3"}
+            >
+              <h3 className="font-semibold text-xs tracking-[0.2em] uppercase mb-6" style={{ color: "var(--fg)" }}>
+                {col.title}
+              </h3>
+              <ul className="space-y-3">
+                {col.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-sm transition-colors hover:text-[var(--accent)]"
+                      style={{ color: "var(--fg-muted)" }}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           {/* Contact */}
-          <div className="lg:col-span-5">
+          <div className={columns.length > 1 ? "lg:col-span-3" : "lg:col-span-5"}>
             <h3 className="font-semibold text-xs tracking-[0.2em] uppercase mb-6" style={{ color: "var(--fg)" }}>
               Contact
             </h3>
@@ -252,6 +313,43 @@ export function Footer({ className = "" }: FooterProps) {
           </div>
         </div>
       </div>
+
+      {/* Compliance / disclosure band (optional — siteConfig.footer.compliance) */}
+      {compliance && (
+        <div className="border-t" style={{ borderColor: "var(--border)" }}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 py-10">
+            {compliance.heading && (
+              <h3
+                className="font-semibold text-xs tracking-[0.2em] uppercase mb-4"
+                style={{ color: "var(--fg)" }}
+              >
+                {compliance.heading}
+              </h3>
+            )}
+            <div className="space-y-3 max-w-4xl">
+              {compliance.paragraphs.map((p, i) => (
+                <p key={i} className="text-xs leading-relaxed" style={{ color: "var(--fg-muted)" }}>
+                  {p}
+                </p>
+              ))}
+            </div>
+            {compliance.links && compliance.links.length > 0 && (
+              <nav className="mt-4 flex flex-wrap gap-x-6 gap-y-2" aria-label="Disclosures">
+                {compliance.links.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className="text-xs underline transition-colors hover:text-[var(--fg)]"
+                    style={{ color: "var(--fg-muted)" }}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Lower footer -- compliance & copyright */}
       <div className="border-t" style={{ borderColor: "var(--border)" }}>

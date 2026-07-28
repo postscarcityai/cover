@@ -1,55 +1,25 @@
 import type { Metadata } from "next"
-import PracticeAreasClient from "./client"
-import { practiceAreasData } from "./data"
+import ServicesClient from "./client"
+import { servicesData } from "./data"
 import { siteConfig } from "@/site.config"
+import { pageMetadata } from "@/lib/seo"
+import { JsonLd } from "@/components/json-ld"
 
-export const metadata: Metadata = {
-  title: `Services - ${siteConfig.name}`,
+export const metadata: Metadata = pageMetadata({
+  path: "/services",
+  title: "Services",
   description: siteConfig.description,
-  keywords: siteConfig.seo.keywords,
-  alternates: {
-    canonical: `${siteConfig.url}/services`
-  },
-  openGraph: {
-    title: `Services - ${siteConfig.name}`,
-    description: siteConfig.description,
-    url: `${siteConfig.url}/services`,
-    siteName: siteConfig.seo.openGraph.siteName,
-    type: "website",
-    images: siteConfig.seo.openGraph.images
-  },
-  twitter: {
-    card: siteConfig.seo.twitter.cardType as "summary_large_image",
-    title: `Services - ${siteConfig.name}`,
-    description: siteConfig.description,
-    images: siteConfig.seo.openGraph.images.map(img => img.url),
-  }
-}
+})
 
-export default function PracticeAreasPage() {
-  // Server-side: Prepare data and pass to client component
+export default function ServicesPage() {
   return (
     <>
-      {/* BreadcrumbList Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(practiceAreasData.breadcrumbSchema)
-        }}
-      />
-      
-      {/* Service Schemas */}
-      {practiceAreasData.serviceSchema.map((schema, index) => (
-        <script
-          key={index}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schema)
-          }}
-        />
+      {/* Service Schemas (breadcrumb JSON-LD is emitted by SubpageHero) */}
+      {servicesData.serviceSchema.map((schema, index) => (
+        <JsonLd key={index} data={schema} />
       ))}
-      
-      <PracticeAreasClient data={practiceAreasData} />
+
+      <ServicesClient data={servicesData} />
     </>
   )
 }

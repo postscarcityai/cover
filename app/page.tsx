@@ -3,7 +3,9 @@ import { siteConfig } from "@/site.config"
 import HomePageClient from "./client"
 
 export const metadata: Metadata = {
-  title: siteConfig.seo.defaultTitle,
+  // `absolute` opts out of the layout's title template — the homepage
+  // carries the full default title, not "X | Site Name".
+  title: { absolute: siteConfig.seo.defaultTitle },
   description: siteConfig.description,
   keywords: siteConfig.seo.keywords,
   alternates: {

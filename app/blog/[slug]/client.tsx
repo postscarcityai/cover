@@ -3,7 +3,6 @@
 import { Calendar, Clock, User, ArrowLeft, ArrowRight, Share2 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { BlogCTA } from "@/components/blog-cta"
 import { AudioPlayer } from "@/components/audio-player"
@@ -38,7 +37,6 @@ export function BlogPostClient({ post, mdxContent }: BlogPostClientProps) {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
 
       <article className="pt-32 md:pt-40 pb-16" id="main-content" style={{ backgroundColor: "var(--bg)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
@@ -82,8 +80,8 @@ export function BlogPostClient({ post, mdxContent }: BlogPostClientProps) {
 
           <h1
             data-reveal="words"
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-[0.95] tracking-tight"
-            style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-normal mb-8 leading-[0.95] tracking-display-tight"
+            style={{ color: "var(--fg)" }}
           >
             {post.title}
           </h1>
@@ -181,7 +179,7 @@ export function BlogPostClient({ post, mdxContent }: BlogPostClientProps) {
 
           <div className="mt-16 pt-8 border-t" style={{ borderColor: "var(--border)" }}>
             <div
-              className="p-8 rounded-lg"
+              className="p-8 rounded-2xl"
               style={{ backgroundColor: "var(--surface)" }}
             >
               <div className="flex items-start gap-6">

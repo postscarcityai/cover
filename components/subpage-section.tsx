@@ -24,9 +24,11 @@ const bgStyles: Record<SectionBackground, React.CSSProperties> = {
   },
 }
 
+// Inside the shared `container`: "wide" fills it (edges align with the
+// homepage sections), "narrow" is a centered prose column.
 const widthClasses: Record<SectionWidth, string> = {
-  narrow: "max-w-4xl",
-  wide: "max-w-7xl",
+  narrow: "max-w-4xl mx-auto",
+  wide: "max-w-none",
   full: "max-w-none",
 }
 
@@ -49,17 +51,19 @@ export function SubpageSection({
   return (
     <section
       id={id}
-      className={`py-24 md:py-40 ${className}`}
+      className={`py-24 md:py-32 ${className}`}
       style={bgStyles[background]}
     >
-      <div
-        className={`${widthClasses[maxWidth]} mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24`}
-      >
+      {/* `container` matches the homepage sections, so subpage content edges
+          line up with the DTC sections at every breakpoint. maxWidth narrows
+          the inner column without changing the shared gutter geometry. */}
+      <div className="container">
+        <div className={widthClasses[maxWidth]}>
         {(eyebrow || title || description) && (
-          <div className="mb-20 max-w-2xl" data-reveal="fade-up">
+          <div className="mb-16 md:mb-20 max-w-2xl" data-reveal="fade-up">
             {eyebrow && (
               <p
-                className="text-xs tracking-[0.3em] uppercase mb-6"
+                className="text-xs tracking-[0.18em] uppercase font-semibold mb-6"
                 style={{ color: accentColor }}
               >
                 {sectionNumber && (
@@ -70,8 +74,8 @@ export function SubpageSection({
             )}
             {title && (
               <h2
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
-                style={{ fontFamily: "var(--font-heading)", color: fgColor }}
+                className="font-display text-4xl md:text-5xl lg:text-6xl font-normal tracking-display-tight leading-[1.05] mb-6"
+                style={{ color: fgColor }}
               >
                 {title}
               </h2>
@@ -88,6 +92,7 @@ export function SubpageSection({
         )}
 
         {children}
+        </div>
       </div>
     </section>
   )

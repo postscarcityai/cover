@@ -1,30 +1,22 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
 import { siteConfig } from "@/site.config"
+import { pageMetadata } from "@/lib/seo"
 import { getNonDiscriminationData } from "./data"
 
-export const metadata: Metadata = {
-  title: `Non-Discrimination Statement | ${siteConfig.name}`,
-  description: `Our commitment to equal access and non-discrimination in all services we provide.`,
-  keywords: [
-    ...siteConfig.seo.keywords,
-    "non-discrimination",
-    "equal access",
-    "civil rights",
-  ],
-  alternates: {
-    canonical: `${siteConfig.url}/non-discrimination-statement`,
-  },
-  robots: { index: true, follow: true },
-}
+export const metadata: Metadata = pageMetadata({
+  path: "/non-discrimination-statement",
+  title: "Non-Discrimination Statement",
+  description: "Our commitment to equal access and non-discrimination in all services we provide.",
+  keywords: ["non-discrimination", "equal access", "civil rights"],
+})
 
 const sectionHeadingStyle = {
   fontFamily: "var(--font-heading)",
-  color: "var(--accent)",
+  color: "var(--fg)",
 }
 
 function ContactItemsList({
@@ -73,7 +65,6 @@ export default function NonDiscriminationStatementPage() {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
       <SubpageHero
         eyebrow={data.hero.eyebrow}
         title={data.hero.title}

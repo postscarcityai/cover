@@ -84,9 +84,13 @@ export function ScrollSmoother(config: ScrollSmootherConfig = {}) {
           return
         }
 
-        // Set up container
-        const viewportHeight = window.innerHeight
-        scrollContainer.style.height = `${viewportHeight}px`
+        // Set up container. Height uses 100vh (not a measured pixel value):
+        // innerHeight can read 0 at init in freshly-created or hidden
+        // windows, which would freeze the wrapper at height 0 and blank the
+        // whole page. The numeric value below is only used for scroll
+        // clamping, so a late-settling fallback is fine there.
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 800
+        scrollContainer.style.height = '100vh'
         scrollContainer.style.overflow = 'hidden'
         scrollContainer.style.position = 'fixed'
         scrollContainer.style.top = '0'

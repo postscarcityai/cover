@@ -26,31 +26,32 @@ export interface DesignTokens {
 }
 
 /**
- * Default preset: "Clinical" — modeled on ro.co.
- * Clean light palette, charcoal ink, burnt-orange accent, deep-green trust.
+ * Default preset: "Periwinkle" — built around the brand indigo #5A6DF3,
+ * matching the generated blue imagery (see docs/brand-guides/image-style-guide.md).
+ * Cool off-white surfaces, cool charcoal ink, deep-indigo trust.
  * One typeface (Inter Tight) used for both display and body.
  *
  * Accent contrast (WCAG AA):
- *   accent #b35836 vs white      → 5.1:1 (UI element 3:1 ✓, text 4.5:1 ✓)
- *   accent #b35836 vs white text → 5.1:1 (text 4.5:1 ✓)
+ *   accent #5A6DF3 vs white → 4.3:1 (UI elements 3:1 ✓, large/bold text 3:1 ✓;
+ *   for small body text on accent, prefer the trust indigo #2e3a9f → 9.6:1)
  */
 export const defaultTokens: DesignTokens = {
   background: "#ffffff",
-  surface: "#f7f4f1",
-  surfaceWarm: "#eee9e4",
-  muted: "rgba(26, 26, 26, 0.05)",
-  border: "rgba(26, 26, 26, 0.12)",
+  surface: "#f4f5fa",
+  surfaceWarm: "#e9ecf9",
+  muted: "rgba(23, 25, 33, 0.05)",
+  border: "rgba(23, 25, 33, 0.12)",
 
-  foreground: "#1a1a1a",
-  ink: "#1a1a1a",
-  mutedForeground: "#666666",
-  mute: "#666666",
+  foreground: "#171921",
+  ink: "#171921",
+  mutedForeground: "#63666f",
+  mute: "#63666f",
 
-  accent: "#b35836",
+  accent: "#5A6DF3",
   accentForeground: "#ffffff",
   accentInk: "#ffffff",
 
-  trust: "#0d7744",
+  trust: "#2e3a9f",
 
   fontHeading: "var(--font-display-source), system-ui, sans-serif",
   fontBody: "var(--font-body-source), system-ui, sans-serif",

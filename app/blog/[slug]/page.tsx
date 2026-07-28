@@ -7,6 +7,7 @@ import { notFound } from "next/navigation"
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { useMDXComponents } from '@/components/mdx-components'
 import { siteConfig } from "@/site.config"
+import { JsonLd } from "@/components/json-ld"
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -30,12 +31,13 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   if (!post) {
     return {
-      title: `Post Not Found | ${siteConfig.name}`,
+      title: "Post Not Found",
     }
   }
 
   return {
-    title: `${post.title} | ${siteConfig.blog.title} - ${siteConfig.name}`,
+    // Bare title — the layout's title template appends the site name.
+    title: post.title,
     description: post.excerpt,
     keywords: [post.category, ...siteConfig.seo.keywords],
     alternates: {
@@ -99,29 +101,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <>
       {/* BreadcrumbList Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schemas.breadcrumb)
-        }}
-      />
+      <JsonLd data={schemas.breadcrumb} />
       
       {/* Enhanced Article Schema with Speakable + AudioObject */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schemas.article)
-        }}
-      />
+      <JsonLd data={schemas.article} />
       
       {/* FAQPage Schema (if Q&A content detected) */}
       {schemas.faq && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schemas.faq)
-          }}
-        />
+        <JsonLd data={schemas.faq} />
       )}
       
       <BlogPostClient post={post} mdxContent={mdxContent} />

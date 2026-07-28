@@ -1,16 +1,12 @@
 import { siteConfig } from "@/site.config"
 
+export interface ServiceSection {
+  title: string
+  description: string
+  areas: string[]
+}
+
 export interface ServicesData {
-  breadcrumbSchema: {
-    "@context": string
-    "@type": string
-    itemListElement: Array<{
-      "@type": string
-      position: number
-      name: string
-      item: string
-    }>
-  }
   serviceSchema: Array<{
     "@context": string
     "@type": string
@@ -26,202 +22,175 @@ export interface ServicesData {
     description: string
   }>
   hero: {
-    title: string[]
+    title: string
     subtitle: string
   }
-  stats: {
-    primary: {
-      label: string
-      value: string
-      subtext: string
-    }
-    secondary: {
-      label: string
-      value: string
-      subtext: string
-    }
-  }
-  primaryServices: {
-    introduction: string
+  pullQuote: {
+    eyebrow: string
     quote: string
-    sections: {
-      title: string
-      description: string
-      color: string
-      icon: string
-      areas: string[]
-    }[]
   }
-  secondaryServices: {
+  primary: {
     introduction: string
-    quote: string
-    sections: {
-      title: string
-      description: string
-      color: string
-      icon: string
-      areas: string[]
-    }[]
+    services: ServiceSection[]
   }
-  additionalInfo: {
+  additional: {
+    introduction: string
+    services: ServiceSection[]
+    highlights: string[]
+  }
+  howWeWork: {
     title: string
     description: string
-    areas: string[]
+    steps: { title: string; description: string }[]
+  }
+  cta: {
+    heading: string
+    description: string
+    buttonText: string
   }
 }
 
+const config = siteConfig.servicesPage
+
 export const servicesData: ServicesData = {
-  breadcrumbSchema: {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": siteConfig.url
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Services",
-        "item": `${siteConfig.url}/services`
-      }
-    ]
-  },
   serviceSchema: siteConfig.business.expertise.map((service, index) => ({
     "@context": "https://schema.org",
     "@type": "Service",
     "@id": `${siteConfig.url}/#service-${index}`,
-    "serviceType": service,
-    "provider": {
-      "@id": siteConfig.url
+    serviceType: service,
+    provider: {
+      "@id": siteConfig.url,
     },
-    "areaServed": siteConfig.business.serviceAreas.map(area => ({
+    areaServed: siteConfig.business.serviceAreas.map((area) => ({
       "@type": "State",
-      "name": area
+      name: area,
     })),
-    "description": `Professional ${service.toLowerCase()} services provided by ${siteConfig.name}.`
+    description: `Professional ${service.toLowerCase()} services provided by ${siteConfig.name}.`,
   })),
   hero: {
-    title: siteConfig.servicesPage?.heroTitle || ["Comprehensive", "Solutions"],
-    subtitle: siteConfig.servicesPage?.heroSubtitle || "Expert Services Tailored to Your Needs"
+    title: (config?.heroTitle || ["Comprehensive", "Solutions"]).join(" "),
+    subtitle: config?.heroSubtitle || "Expert services tailored to your needs",
   },
-  stats: {
-    primary: {
-      label: siteConfig.servicesPage?.stat1Label || "Service Areas",
-      value: siteConfig.servicesPage?.stat1Value || `${siteConfig.business.expertise.length}+`,
-      subtext: siteConfig.servicesPage?.stat1Subtext || "Core Specialties"
-    },
-    secondary: {
-      label: siteConfig.servicesPage?.stat2Label || "Locations",
-      value: siteConfig.servicesPage?.stat2Value || `${siteConfig.business.serviceAreas.length}+`,
-      subtext: siteConfig.servicesPage?.stat2Subtext || "Regions Served"
-    }
+  pullQuote: {
+    eyebrow: "What we do",
+    quote: config?.primaryQuote || "Excellence in every detail. Your success is our mission.",
   },
-  primaryServices: {
-    introduction: siteConfig.servicesPage?.primaryIntro || `${siteConfig.name} provides comprehensive professional services across ${siteConfig.business.expertise.join(", ").toLowerCase()}. Our expertise and dedication ensure exceptional results for every client.`,
-    quote: siteConfig.servicesPage?.primaryQuote || "Excellence in every detail. Your success is our mission.",
-    sections: siteConfig.servicesPage?.primarySections || [
+  primary: {
+    introduction:
+      config?.primaryIntro ||
+      `${siteConfig.name} provides comprehensive professional services across ${siteConfig.business.expertise.join(", ").toLowerCase()}. Our expertise and dedication ensure exceptional results for every client.`,
+    services: (config?.primarySections || [
       {
         title: siteConfig.business.expertise[0] || "Core Service 1",
         description: `Comprehensive solutions in ${siteConfig.business.expertise[0]?.toLowerCase() || "our primary service area"}. We deliver results through expertise, dedication, and attention to detail.`,
-        color: "blue",
-        icon: "Scale",
         areas: [
           "Strategic Planning",
           "Implementation",
           "Analysis & Optimization",
           "Ongoing Support",
-          "Custom Solutions"
-        ]
+          "Custom Solutions",
+        ],
       },
       {
         title: siteConfig.business.expertise[1] || "Core Service 2",
         description: `Expert services in ${siteConfig.business.expertise[1]?.toLowerCase() || "our secondary service area"}. Our approach combines industry knowledge with innovative strategies.`,
-        color: "purple",
-        icon: "Zap",
         areas: [
           "Consultation",
           "Strategy Development",
           "Execution",
           "Quality Assurance",
-          "Results Tracking"
-        ]
+          "Results Tracking",
+        ],
       },
       {
         title: siteConfig.business.expertise[2] || "Core Service 3",
         description: `Specialized expertise in ${siteConfig.business.expertise[2]?.toLowerCase() || "our tertiary service area"}. We provide tailored solutions that meet your unique needs.`,
-        color: "green",
-        icon: "CheckCircle",
-        areas: [
-          "Assessment",
-          "Planning",
-          "Implementation",
-          "Monitoring",
-          "Optimization"
-        ]
-      }
-    ]
+        areas: ["Assessment", "Planning", "Implementation", "Monitoring", "Optimization"],
+      },
+    ]).map(({ title, description, areas }) => ({ title, description, areas })),
   },
-  secondaryServices: {
-    introduction: siteConfig.servicesPage?.secondaryIntro || `We serve clients across ${siteConfig.business.serviceAreas.join(", ")} with the same level of dedication and expertise that has built our reputation for excellence.`,
-    quote: siteConfig.servicesPage?.secondaryQuote || "Your success drives everything we do.",
-    sections: siteConfig.servicesPage?.secondarySections || [
+  additional: {
+    introduction:
+      config?.secondaryIntro ||
+      `We serve clients across ${siteConfig.business.serviceAreas.join(", ")} with the same level of dedication and expertise that has built our reputation for excellence.`,
+    services: (config?.secondarySections || [
       {
         title: "Consultation Services",
-        description: "Expert guidance and strategic advice to help you make informed decisions and achieve your goals.",
-        color: "blue",
-        icon: "Users",
+        description:
+          "Expert guidance and strategic advice to help you make informed decisions and achieve your goals.",
         areas: [
           "Initial Assessment",
           "Strategic Planning",
           "Implementation Guidance",
           "Progress Review",
-          "Ongoing Advisory"
-        ]
+          "Ongoing Advisory",
+        ],
       },
       {
         title: "Support Services",
-        description: "Comprehensive support throughout your journey, ensuring you have the resources and assistance needed for success.",
-        color: "orange",
-        icon: "Shield",
+        description:
+          "Comprehensive support throughout your journey, ensuring you have the resources and assistance needed for success.",
         areas: [
           "Technical Support",
           "Customer Service",
           "Training & Education",
           "Documentation",
-          "Emergency Assistance"
-        ]
+          "Emergency Assistance",
+        ],
       },
       {
         title: "Specialized Solutions",
-        description: "Custom-tailored services designed to address your specific challenges and opportunities.",
-        color: "purple",
-        icon: "Globe",
+        description:
+          "Custom-tailored services designed to address your specific challenges and opportunities.",
         areas: [
           "Custom Development",
           "Specialized Analysis",
           "Targeted Implementation",
           "Performance Optimization",
-          "Results Measurement"
-        ]
-      }
-    ]
-  },
-  additionalInfo: {
-    title: siteConfig.servicesPage?.additionalTitle || "Getting Started",
-    description: siteConfig.servicesPage?.additionalDescription || "Ready to work with us? Contact our team to discuss your needs and learn how we can help you achieve your goals.",
-    areas: siteConfig.servicesPage?.additionalAreas || [
+          "Results Measurement",
+        ],
+      },
+    ]).map(({ title, description, areas }) => ({ title, description, areas })),
+    highlights: config?.additionalAreas || [
       "Free Initial Consultation",
       "Customized Service Plans",
       "Transparent Pricing",
       "Flexible Scheduling",
-      "Dedicated Support"
-    ]
-  }
+      "Dedicated Support",
+    ],
+  },
+  howWeWork: {
+    title: "A process built for clarity",
+    description:
+      "Every engagement follows the same simple rhythm, so you always know what happens next.",
+    steps: [
+      {
+        title: "Discovery call",
+        description:
+          "We start with a conversation about where you are, where you want to be, and what's standing in the way.",
+      },
+      {
+        title: "Plan & proposal",
+        description:
+          "You get a clear scope, timeline, and price — no surprises, no padding, no fine print.",
+      },
+      {
+        title: "Execution",
+        description:
+          "We do the work with regular check-ins along the way, so you're never left wondering about progress.",
+      },
+      {
+        title: "Review & iterate",
+        description:
+          "We measure results against the plan, refine what needs refining, and set up what comes next.",
+      },
+    ],
+  },
+  cta: {
+    heading: config?.additionalTitle || "Let's work together",
+    description:
+      config?.additionalDescription ||
+      "Ready to work with us? Contact our team to discuss your needs and learn how we can help you achieve your goals.",
+    buttonText: "Contact us today",
+  },
 }
-
-// Legacy export for backwards compatibility
-export const practiceAreasData = servicesData
-export type PracticeAreasData = ServicesData

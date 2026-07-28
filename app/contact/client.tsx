@@ -1,10 +1,9 @@
 "use client"
 
 import { Phone } from "lucide-react"
-import { MagneticButton } from "@/components/magnetic-button"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { ContactConversionForm } from "@/components/contact-conversion-form"
+import { PullQuote } from "@/components/pull-quote"
 import { trackPhoneCallClick, trackScheduleConsultation } from "@/lib/analytics"
 import { usePageTracking, useScrollTracking } from "@/lib/analytics-hooks"
 import { siteConfig } from "@/site.config"
@@ -45,28 +44,26 @@ export default function ContactClient({ data }: Props) {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
-
       <main id="main-content">
+        {/* Split conversion hero — copy left, form card right. Shares the
+            subpage hero's radial wash, container geometry, and type voice. */}
         <section
-          className="relative min-h-[100dvh] flex flex-col justify-center py-24 md:py-32"
+          className="relative flex flex-col justify-center pt-32 md:pt-40 pb-16 md:pb-24"
           style={{ backgroundColor: "var(--bg)" }}
         >
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "radial-gradient(ellipse 70% 50% at 50% 20%, color-mix(in srgb, var(--accent) 6%, transparent), transparent)",
+                "radial-gradient(ellipse 80% 60% at 50% 40%, color-mix(in srgb, var(--accent) 6%, transparent), transparent)",
             }}
+            aria-hidden
           />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 w-full">
+          <div className="relative z-10 container w-full">
             <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
               <div data-reveal="fade-up" className="order-2 lg:order-1">
-                <nav
-                  aria-label="Breadcrumb"
-                  className="mb-8"
-                >
+                <nav aria-label="Breadcrumb" className="mb-8">
                   <ol className="flex items-center gap-2 text-xs tracking-[0.2em] uppercase">
                     <li>
                       <a
@@ -83,8 +80,8 @@ export default function ContactClient({ data }: Props) {
                 </nav>
 
                 <h1
-                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-6"
-                  style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+                  className="font-display text-5xl sm:text-6xl md:text-7xl font-normal leading-[0.95] tracking-display-tight mb-6"
+                  style={{ color: "var(--fg)" }}
                 >
                   {headline}
                 </h1>
@@ -116,31 +113,28 @@ export default function ContactClient({ data }: Props) {
                   <span className="text-sm" style={{ color: "var(--fg-muted)" }}>
                     Prefer to talk?
                   </span>
-                  <MagneticButton>
-                    <a
-                      href={phoneHref}
-                      onClick={handleCallClick}
-                      className="inline-flex items-center gap-2 px-6 py-3 font-semibold text-sm rounded-xl transition-all hover:scale-[1.02]"
-                      style={{
-                        backgroundColor: "var(--surface)",
-                        color: "var(--accent)",
-                        border: "1px solid var(--border)",
-                      }}
-                    >
-                      <Phone className="h-4 w-4" />
-                      {siteConfig.contact.phoneDisplay}
-                    </a>
-                  </MagneticButton>
+                  <a
+                    href={phoneHref}
+                    onClick={handleCallClick}
+                    className="inline-flex items-center gap-2 px-6 h-12 font-semibold text-sm rounded-pill border transition-colors hover:border-[var(--accent)]"
+                    style={{
+                      backgroundColor: "var(--surface)",
+                      color: "var(--accent)",
+                      borderColor: "var(--border)",
+                    }}
+                  >
+                    <Phone className="h-4 w-4" />
+                    {siteConfig.contact.phoneDisplay}
+                  </a>
                 </div>
               </div>
 
               <div data-reveal="fade-up" className="order-1 lg:order-2">
                 <div
-                  className="rounded-2xl p-6 md:p-8 border max-w-md mx-auto lg:mx-0 lg:ml-auto"
+                  className="rounded-3xl p-6 md:p-8 border max-w-md mx-auto lg:mx-0 lg:ml-auto"
                   style={{
                     backgroundColor: "var(--surface)",
                     borderColor: "var(--border)",
-                    boxShadow: "0 25px 50px -12px color-mix(in srgb, var(--fg) 8%, transparent)",
                   }}
                 >
                   <ContactConversionForm />
@@ -151,57 +145,46 @@ export default function ContactClient({ data }: Props) {
         </section>
 
         {testimonialQuote && (
-          <section
-            className="py-20 md:py-28"
-            style={{ backgroundColor: "var(--surface)" }}
-          >
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 text-center" data-reveal="fade-up">
-              <blockquote
-                className="text-2xl md:text-3xl font-light leading-relaxed italic mb-6"
-                style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
-              >
-                &ldquo;{testimonialQuote}&rdquo;
-              </blockquote>
-              {testimonialAuthor && (
-                <footer>
-                  <cite className="font-semibold not-italic" style={{ color: "var(--fg)" }}>
-                    {testimonialAuthor}
-                  </cite>
-                  {testimonialRole && (
-                    <span className="block text-sm mt-1" style={{ color: "var(--fg-muted)" }}>
-                      {testimonialRole}
-                    </span>
-                  )}
-                </footer>
-              )}
+          <section className="py-16 md:py-24" style={{ backgroundColor: "var(--surface)" }}>
+            <div className="container">
+              <div className="max-w-3xl mx-auto" data-reveal="fade-up">
+                <PullQuote
+                  eyebrow="What clients say"
+                  body={testimonialQuote}
+                  attribution={
+                    testimonialAuthor
+                      ? `${testimonialAuthor}${testimonialRole ? `, ${testimonialRole}` : ""}`
+                      : undefined
+                  }
+                />
+              </div>
             </div>
           </section>
         )}
 
-        <section
-          className="py-12 md:py-16"
-          style={{ backgroundColor: "var(--bg)" }}
-        >
-          <details className="group max-w-3xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
-            <summary
-              className="text-xs font-semibold uppercase tracking-[0.2em] cursor-pointer flex items-center gap-2 [&::-webkit-details-marker]:hidden"
-              style={{ color: "var(--fg-muted)" }}
-            >
-              <span className="transition-transform group-open:rotate-90">›</span>
-              {disclaimer.title}
-            </summary>
-            <div className="mt-4 space-y-2">
-              {disclaimer.content.map((paragraph, index) => (
-                <p
-                  key={index}
-                  className="text-xs leading-relaxed"
-                  style={{ color: "var(--fg-muted)", opacity: 0.8 }}
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </details>
+        <section className="py-12 md:py-16" style={{ backgroundColor: "var(--bg)" }}>
+          <div className="container">
+            <details className="group max-w-3xl mx-auto">
+              <summary
+                className="text-xs font-semibold uppercase tracking-[0.18em] cursor-pointer flex items-center gap-2 [&::-webkit-details-marker]:hidden"
+                style={{ color: "var(--fg-muted)" }}
+              >
+                <span className="transition-transform group-open:rotate-90">›</span>
+                {disclaimer.title}
+              </summary>
+              <div className="mt-4 space-y-2">
+                {disclaimer.content.map((paragraph, index) => (
+                  <p
+                    key={index}
+                    className="text-xs leading-relaxed"
+                    style={{ color: "var(--fg-muted)", opacity: 0.8 }}
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </details>
+          </div>
         </section>
       </main>
 

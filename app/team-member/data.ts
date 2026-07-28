@@ -1,158 +1,122 @@
 import { siteConfig } from "@/site.config"
 
 export interface TeamMemberData {
-  breadcrumbSchema: {
-    "@context": string
-    "@type": string
-    itemListElement: Array<{
-      "@type": string
-      position: number
-      name: string
-      item: string
-    }>
-  }
-  hero: {
-    label: string
+  person: {
     name: string
     title: string
-    imageSrc: string
-    imageAlt: string
-    stats: {
-      experience: {
-        label: string
-        value: string
-      }
-      jurisdictions: {
-        label: string
-        value: string
-      }
-    }
+    intro: string
   }
   overview: {
-    sectionTitle: string
-    paragraphs: string[]
-  }
-  highlights: string[]
-  expertise: {
-    sectionTitle: string
-    paragraphs: string[]
-  }
-  credentials: {
-    sectionTitle: string
+    title: string
     description: string
-    licenses: string[]
-    certifications: string[]
-    note: string
+    paragraphs: string[]
+    portraitSrc: string
+    portraitAlt: string
   }
   leadership: {
-    sectionTitle: string
+    title: string
+    description: string
     paragraphs: string[]
-    highlights: {
-      title: string
-      subtitle: string
-      items: string[]
-    }
   }
+  stats: Array<{ value: string; label: string; suffix?: string }>
+  highlights: Array<{ icon: string; title: string; description: string }>
+  credentials: {
+    title: string
+    licenses: string[]
+    certifications: string[]
+  }
+  quote: string
   cta: {
     title: string
-    paragraphs: string[]
-    quote: string
+    description: string
     buttonText: string
-    phoneNumber: string
   }
 }
 
+const founderName = siteConfig.business.founder.name || "Team Member Name"
+const founderFirst = founderName.split(" ")[0]
+
+const overviewParagraphs = siteConfig.teamMember?.overviewParagraphs || [
+  `${founderName} is a recognized professional with extensive experience in ${siteConfig.business.expertise.join(", ").toLowerCase()}. With a commitment to excellence and client success, ${founderFirst} has built a reputation for delivering exceptional results.`,
+  `Throughout their career, ${founderFirst} has worked with clients across ${siteConfig.business.serviceAreas.join(", ")}, providing strategic guidance and expert solutions tailored to each client's unique needs.`,
+]
+
+const leadershipParagraphs = siteConfig.teamMember?.leadershipParagraphs || [
+  `Beyond professional practice, ${founderName} is actively involved in community initiatives and industry leadership roles.`,
+  `As a resident of ${siteConfig.contact.address.city}, ${siteConfig.contact.address.state}, ${founderFirst} maintains strong connections with the local community and contributes to regional development.`,
+]
+
 export const teamMemberData: TeamMemberData = {
-  breadcrumbSchema: {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": siteConfig.url
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": siteConfig.business.founder.name,
-        "item": `${siteConfig.url}/team-member`
-      }
-    ]
-  },
-  hero: {
-    label: siteConfig.business.founder.title || "Team Leader",
-    name: siteConfig.business.founder.name || "Team Member Name",
-    title: siteConfig.teamMember?.heroTitle || "Professional Title",
-    imageSrc: siteConfig.teamMember?.imageSrc || "",
-    imageAlt: siteConfig.teamMember?.imageAlt || `${siteConfig.business.founder.name} professional portrait`,
-    stats: {
-      experience: {
-        label: "Experience",
-        value: siteConfig.teamMember?.experience || "10+ Years"
-      },
-      jurisdictions: {
-        label: siteConfig.teamMember?.statsLabel || "Service Areas",
-        value: siteConfig.teamMember?.statsValue || `${siteConfig.business.serviceAreas.length}+ Regions`
-      }
-    }
+  person: {
+    name: founderName,
+    title: siteConfig.business.founder.title || "Team Leader",
+    intro:
+      siteConfig.teamMember?.personDescription ||
+      `${siteConfig.teamMember?.heroTitle || "Professional"} serving clients across ${siteConfig.business.serviceAreas.join(", ")}.`,
   },
   overview: {
-    sectionTitle: siteConfig.teamMember?.overviewTitle || "Professional Background",
-    paragraphs: siteConfig.teamMember?.overviewParagraphs || [
-      `${siteConfig.business.founder.name} is a recognized professional with extensive experience in ${siteConfig.business.expertise.join(", ").toLowerCase()}. With a commitment to excellence and client success, ${siteConfig.business.founder.name.split(" ")[0]} has built a reputation for delivering exceptional results.`,
-      `Throughout their career, ${siteConfig.business.founder.name.split(" ")[0]} has worked with clients across ${siteConfig.business.serviceAreas.join(", ")}, providing strategic guidance and expert solutions tailored to each client's unique needs.`
-    ]
+    title: siteConfig.teamMember?.overviewTitle || "Professional Background",
+    description: overviewParagraphs[0],
+    paragraphs: overviewParagraphs.slice(1),
+    portraitSrc: siteConfig.teamMember?.imageSrc || "/img/style-guide/samples/sample-portrait.jpg",
+    portraitAlt: siteConfig.teamMember?.imageAlt || `${founderName} professional portrait`,
   },
-  highlights: siteConfig.teamMember?.highlights || [
-    `Expertise in ${siteConfig.business.expertise[0]?.toLowerCase() || "core services"}`,
-    `Experience across ${siteConfig.business.serviceAreas.length}+ service regions`,
-    "Strategic client-focused approach",
-    "Proven track record of success",
-    "Industry-recognized professional"
+  leadership: {
+    title: siteConfig.teamMember?.leadershipTitle || "Leadership & Community",
+    description: leadershipParagraphs[0],
+    paragraphs: leadershipParagraphs.slice(1),
+  },
+  stats: [
+    {
+      value: siteConfig.teamMember?.experience || "10+",
+      label: "Years of Experience",
+    },
+    {
+      value: siteConfig.teamMember?.statsValue || `${siteConfig.business.serviceAreas.length}+`,
+      label: siteConfig.teamMember?.statsLabel || "Service Regions",
+    },
+    {
+      value: String(siteConfig.business.expertise.length),
+      label: "Areas of Expertise",
+      suffix: "+",
+    },
   ],
-  expertise: {
-    sectionTitle: siteConfig.teamMember?.expertiseTitle || "Areas of Expertise",
-    paragraphs: siteConfig.teamMember?.expertiseParagraphs || [
-      `${siteConfig.business.founder.name}'s professional practice encompasses ${siteConfig.business.expertise.join(", ").toLowerCase()}, serving clients across multiple regions and industries.`,
-      `With deep experience and a client-centered approach, ${siteConfig.business.founder.name.split(" ")[0]} provides comprehensive solutions that address complex challenges and deliver measurable results.`
-    ]
-  },
+  highlights: [
+    {
+      icon: "Target",
+      title: "Strategic Approach",
+      description:
+        "Every engagement starts with your goals. Solutions are shaped around outcomes, not templates, so the work stays focused on what matters to you.",
+    },
+    {
+      icon: "Users",
+      title: "Client Partnership",
+      description:
+        "Direct, responsive communication and a working relationship built on trust, transparency, and shared accountability for results.",
+    },
+    {
+      icon: "Award",
+      title: "Recognized Expertise",
+      description: `Deep experience across ${siteConfig.business.expertise.join(", ").toLowerCase()}, backed by ongoing professional development and industry involvement.`,
+    },
+  ],
   credentials: {
-    sectionTitle: siteConfig.teamMember?.credentialsTitle || "Credentials & Qualifications",
-    description: siteConfig.teamMember?.credentialsDescription || `${siteConfig.business.founder.name} holds professional credentials and qualifications that demonstrate expertise and commitment to excellence in the field.`,
+    title: siteConfig.teamMember?.credentialsTitle || "Credentials & Qualifications",
     licenses: siteConfig.teamMember?.licenses || siteConfig.business.serviceAreas,
     certifications: siteConfig.teamMember?.certifications || [
       "Professional Certification (Example)",
       "Industry Qualification (Example)",
-      "Specialized Training (Example)"
+      "Specialized Training (Example)",
     ],
-    note: siteConfig.teamMember?.credentialsNote || `${siteConfig.business.founder.name} is available to serve clients across all service regions.`
   },
-  leadership: {
-    sectionTitle: siteConfig.teamMember?.leadershipTitle || "Leadership & Community",
-    paragraphs: siteConfig.teamMember?.leadershipParagraphs || [
-      `Beyond professional practice, ${siteConfig.business.founder.name} is actively involved in community initiatives and industry leadership roles.`,
-      `As a resident of ${siteConfig.contact.address.city}, ${siteConfig.contact.address.state}, ${siteConfig.business.founder.name.split(" ")[0]} maintains strong connections with the local community and contributes to regional development.`
-    ],
-    highlights: {
-      title: siteConfig.teamMember?.leadershipHighlightTitle || "Community Leader",
-      subtitle: `${siteConfig.contact.address.city}, ${siteConfig.contact.address.state}`,
-      items: siteConfig.teamMember?.leadershipHighlightItems || [
-        "Industry Leadership Role",
-        "Community Organization Involvement",
-        "Professional Association Member"
-      ]
-    }
-  },
+  quote:
+    siteConfig.teamMember?.ctaQuote ||
+    "Delivering exceptional results through expertise and dedication.",
   cta: {
     title: siteConfig.teamMember?.ctaTitle || "Experience & Expertise You Can Trust",
-    paragraphs: siteConfig.teamMember?.ctaParagraphs || [
-      `With extensive experience in ${siteConfig.business.expertise[0]?.toLowerCase() || "professional services"}, ${siteConfig.business.founder.name} provides strategic guidance and expert solutions for clients across ${siteConfig.business.serviceAreas[0]} and beyond.`
-    ],
-    quote: siteConfig.teamMember?.ctaQuote || "Delivering exceptional results through expertise and dedication.",
+    description:
+      siteConfig.teamMember?.ctaParagraphs?.[0] ||
+      `With extensive experience in ${siteConfig.business.expertise[0]?.toLowerCase() || "professional services"}, ${founderName} provides strategic guidance and expert solutions for clients across ${siteConfig.business.serviceAreas[0]} and beyond.`,
     buttonText: siteConfig.teamMember?.ctaButton || "Schedule Consultation",
-    phoneNumber: siteConfig.contact.phoneDisplay
-  }
+  },
 }

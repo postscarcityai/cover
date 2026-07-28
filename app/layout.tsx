@@ -10,13 +10,28 @@ import { ExitIntentPopup } from "@/components/exit-intent-popup";
 import { FloatingCTA } from "@/components/floating-cta";
 import { AnnouncementBanner } from "@/components/announcement-banner";
 import { ScrollRevealInit } from "@/components/scroll-reveal";
+import { Navigation } from "@/components/navigation";
 import { siteConfig } from "@/site.config";
 import { interTight, inter } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: siteConfig.seo.defaultTitle,
+  title: {
+    default: siteConfig.seo.defaultTitle,
+    template: siteConfig.seo.titleTemplate,
+  },
   description: siteConfig.description,
+  openGraph: {
+    siteName: siteConfig.seo.openGraph.siteName,
+    type: "website",
+    locale: siteConfig.seo.openGraph.locale,
+    images: siteConfig.seo.openGraph.images,
+  },
+  twitter: {
+    card: siteConfig.seo.twitter.cardType as "summary_large_image",
+    site: siteConfig.seo.twitter.site,
+    images: siteConfig.seo.openGraph.images.map((img) => img.url),
+  },
 };
 
 export default function RootLayout({
@@ -114,6 +129,12 @@ export default function RootLayout({
             effects={true}
           />
         )}
+        {/* Navigation is rendered here, OUTSIDE #smooth-wrapper, so its
+            `position: fixed` is relative to the viewport. Rendering it
+            inside #smooth-content breaks fixed positioning because the
+            transform applied to #smooth-content by ScrollSmoother creates
+            a new containing block for fixed descendants. */}
+        <Navigation />
         <UTMPreserver />
         {siteConfig.features.smoothScroll ? (
           <div id="smooth-wrapper" className="overflow-x-hidden">

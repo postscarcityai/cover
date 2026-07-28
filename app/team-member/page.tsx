@@ -2,9 +2,10 @@ import type { Metadata } from "next"
 import TeamMemberClient from "./client"
 import { teamMemberData } from "./data"
 import { siteConfig } from "@/site.config"
+import { JsonLd } from "@/components/json-ld"
 
 export const metadata: Metadata = {
-  title: `${siteConfig.business.founder.name} - ${siteConfig.business.founder.title} | ${siteConfig.name}`,
+  title: `${siteConfig.business.founder.name} - ${siteConfig.business.founder.title}`,
   description: siteConfig.teamMember?.metaDescription || `Learn more about ${siteConfig.business.founder.name}, ${siteConfig.business.founder.title} at ${siteConfig.name}. Serving clients across ${siteConfig.business.serviceAreas.join(", ")}.`,
   keywords: siteConfig.teamMember?.keywords || [
     siteConfig.business.founder.name,
@@ -64,21 +65,8 @@ export default function TeamMemberPage() {
 
   return (
     <>
-      {/* BreadcrumbList Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(teamMemberData.breadcrumbSchema)
-        }}
-      />
-
-      {/* Person Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(personSchema)
-        }}
-      />
+      {/* Person Schema (breadcrumb schema is emitted by SubpageHero) */}
+      <JsonLd data={personSchema} />
 
       <TeamMemberClient data={teamMemberData} />
     </>

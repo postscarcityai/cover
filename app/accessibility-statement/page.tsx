@@ -1,31 +1,22 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
 import { siteConfig } from "@/site.config"
+import { pageMetadata } from "@/lib/seo"
 import { getAccessibilityStatementData } from "./data"
 
-export const metadata: Metadata = {
-  title: `Accessibility Statement | ${siteConfig.name}`,
-  description: `Our commitment to web accessibility and ensuring our website is accessible to people with disabilities.`,
-  keywords: [
-    ...siteConfig.seo.keywords,
-    "accessibility statement",
-    "ADA compliance",
-    "WCAG",
-    "web accessibility",
-  ],
-  alternates: {
-    canonical: `${siteConfig.url}/accessibility-statement`,
-  },
-  robots: { index: true, follow: true },
-}
+export const metadata: Metadata = pageMetadata({
+  path: "/accessibility-statement",
+  title: "Accessibility Statement",
+  description: "Our commitment to web accessibility and ensuring our website is accessible to people with disabilities.",
+  keywords: ["accessibility statement", "ADA compliance", "WCAG", "web accessibility"],
+})
 
 const sectionHeadingStyle = {
   fontFamily: "var(--font-heading)",
-  color: "var(--accent)",
+  color: "var(--fg)",
 }
 
 function ContactItemsList({ items }: { items: readonly ("phone" | "email")[] }) {
@@ -64,7 +55,6 @@ export default function AccessibilityStatementPage() {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
       <SubpageHero
         eyebrow={data.hero.eyebrow}
         title={data.hero.title}

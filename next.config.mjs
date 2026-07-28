@@ -17,6 +17,14 @@ const nextConfig = {
   },
   // Configure `pageExtensions` to include MDX files
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  // Permanent redirects for renamed or removed pages. Add entries here when a
+  // public URL changes so inbound links keep their equity:
+  //   { source: '/old-path', destination: '/new-path', permanent: true }
+  // For renamed dynamic slugs, prefer a redirect map + permanentRedirect()
+  // inside the [slug] page (see Next.js docs) so aliases live next to the data.
+  async redirects() {
+    return []
+  },
   // Performance and caching headers
   async headers() {
     return [
@@ -46,15 +54,21 @@ const nextConfig = {
           },
         ],
       },
-      {
-        source: '/_next/static/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
+      // Only in production: dev chunk filenames are NOT content-hashed, so an
+      // immutable header would make browsers cache stale dev code forever.
+      ...(process.env.NODE_ENV === 'production'
+        ? [
+            {
+              source: '/_next/static/(.*)',
+              headers: [
+                {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=31536000, immutable',
+                },
+              ],
+            },
+          ]
+        : []),
       {
         source: '/(.*)\\.(ico|png|jpg|jpeg|gif|webp|avif|svg)',
         headers: [

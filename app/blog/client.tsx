@@ -3,9 +3,7 @@
 import { useState, useMemo } from "react"
 import { Calendar, Clock, ArrowRight, User, Search } from "lucide-react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { MagneticButton } from "@/components/magnetic-button"
-import { Navigation } from "@/components/navigation"
+import { PillButton } from "@/components/ui/pill-button"
 import { Footer } from "@/components/footer"
 import { SubpageHero } from "@/components/subpage-hero"
 import { SubpageSection } from "@/components/subpage-section"
@@ -71,7 +69,6 @@ export function BlogClient({ allPosts, featuredPosts, data }: BlogClientProps) {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
 
       <SubpageHero
         eyebrow={data.hero.eyebrow}
@@ -112,12 +109,12 @@ export function BlogClient({ allPosts, featuredPosts, data }: BlogClientProps) {
               {filteredFeaturedPosts.map((post) => (
                 <article
                   key={post.slug}
-                  className="group p-8 rounded-lg border transition-all duration-500 hover:border-[var(--accent)]"
+                  className="group p-8 rounded-3xl border transition-all duration-500 hover:border-[var(--accent)]"
                   style={{ backgroundColor: "var(--muted)", borderColor: "var(--border)" }}
                 >
                   <div className="flex items-center gap-4 mb-4">
                     <span
-                      className="px-3 py-1 text-xs font-medium uppercase tracking-wider rounded-full"
+                      className="px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] rounded-full"
                       style={{ backgroundColor: "color-mix(in srgb, var(--accent) 15%, transparent)", color: "var(--accent)" }}
                     >
                       {post.category}
@@ -133,8 +130,8 @@ export function BlogClient({ allPosts, featuredPosts, data }: BlogClientProps) {
                   </div>
 
                   <h3
-                    className="text-xl font-bold mb-4 transition-opacity group-hover:opacity-80"
-                    style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+                    className="text-xl font-display font-normal tracking-display-snug mb-4 transition-opacity group-hover:opacity-80"
+                    style={{ color: "var(--fg)" }}
                   >
                     <Link href={`/blog/${post.slug}`} onClick={() => handleBlogPostClick(post)}>
                       {post.title}
@@ -159,7 +156,7 @@ export function BlogClient({ allPosts, featuredPosts, data }: BlogClientProps) {
                     <Link
                       href={`/blog/${post.slug}`}
                       onClick={() => handleBlogPostClick(post)}
-                      className="inline-flex items-center text-xs font-semibold uppercase tracking-wider transition-opacity hover:opacity-70"
+                      className="inline-flex items-center text-xs font-semibold uppercase tracking-[0.18em] transition-opacity hover:opacity-70"
                       style={{ color: "var(--accent)" }}
                     >
                       Read
@@ -192,14 +189,14 @@ export function BlogClient({ allPosts, featuredPosts, data }: BlogClientProps) {
             {filteredRegularPosts.map((post) => (
               <article
                 key={post.slug}
-                className="group p-6 border rounded-lg transition-all duration-500 hover:border-[var(--accent)]"
+                className="group p-6 border rounded-3xl transition-all duration-500 hover:border-[var(--accent)]"
                 style={{ borderColor: "var(--border)" }}
               >
                 <div className="flex flex-col lg:flex-row lg:items-start lg:gap-8">
                   <div className="flex-1">
                     <div className="flex items-center gap-4 mb-3">
                       <span
-                        className="px-3 py-1 text-xs font-medium uppercase tracking-wider rounded-full"
+                        className="px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] rounded-full"
                         style={{ backgroundColor: "color-mix(in srgb, var(--accent) 15%, transparent)", color: "var(--accent)" }}
                       >
                         {post.category}
@@ -215,8 +212,8 @@ export function BlogClient({ allPosts, featuredPosts, data }: BlogClientProps) {
                     </div>
 
                     <h3
-                      className="text-xl font-bold mb-3 transition-opacity group-hover:opacity-80"
-                      style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+                      className="text-xl font-display font-normal tracking-display-snug mb-3 transition-opacity group-hover:opacity-80"
+                      style={{ color: "var(--fg)" }}
                     >
                       <Link href={`/blog/${post.slug}`} onClick={() => handleBlogPostClick(post)}>
                         {post.title}
@@ -243,7 +240,7 @@ export function BlogClient({ allPosts, featuredPosts, data }: BlogClientProps) {
                     <Link
                       href={`/blog/${post.slug}`}
                       onClick={() => handleBlogPostClick(post)}
-                      className="inline-flex items-center text-sm font-semibold uppercase tracking-wider transition-opacity hover:opacity-70"
+                      className="inline-flex items-center text-sm font-semibold uppercase tracking-[0.18em] transition-opacity hover:opacity-70"
                       style={{ color: "var(--accent)" }}
                     >
                       Read More
@@ -267,26 +264,22 @@ export function BlogClient({ allPosts, featuredPosts, data }: BlogClientProps) {
         <SubpageSection background="gradient">
           <div className="text-center max-w-4xl mx-auto" data-reveal="fade-up">
             <h2
-              className="text-4xl md:text-5xl lg:text-7xl font-bold mb-8"
-              style={{ fontFamily: "var(--font-heading)", color: "var(--fg)" }}
+              className="text-4xl md:text-5xl lg:text-6xl font-display font-normal tracking-display-snug mb-8"
+              style={{ color: "var(--fg)" }}
             >
               Ready to Get Started?
             </h2>
             <p className="text-lg md:text-xl mb-12 leading-relaxed" style={{ color: "var(--fg-muted)" }}>
               Have questions or need assistance? We&apos;re here to help.
             </p>
-            <MagneticButton>
-              <Button
-                variant={null as any}
-                size="lg"
-                className="font-semibold text-base px-10 py-5 tracking-wide uppercase rounded-full transition-all hover:scale-105"
-                style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
-                onClick={() => (window.location.href = "/contact")}
-              >
-                Contact Us Today
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </MagneticButton>
+            <PillButton
+              size="lg"
+              variant="primary"
+              onClick={() => (window.location.href = "/contact")}
+            >
+              Contact Us Today
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </PillButton>
           </div>
         </SubpageSection>
       </main>

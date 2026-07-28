@@ -2,38 +2,19 @@ import type { Metadata } from "next"
 import { getAllBlogPosts, getFeaturedBlogPosts, type BlogPost } from "@/lib/blog"
 import { BlogClient } from "./client"
 import { siteConfig } from "@/site.config"
+import { pageMetadata } from "@/lib/seo"
 import { blogData } from "./data"
+import { JsonLd } from "@/components/json-ld"
 
 // Revalidate every hour (3600 seconds)
 export const revalidate = 3600
 
-export const metadata: Metadata = {
-  title: `Blog - Insights & Updates | ${siteConfig.name}`,
+export const metadata: Metadata = pageMetadata({
+  path: "/blog",
+  title: "Blog - Insights & Updates",
   description: "Expert insights, industry news, and helpful resources. Stay informed with our latest articles and updates.",
   keywords: ["blog", "insights", "news", "updates", "articles"],
-  alternates: {
-    canonical: `${siteConfig.url}/blog`
-  },
-  openGraph: {
-    title: `Blog - ${siteConfig.name}`,
-    description: "Expert insights, industry news, and helpful resources from our team.",
-    url: `${siteConfig.url}/blog`,
-    siteName: siteConfig.name,
-    type: "website",
-    images: [{
-      url: `${siteConfig.url}/og-image.png`,
-      width: 1200,
-      height: 630,
-      alt: siteConfig.name
-    }]
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `Blog - ${siteConfig.name}`,
-    description: "Expert insights, industry news, and helpful resources.",
-    images: [`${siteConfig.url}/og-image.png`],
-  }
-}
+})
 
 export default async function BlogPage() {
   const allPosts = await getAllBlogPosts()
@@ -61,12 +42,7 @@ export default async function BlogPage() {
   return (
     <>
       {/* BreadcrumbList Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema)
-        }}
-      />
+      <JsonLd data={breadcrumbSchema} />
 
       <BlogClient allPosts={allPosts} featuredPosts={featuredPosts} data={blogData} />
     </>

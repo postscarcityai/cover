@@ -9,7 +9,7 @@ import type { DesignTokens } from "@/theme.config"
 
 export const siteConfig = {
   // Color overrides (see theme.config.ts for defaults)
-  // The default preset is "Clinical" (white + charcoal + electric yellow accent).
+  // The default preset is "Periwinkle" (white + cool charcoal + #5A6DF3 indigo accent).
   // Per-client overrides go here. Examples:
   //   colors: { accent: "#ffc671", accentForeground: "#453421" } // → warm/hims palette
   //   colors: warmPreset                                          // import from theme.config
@@ -19,6 +19,9 @@ export const siteConfig = {
   // Basic Site Information
   name: "Your Company Name",
   description: "Your company tagline or brief description",
+  // TODO(launch): set this to the real production domain before launch.
+  // Canonical URLs, Open Graph tags, the sitemap, and JSON-LD all derive
+  // from this value — a stale URL here silently poisons all of them.
   url: "https://psai-cover.vercel.app",
 
   // Contact Information
@@ -129,7 +132,7 @@ export const siteConfig = {
     href: string
     submenu?: Array<{
       label: string
-      items: Array<{ label: string; href: string }>
+      items: Array<{ label: string; href: string; description?: string }>
     }>
   }>,
 
@@ -308,6 +311,30 @@ export const siteConfig = {
     cookiePolicy: "/cookie-policy",
     accessibilityStatement: "/accessibility-statement",
     nonDiscrimination: "/non-discrimination-statement"
+  },
+
+  // Footer Configuration (all optional — the footer falls back to a
+  // navigation-derived link column when `columns` is unset)
+  footer: {
+    // CTA banner row above the link columns
+    cta: undefined as {
+      title: string
+      description?: string
+      primary?: { text: string; href: string }
+      /** Render a tel: pill built from siteConfig.contact. */
+      showPhone?: boolean
+    } | undefined,
+    // Custom link columns (replaces the nav-derived "Resources" column)
+    columns: undefined as Array<{
+      title: string
+      links: Array<{ label: string; href: string }>
+    }> | undefined,
+    // Compliance/disclosure band below the columns (regulated industries)
+    compliance: undefined as {
+      heading?: string
+      paragraphs: string[]
+      links?: Array<{ label: string; href: string }>
+    } | undefined,
   },
 
   // Optional Page Configurations

@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import type { TestimonialsContent } from "@/app/data"
 
 interface TestimonialsSectionProps {
@@ -39,7 +40,7 @@ export function TestimonialsSection({ content, sectionNumber, className = "" }: 
               </blockquote>
               <div className="flex items-center gap-3 mt-auto">
                 {t.imageSrc ? (
-                  <img src={t.imageSrc} alt={t.author} className="w-10 h-10 rounded-full object-cover" />
+                  <Image src={t.imageSrc} alt={t.author} width={40} height={40} className="w-10 h-10 rounded-full object-cover" />
                 ) : (
                   <svg
                     className="w-10 h-10 rounded-full"

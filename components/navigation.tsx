@@ -41,10 +41,9 @@ export function Navigation({ className = "" }: NavigationProps) {
   //   Any upward scroll:   nav slides back down into the sticky position,
   //                        regardless of how far down the page the user is.
   //
-  // Listens to both native scroll AND the custom `smoothscroll` event
-  // dispatched by components/scroll-smoother.tsx, since that wrapper
-  // captures wheel events and `window.scrollY` can be 0 while it owns
-  // the scroll. Whichever event fires, we use it.
+  // The native `scroll` event is the single source of truth. Lenis smooths
+  // the real document scroll rather than owning it behind a transform, so
+  // `window.scrollY` stays accurate whether or not the smoother is running.
   useEffect(() => {
     if (!siteConfig.features.navigationScrollHide) return
 
@@ -81,18 +80,13 @@ export function Navigation({ className = "" }: NavigationProps) {
       lastY = currentY
     }
 
-    const handleNativeScroll = () => update(window.scrollY)
-    const handleSmoothScroll = (e: Event) => {
-      const ce = e as CustomEvent<{ scrollY: number }>
-      update(ce.detail.scrollY)
-    }
+    // Lenis moves the real document scroll position, so the native `scroll`
+    // event fires on every smoothed frame and `window.scrollY` is accurate.
+    // No parallel custom-event path is needed.
+    const handleScroll = () => update(window.scrollY)
 
-    window.addEventListener("scroll", handleNativeScroll, { passive: true })
-    window.addEventListener("smoothscroll", handleSmoothScroll)
-    return () => {
-      window.removeEventListener("scroll", handleNativeScroll)
-      window.removeEventListener("smoothscroll", handleSmoothScroll)
-    }
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   // Anchor the dropdown panel to its trigger, and keep it anchored when the
@@ -109,11 +103,9 @@ export function Navigation({ className = "" }: NavigationProps) {
     measure()
     window.addEventListener("resize", measure)
     window.addEventListener("scroll", measure, { passive: true })
-    window.addEventListener("smoothscroll", measure)
     return () => {
       window.removeEventListener("resize", measure)
       window.removeEventListener("scroll", measure)
-      window.removeEventListener("smoothscroll", measure)
     }
   }, [activeDropdown])
 

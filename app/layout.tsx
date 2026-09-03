@@ -3,7 +3,7 @@ import "./globals.css";
 import GoogleAnalytics from "@/components/google-analytics";
 import { UTMPreserver } from "@/components/utm-preserver";
 import { ThemeInjector } from "@/components/theme-injector";
-import { ScrollSmoother } from "@/components/scroll-smoother";
+import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { CookieConsentWrapper } from "@/components/cookie-consent-wrapper";
 import { RouteAnnouncer } from "@/components/route-announcer";
 import { ExitIntentPopup } from "@/components/exit-intent-popup";
@@ -120,28 +120,14 @@ export default function RootLayout({
         <RouteAnnouncer />
         {siteConfig.announcement?.enabled && <AnnouncementBanner />}
         <ScrollRevealInit />
-        {siteConfig.features.smoothScroll && (
-          <ScrollSmoother 
-            smooth={0.08}
-            speed={1}
-            ease="power2.out"
-            normalizeScroll={true}
-            effects={true}
-          />
-        )}
-        {/* Navigation is rendered here, OUTSIDE #smooth-wrapper, so its
-            `position: fixed` is relative to the viewport. Rendering it
-            inside #smooth-content breaks fixed positioning because the
-            transform applied to #smooth-content by ScrollSmoother creates
-            a new containing block for fixed descendants. */}
         <Navigation />
         <UTMPreserver />
+        {/* Lenis smooths the real document scroll, so it needs no wrapper
+            elements and imposes no transform. Nothing outside this provider
+            has to move, and `position: fixed` on the nav above still resolves
+            against the viewport. */}
         {siteConfig.features.smoothScroll ? (
-          <div id="smooth-wrapper" className="overflow-x-hidden">
-            <div id="smooth-content" className="overflow-x-hidden">
-              {children}
-            </div>
-          </div>
+          <SmoothScrollProvider lerp={0.1}>{children}</SmoothScrollProvider>
         ) : (
           children
         )}

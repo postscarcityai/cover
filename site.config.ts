@@ -203,6 +203,7 @@ export const siteConfig = {
     exitIntentPopup: true,
     floatingCTA: true,
     smoothScroll: true,
+    scrollVideo: true, // Scroll-scrubbed video sections
     navigationScrollHide: true
   },
 

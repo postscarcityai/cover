@@ -42,6 +42,7 @@ happens to be implemented with Lenis.
 | Branch | Opinion | Docs |
 |---|---|---|
 | `variant/lenis-smooth-scroll` | Momentum scrolling on the real document scroll position | [LENIS-SMOOTH-SCROLL.md](features/LENIS-SMOOTH-SCROLL.md) |
+| `variant/scroll-video` | Scroll-scrubbed video + sticky choreography. **Branched off `variant/lenis-smooth-scroll`, not `main`** — the scrub engine needs a document that actually scrolls. | [SCROLL-VIDEO.md](features/SCROLL-VIDEO.md) |
 
 ### Not yet under the convention
 
